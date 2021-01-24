@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" type="text/css" />
+
+    <link th:href="@{/styles/startStyle.css}" rel="stylesheet">
+    <script type="text/javascript" th:inline="javascript" th:src="@{/validateUploadFile.js}"></script>
+
+    <title>[[#{app.HCMHelper}]]</title>
+</head>
+
+<div th:replace="menuFragments :: menu"></div>
+
+<body>
+<main role="main" class="background">
+    <!-- SEND EMAIL -->
+    <div class="container">
+    <div class="row h-100 position-relative">
+        <div class="mt-5">
+            <div class="row">
+                <i class="far fa-check-circle fa-2x"></i>
+                <h4 class="mt-1" >&nbsp;[[#{app.sendMailTitle}]]</h4>
+            </div>
+            <p class="text-muted  ml-1 mt-1">[[#{app.sendMailDescription}]]</p>
+        </div>
+        <div class="col-sm-12">
+            <form action="#" th:action="@{/send}" method="post" class="border rounded col-5">
+                <div class="form-group row mt-4 mb-0 container">
+                    <label for="email" class="text mt-2">
+                        <h6>[[#{app.emailAddress}]]:</h6>
+                    </label>&nbsp;
+                    <input id="email" class="form-control-sm mb-4 responsive-width" type="email" name="email"
+                           placeholder="example@domain.com" required>
+                </div>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-info btn-sm mb-3 text-center col-2 responsive-width">[[#{app.send}]]</button>
+                </div>
+            </form>
+            <div class="form-group col-4 alert alert-success mt-2" th:if="${successfulSendMail}" role="alert">
+                <strong>[[#{app.emailMessage}]]: </strong> <span th:text="${email}"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!--UPLOAD PDF FILE -->
+    <div class="container mt-5">
+        <div class="row h-100 position-relative">
+            <div class="mt-5">
+                <div class="row">
+                    <i class="far fa-check-circle fa-2x"></i>
+                    <h4 class="mt-1" >&nbsp;[[#{app.uploadPdfTitle}]]</h4>
+                </div>
+                <p class="text-muted ml-1 mt-1">[[#{app.uploadPdfDescription}]]</p>
+            </div>
+            <div class="col-sm-12 my-auto mt-3">
+                <form class="form  border rounded col-5 responsive-width" enctype="multipart/form-data" method="post" th:action="@{/persons/uploadPdfFile}">
+                    <div class="form-group row mt-4 mb-0 container">
+                        <label for="uploadedMultipartPdfFile" class="text">
+                            <h6 >[[#{app.uploadPdfFile}]]:</h6>
+                        </label>&nbsp;
+                        <input id="uploadedMultipartPdfFile" class="form-control-file form-control-sm mb-4 col-4 responsive-width" type="file"
+                               name="uploadedMultipartPdfFile">
+                    </div>
+                    <div class="text-right">
+                            <button type="submit" class="btn btn-info btn-sm mb-3 text-center col-2 responsive-width" disabled>[[#{app.submit}]]</button>
+                    </div>
+                </form>
+            </div>
+            <div class="row container mt-2 ml-1">
+                <div class="form-group col-5 alert alert-success" th:if="${exists}" role="alert">
+                    <h5 class="text">[[#{app.existEmployeeMessage}]]</h5>
+                    <a th:href="@{/persons/showFormForUpdate(personId = ${personId})}" class="btn btn-info  btn-sm"
+                       role="button">[[#{app.seeDetails}]]</a>
+                </div>
+                <div class="form-group col-5 alert alert-danger" th:if="${invalidUploadPdf}" role="alert">
+                    <h5 class="text">[[#{app.invalidPdfFile}]]</h5>
+                    <div class="form-group">
+                        <table>
+                            <tr th:each="error, iterstat: ${invalidInputFields}">
+                                <td th:text="${error}" th:id="|td${iterstat.index}|"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

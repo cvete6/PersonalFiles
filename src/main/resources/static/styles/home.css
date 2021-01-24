@@ -1,0 +1,30 @@
+#title{
+    color: #124265;
+    font-size: 42px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 0;
+    margin-top: 170px;
+    font-family:  "Raleway", sans-serif;
+}
+@media(min-width:1200px){
+
+    div {font-size:24px}
+
+}
+@media(min-width:992px){
+
+    div {font-size:22px}
+
+}
+@media(min-width:768px){
+
+    div {font-size:18px}
+    h1 {font-size: 21px}
+}
+@media(max-width:767px){
+
+    div {font-size:12px}
+    h1 {font-size: 21px}
+}

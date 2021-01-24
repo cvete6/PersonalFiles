@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" http-equiv=refresh>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    <script type="text/javascript" th:inline="javascript" th:src="@{/validateInsuranceCardDetails.js}"></script>
+    <link th:href="@{/styles/startStyle.css}" rel="stylesheet">
+
+    <title>[[#{app.HCMHelper}]]</title>
+</head>
+<body>
+<div th:replace="menuFragments :: menu"></div>
+
+<main role="main" class="background mb-5">
+    <div class="container mb-5 position-relative ">
+        <h2>[[#{app.employeeDetails}]]:</h2>
+        <form class="form mt-5" enctype="multipart/form-data" method="post" th:action="@{/persons/edit}">
+            <div class="form-group">
+                <input id="personId" type="hidden" class="form-control mb-4 col-6" th:field="*{person.id}"
+                       name="personId"
+                       required>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="row">
+                        <label for="name" class="col-sm-5 col-form-label"><h6>[[#{app.name}]]:</h6></label>
+                        <input id="name" type="text" class="form-control form-control-sm col-6 "
+                               th:field="*{person.givenName}"
+                               name="name" th:placeholder="#{app.name}" required>
+                    </div>
+                    <div class="row">
+                        <label for="personLastName"
+                               class="col-sm-5 col-form-label"><h6>[[#{app.lastName}]]:</h6></label>
+                        <input id="personLastName" class="form-control form-control-sm col-6 " type="text"
+                               th:field="*{person.familyName}"
+                               name="lastName"
+                               th:placeholder="#{app.lastName}" required>
+                    </div>
+                    <div class="row">
+                        <label for="personAdditionalName"
+                               class="col-sm-5 col-form-label"><h6>[[#{app.additionalName}]]:</h6></label>
+                        <input id="personAdditionalName" class="form-control form-control-sm col-6 " type="text"
+                               th:field="*{person.additionalName}"
+                               name="additionalName"
+                               th:placeholder="#{app.additionalName}">
+                    </div>
+                    <div class="row">
+                        <label for="personAddres" class="col-sm-5 col-form-label"><h6>[[#{app.address}]]:</h6></label>
+                        <input id="personAddres" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.address}"
+                               name="address"
+                               th:placeholder="#{app.address}">
+                    </div>
+                    <div class="row">
+                        <label for="personAward" class="col-sm-5 col-form-label"><h6>[[#{app.award}]]:</h6></label>
+                        <input id="personAward" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.award}"
+                               name="award"
+                               th:placeholder="#{app.award}">
+                    </div>
+                    <div class="row">
+                        <label for="socialNumber"
+                               class="col-sm-5 col-form-label"><h6>[[#{app.socialNumber}]]:</h6></label>
+                        <input id="socialNumber" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.socialNumber}"
+                               name="socialNumber"
+                               th:placeholder="#{app.socialNumber}" required>
+                    </div>
+                    <div class="row">
+                        <label for="personCallSign" class="col-sm-5 col-form-label"><h6>[[#{app.callSign}]]:</h6></label>
+                        <input id="personCallSign" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.callSign}"
+                               name="callSign"
+                               th:placeholder="#{app.callSign}" >
+                    </div>
+                    <div class="row">
+                        <label for="personContactPoint" class="col-sm-5 col-form-label"><h6>[[#{app.contactPoint}]]:</h6></label>
+                        <input id="personContactPoint" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.contactPoint}"
+                               name="contact point"
+                               th:placeholder="#{app.contactPoint}" >
+                    </div>
+                    <div class="row">
+                        <label for="dateOfBirth"
+                               class="col-sm-5 col-form-label"><h6>[[#{app.dateOfBirth}]]:</h6></label>
+                        <input id="dateOfBirth" class="form-control form-control-sm col-6" type="date"
+                               th:field="*{person.birthDate}"
+                               name="address"
+                               th:placeholder="#{app.dateOfBirth}" required>
+                    </div>
+                    <div class="row">
+                        <label for="placeOfBirth"
+                               class="col-sm-5 col-form-label"><h6>[[#{app.placeOfBirth}]]:</h6></label>
+                        <input id="placeOfBirth" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.birthPlace}"
+                               name="placeOfBirth"
+                               th:placeholder="#{app.placeOfBirth}" required>
+                    </div>
+                    <div class="row">
+                        <label for="dateOfDeath"
+                               class="col-sm-5 col-form-label"><h6>[[#{app.dateOfDeath}]]:</h6></label>
+                        <input id="dateOfDeath" class="form-control form-control-sm col-6" type="date"
+                               th:field="*{person.deathDate}"
+                               name="dateOfDeath"
+                               th:placeholder="#{app.dateOfDeath}" >
+                    </div>
+                    <div class="row">
+                        <label for="placeOfDeath"
+                               class="col-sm-5 col-form-label"><h6>[[#{app.placeOfDeath}]]:</h6></label>
+                        <input id="placeOfDeath" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.deathPlace}"
+                               name="placeOfDeath"
+                               th:placeholder="#{app.placeOfDeath}" >
+                    </div>
+                    <div class="row">
+                        <label for="email"
+                               class="col-sm-5 col-form-label"><h6>[[#{app.email}]]:</h6></label>
+                        <input id="email" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.email}"
+                               name="email"
+                               th:placeholder="#{app.email}" required>
+                    </div>
+                    <div class="row">
+                        <label for="personFaxNumber" class="col-sm-5 col-form-label"><h6>[[#{app.faxNumber}]]:</h6></label>
+                        <input id="personFaxNumber" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.faxNumber}"
+                               name="faxNumber"
+                               th:placeholder="#{app.faxNumber}" >
+                    </div>
+                    <div class="row">
+                        <label for="personGender" class="col-sm-5 col-form-label"><h6>[[#{app.gender}]]:</h6></label>
+                        <input id="personGender" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.gender}"
+                               name="gender"
+                               th:placeholder="#{app.gender}" >
+                    </div>
+                    <div class="row">
+                        <label for="personGlobalLocationNumber" class="col-sm-5 col-form-label"><h6>[[#{app.globalLocationNumber}]]:</h6></label>
+                        <input id="personGlobalLocationNumber" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.globalLocationNumber}"
+                               name="address"
+                               th:placeholder="#{app.globalLocationNumber}" >
+                    </div>
+                    <div class="row">
+                        <label for="personHeight" class="col-sm-5 col-form-label"><h6>[[#{app.height}]]:</h6></label>
+                        <input id="personHeight" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.height}"
+                               name="height"
+                               th:placeholder="#{app.height}" >
+                    </div>
+                    <div class="row">
+                        <label for="personWeight" class="col-sm-5 col-form-label"><h6>[[#{app.weight}]]:</h6></label>
+                        <input id="personWeight" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.weight}"
+                               name="weight"
+                               th:placeholder="#{app.weight}" >
+                    </div>
+                    <div class="row">
+                        <label for="personHomeLocation" class="col-sm-5 col-form-label"><h6>[[#{app.homeLocation}]]:</h6></label>
+                        <input id="personHomeLocation" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.homeLocation}"
+                               name="homeLocation"
+                               th:placeholder="#{app.homeLocation}" >
+                    </div>
+                    <div class="row">
+                        <label for="personHonorificPrefix" class="col-sm-5 col-form-label"><h6>[[#{app.honorificPrefix}]]:</h6></label>
+                        <input id="personHonorificPrefix" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.honorificPrefix}"
+                               name="honorificPrefix"
+                               th:placeholder="#{app.honorificPrefix}" >
+                    </div>
+                    <div class="row">
+                        <label for="personHonorificSuffix" class="col-sm-5 col-form-label"><h6>[[#{app.honorificSuffix}]]:</h6></label>
+                        <input id="personHonorificSuffix" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.honorificSuffix}"
+                               name="honorificSuffix"
+                               th:placeholder="#{app.honorificSuffix}" >
+                    </div>
+                    <div class="row">
+                        <label for="personJobTitle" class="col-sm-5 col-form-label"><h6>[[#{app.jobTitle}]]:</h6></label>
+                        <input id="personJobTitle" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.jobTitle}"
+                               name="jobTitle"
+                               th:placeholder="#{app.jobTitle}" >
+                    </div>
+                    <div class="row">
+                        <label for="personKnowsAbout" class="col-sm-5 col-form-label"><h6>[[#{app.knowsAbout}]]:</h6></label>
+                        <input id="personKnowsAbout" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.knowsAbout}"
+                               name="knowsAbout"
+                               th:placeholder="#{app.knowsAbout}" >
+                    </div>
+                    <div class="row">
+                        <label for="personKnowsLanguage" class="col-sm-5 col-form-label"><h6>[[#{app.knowsLanguage}]]:</h6></label>
+                        <input id="personKnowsLanguage" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.knowsLanguage}"
+                               name="knowsLanguage"
+                               th:placeholder="#{app.knowsLanguage}" >
+                    </div>
+                    <div class="row">
+                        <label for="personNationality" class="col-sm-5 col-form-label"><h6>[[#{app.nationality}]]:</h6></label>
+                        <input id="personNationality" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.nationality}"
+                               name="nationality"
+                               th:placeholder="#{app.nationality}" >
+                    </div>
+                    <div class="row">
+                        <label for="personPerformIn" class="col-sm-5 col-form-label"><h6>[[#{app.performerIn}]]:</h6></label>
+                        <input id="personPerformIn" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.performerIn}"
+                               name="performIn"
+                               th:placeholder="#{app.performerIn}" >
+                    </div>
+                    <div class="row">
+                        <label for="personPublishingPrinciple" class="col-sm-5 col-form-label"><h6>[[#{app.publishingPrinciples}]]:</h6></label>
+                        <input id="personPublishingPrinciple" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.publishingPrinciples}"
+                               name="publishingPrinciple"
+                               th:placeholder="#{app.publishingPrinciples}" >
+                    </div>
+                    <div class="row">
+                        <label for="personSeeks" class="col-sm-5 col-form-label"><h6>[[#{app.seeks}]]:</h6></label>
+                        <input id="personSeeks" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.seeks}"
+                               name="seeks"
+                               th:placeholder="#{app.seeks}" >
+                    </div>
+                    <div class="row">
+                        <label for="personTaxID" class="col-sm-5 col-form-label"><h6>[[#{app.taxID}]]:</h6></label>
+                        <input id="personTaxID" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.taxID}"
+                               name="taxID"
+                               th:placeholder="#{app.taxID}" >
+                    </div>
+                    <div class="row">
+                        <label for="personTelephone" class="col-sm-5 col-form-label"><h6>[[#{app.telephone}]]:</h6></label>
+                        <input id="personTelephone" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.telephone}"
+                               name="telephone"
+                               th:placeholder="#{app.telephone}" >
+                    </div>
+                    <div class="row">
+                        <label for="personWorkLocation" class="col-sm-5 col-form-label"><h6>[[#{app.workLocation}]]:</h6></label>
+                        <input id="personWorkLocation" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.workLocation}"
+                               name="workLocation"
+                        th:placeholder="#{app.workLocation}" >
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <label for="passportNumber" class="col-sm-5 col-form-label">
+                            <h6>[[#{app.passportNumber}]]:</h6>
+                        </label>
+                        <input id="passportNumber" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{person.passportNumber}"
+                               name="passportNumber"
+                               th:placeholder="#{app.passportNumber}" required>
+                    </div>
+                    <div class="row">
+                        <label for="dateOfIssuePassport" class="col-sm-5 col-form-label">
+                            <h6>[[#{app.dateOfIssuePassport}]]:</h6>
+                        </label>
+                        <input id="dateOfIssuePassport" class="form-control form-control-sm col-6" type="date"
+                               th:field="*{person.dateOfIssuePassport}"
+                               name="dateOfIssuePassport"
+                               th:placeholder="dd-mm-yyyy" required>
+                    </div>
+                    <div class="row">
+                        <label for="dateOfExpiryPassport" class="col-sm-5 col-form-label">
+                            <h6>[[#{app.dateOfExpiryPassport}]]:</h6>
+                        </label>
+                        <input id="dateOfExpiryPassport" class="form-control form-control-sm col-6" type="date"
+                               th:field="*{person.dateOfExpiryPassport}"
+                               name="dateOfExpiryPassport"
+                               th:placeholder="dd-mm-yyyy" required>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <label for="personalImage" class="col-sm-5 col-form-label">
+                            <h6>[[#{app.changePersonalImage}]]:</h6>
+                        </label>
+                        <input id="personalImage" class="form-control-file form-control-sm col-6 col-bt-4 pl-1"
+                               name="personalImage"
+                               type="file">
+                    </div>
+                    <button type="submit" class="btn btn-info btn-sm mt-3">
+                        [[#{app.submit}]]
+                    </button>
+                </div>
+                <div class="col d-flex justify-content-end">
+                    <div class="col-sm-8 my-2">
+                        <div class="card justify-content-end " th:if="${personalImageExist}">
+                            <label class="card-body"><h6 class="text-muted">[[#{app.noPersonalImage}]] </h6></label>
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${client.name} +' '+ ${client.lastName}">
+                                    [[#{app.name}]]
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="card justify-content-center mt-2 ml-2" th:unless="${personalImageExist}">
+                            <img class="card-img-top" th:src="@{'data:image/jpeg;base64,'+${personalImage}}">
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${person.givenName} +' '+ ${person.familyName}">
+                                    [[#{app.name}]]
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    </div>
+</main>
+</body>
+</html>
