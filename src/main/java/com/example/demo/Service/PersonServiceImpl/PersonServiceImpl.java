@@ -94,7 +94,7 @@ public class PersonServiceImpl implements PersonService {
         Person oldPerson = personJpaRepository.findById(person.getId()).orElseThrow(
                 InvalidPersonIdException::new);
         Person modifiedPerson = oldPersonMapToNewPerson(person, oldPerson);
-        return personJpaRepository.save(oldPerson);
+        return personJpaRepository.save(modifiedPerson);
     }
 
     @Override

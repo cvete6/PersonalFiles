@@ -21,13 +21,13 @@
     <script type="text/javascript" th:inline="javascript" th:src="@{/validateInsuranceCardDetails.js}"></script>
     <link th:href="@{/styles/startStyle.css}" rel="stylesheet">
 
-    <title>[[#{app.HCMHelper}]]</title>
+    <title>[[#{app.ApplicationTitle}]]</title>
 </head>
 <body>
 <div th:replace="menuFragments :: menu"></div>
 
-<main role="main" class="background mb-5">
-    <div class="container mb-5 position-relative ">
+<main role="main" class="background mw-100">
+    <div class="container mb-5  position-relative ">
         <h2>[[#{app.employeeDetails}]]:</h2>
         <form class="form mt-5" enctype="multipart/form-data" method="post" th:action="@{/persons/edit}">
             <div class="form-group">

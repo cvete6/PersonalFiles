@@ -44,7 +44,6 @@ public class PersonController {
                                 @RequestParam(value = "keyword", required = false) String keyword) {
         personService.getPaginatedPersons(page, keyword, model);
         return "allPersons";
-
     }
 
     /**
@@ -103,7 +102,7 @@ public class PersonController {
                              Model model) throws IOException {
         person.setImage(personalImage.getBytes());
         personService.editPerson(person);
-        return "redirect:/persons/person-list/page/1";
+        return "redirect:/persons/showFormForUpdate?personId=" + person.getId();
     }
 
     /**
