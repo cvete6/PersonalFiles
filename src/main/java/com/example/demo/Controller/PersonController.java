@@ -1,13 +1,20 @@
 package com.example.demo.Controller;
 
-import com.example.demo.DomainModel.Person;
-import com.example.demo.Service.PersonServiceImpl.PersonServiceImpl;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+        import com.example.demo.DomainModel.Organization;
+        import com.example.demo.DomainModel.Person;
+        import com.example.demo.Service.PersonServiceImpl.PersonServiceImpl;
+        import com.example.demo.Service.RdfManipulationServiceImpl.RdfManipulationServiceImpl;
+        import org.apache.jena.base.Sys;
+        import org.springframework.http.ContentDisposition;
+        import org.springframework.http.HttpHeaders;
+        import org.springframework.http.MediaType;
+        import org.springframework.http.ResponseEntity;
+        import org.springframework.stereotype.Controller;
+        import org.springframework.ui.Model;
+        import org.springframework.web.bind.annotation.*;
+        import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+        import java.io.IOException;
 
 /**
  * Controller for person
@@ -17,9 +24,11 @@ import java.io.IOException;
 public class PersonController {
 
     private PersonServiceImpl personService;
+    private RdfManipulationServiceImpl rdfManipulationService;
 
-    public PersonController(PersonServiceImpl personService) {
+    public PersonController(PersonServiceImpl personService, RdfManipulationServiceImpl rdfManipulationService) {
         this.personService = personService;
+        this.rdfManipulationService = rdfManipulationService;
     }
 
 
@@ -58,33 +67,27 @@ public class PersonController {
         return "redirect:/persons/person-list/page/1";
     }
 
-    /**
-     * Show form for adding new Person
-     *
-     * @param model is used to add model attributes to a view
-     * @return thymeleaf template for insert new Person
-     */
     @GetMapping("/showFormForAddPerson")
-    public String persons(Model model) {
-        model.addAttribute("person", new Person());
+    public String showFormForAddPerson(@RequestParam("personColleagueId") Integer personColleagueId, Model model) {
+        System.out.println(personColleagueId);
+        model.addAttribute("colleaguePerson", new Person());
         return "addPerson";
     }
 
     /**
      * Save new Person to database
      *
-     * @param person     Person that is save to model in AddPerson form
      * @param model         is used to get model attributes from view
-     * @param personalImage multipartFile for uploaded personal image
      * @return redirect to thymeleaf template for all Persons
      * @throws IOException getBytes() from MultipartFile need not to be null
      */
     @PostMapping("/add")
-    public String addNewPerson(@ModelAttribute Person person, Model model,
-                               @RequestParam("personalImage") MultipartFile personalImage) throws IOException {
-        person.setImage(personalImage.getBytes());
-        personService.addNewPerson(person);
-        return "redirect:/persons/person-list/page/1";
+    public String addNewPerson(@ModelAttribute Person colleaguePerson,
+                               @RequestParam("personId") Integer personId,
+                               Model model) {
+        personService.addColleagues(personId,colleaguePerson);
+        return "redirect:/persons/showFormForUpdate?personId=" + personId;
+
     }
 
     /**
@@ -115,6 +118,7 @@ public class PersonController {
     @GetMapping("/showFormForUpdate")
     public String showFormForUpdate(@RequestParam("personId") Integer personId, Model model) {
         personService.sendDataToEditModelView(personId, model);
+        model.addAttribute("colleaguePerson", new Person());
         return "editPerson";
     }
 
@@ -140,5 +144,37 @@ public class PersonController {
             @RequestParam("uploadedMultipartPdfFile") MultipartFile uploadedMultipartPdfFile, Model model)
             throws Exception {
         return personService.validateAndCreateEmployee(uploadedMultipartPdfFile,model);
+    }
+
+    @RequestMapping(value = "/exportRDFFile/{personId}")
+    public ResponseEntity<byte[]> rdfExport(@PathVariable("personId") Integer personId) throws IOException {
+
+        Person person = personService.getPersonById(personId);
+        byte[] documentContent = rdfManipulationService.createRdfFromPersonProfile(person);//call function to create new rdf
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setContentDisposition(ContentDisposition.parse("attachment; filename=RDFProfile.ttl"));
+        headers.setContentLength(documentContent.length);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(documentContent.length)
+                .contentType(MediaType.parseMediaType("application/rdf+xml"))
+                .body(documentContent);
+    }
+
+    /**
+     * Get data from uploaded file and create new entry in database if person with that rdf does not exist
+     *
+     * @param uploadedMultipartRDFFile a file that we upload
+     * @param model add attribute to model only if person already exist in database
+     * @return redirect to edit view for new person or show details if person already exists in the database
+     */
+    @PostMapping("/uploadRDFFile")
+    public String uploadAndSaveDataFromRDFFile(
+            @RequestParam("uploadedMultipartRDFFile") MultipartFile uploadedMultipartRDFFile, Model model)
+            throws Exception {
+        Person person = rdfManipulationService.validateAndCreatePerson(uploadedMultipartRDFFile,model);
+        return  personService.redirectToPersonDetailsView(person,model);
     }
 }

@@ -60,6 +60,17 @@ public class PersonMapper {
         if (person.getImage().length != 0) {
             oldPerson.setImage(person.getImage());
         }
+        oldPerson.setChildren(person.getChildren());
+       // oldPerson.setColleague(person.getColleague());
+        oldPerson.setParent(person.getParent());
+        oldPerson.setSpouse(person.getSpouse());
+        oldPerson.setFollows(person.getFollows());
+        oldPerson.setKnows(person.getKnows());
+
+        oldPerson.setOrganization_members(person.getOrganization_members());
+        oldPerson.setOrganization_sponzor(person.getOrganization_sponzor());
+        oldPerson.setFunder_organization(person.getFunder_organization());
+
         return oldPerson;
     }
 

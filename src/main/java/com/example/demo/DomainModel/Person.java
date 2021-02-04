@@ -40,7 +40,7 @@ public class Person {
     @Size(max = 50)
     private String additionalName;
 
-    @NotEmpty(message = "Address cannot be empty")
+    //@NotEmpty(message = "Address cannot be empty")
     private String address;
 
     private String award;
@@ -56,18 +56,18 @@ public class Person {
     @OneToMany
     private List<Person> children;
 
+    @OneToMany(cascade=CascadeType.PERSIST)
     @JsonIgnore
-    @OneToMany
     private List<Person> colleague;
 
     private String contactPoint;
 
-    @NotNull(message = "Date of birth cannot be empty")
+    //@NotNull(message = "Date of birth cannot be empty")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthDate;
 
-    @NotEmpty(message = "Place of birth cannot be empty")
+    //@NotEmpty(message = "Place of birth cannot be empty")
     private String birthPlace;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
@@ -83,7 +83,6 @@ public class Person {
 
     @JsonIgnore
     @ManyToMany
-    @Column(name = "follows")
     private List<Person> follows;
 
     private String gender;
@@ -104,7 +103,6 @@ public class Person {
 
     @JsonIgnore
     @ManyToMany
-    @Column(name = "knows_person")
     private List<Person> knows;
 
     //(a topic that i known about , job description)
@@ -114,9 +112,7 @@ public class Person {
 
     private String nationality;
 
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "organization_id",insertable = false,updatable = false)
     private Organization funder_organization;
 
     @JsonIgnore
@@ -146,15 +142,15 @@ public class Person {
 
     private String workLocation;
 
-    @NotEmpty(message = "Passport Number cannot be empty")
+    //@NotEmpty(message = "Passport Number cannot be empty")
     private String passportNumber;
 
-    @NotNull(message = "Date of issue passport cannot be empty")
+  //  @NotNull(message = "Date of issue passport cannot be empty")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfIssuePassport;
 
-    @NotNull(message = "Date of expiry passport cannot be empty")
+//    @NotNull(message = "Date of expiry passport cannot be empty")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfExpiryPassport;
@@ -166,6 +162,7 @@ public class Person {
     @JoinTable(name="organization_person",
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "organization_id"))
-    private List<Organization> organization_membes;
+    private List<Organization> organization_members;
+
 
 }

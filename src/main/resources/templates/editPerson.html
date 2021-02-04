@@ -17,8 +17,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
 
     <script type="text/javascript" th:inline="javascript" th:src="@{/validateInsuranceCardDetails.js}"></script>
+    <script type="text/javascript" th:inline="javascript" th:src="@{/model.js}"></script>
     <link th:href="@{/styles/startStyle.css}" rel="stylesheet">
 
     <title>[[#{app.ApplicationTitle}]]</title>
@@ -261,6 +265,114 @@
                                name="workLocation"
                         th:placeholder="#{app.workLocation}" >
                     </div>
+                    <div class="row">
+                        <label for="personChildren" class="col-sm-5 col-form-label"><h6>Children:</h6></label>
+                        <div id="personChildren" class="form-group blu-margin">
+                            <select class="form-control" th:field="*{person.children}"  id="dropOperator">
+                                <option value="0">select</option>
+                                <option th:each="person : ${personsList}" th:value="${person.id}" th:text="${person.givenName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                   <!-- <div class="row">
+                        <label for="personCollegue" class="col-sm-5 col-form-label"><h6>personCollegue:</h6></label>
+                        <div id="personCollegue" class="form-group blu-margin">
+                            &lt;!&ndash;<select class="form-control" th:field="*{person.colleague}" multiple="multiple">
+                                <option th:each="person : ${personsList}"
+                                        th:field="*{person.colleague}"
+                                        th:value="${{person}}"
+                                        th:text="${person.givenName}">Part name</option>
+                            </select>&ndash;&gt;
+      &lt;!&ndash;                      <select class="form-control" th:field="*{person.colleague}">
+                                <option value="0">select</option>
+                                <option th:each="person : ${personsList}" th:value="${person.id}" th:text="${person.givenName}"></option>
+                            </select>&ndash;&gt;
+
+                            &lt;!&ndash; Button trigger modal &ndash;&gt;
+                          &lt;!&ndash;  <form th:action="@{/persons/showFormForAddPerson(personId = ${person.id})}" method="GET">
+                                <input type="hidden" name="personId" th:value="${person.id}"/>
+                                <button type="submit" class="btn btn-sm btn-info" > &lt;!&ndash;data-toggle="modal" data-target="#exampleModalCenter"&ndash;&gt;>[[#{app.add}]]</button>
+                            </form>
+                            <hr>
+                            <form th:action="@{/persons/showFormForAddPerson(personColleagueId = ${person.id})}" method="GET" class="form-inline form-group row d-flex justify-content-end mt-2 mb-3 mr-2 mt-md-0 position-relative">
+                                <input name="personColleagueId" th:value="${person.id}" type="hidden">
+                                <button type="submit" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#exampleModalCenter" >[[#{app.addNewOrganization}]]</button>
+                            </form>&ndash;&gt;
+                            &lt;!&ndash; Button trigger modal &ndash;&gt;
+                        </div>
+                    </div>-->
+                    <div class="row">
+                        <label for="personParent" class="col-sm-5 col-form-label"><h6>personParent:</h6></label>
+                        <div id="personParent" class="form-group blu-margin">
+                            <select class="form-control" th:field="*{person.parent}" >
+                                <option value="0">select</option>
+                                <option th:each="person : ${personsList}" th:value="${person.id}" th:text="${person.givenName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="personSpouse" class="col-sm-5 col-form-label"><h6>personSpouse:</h6></label>
+                        <div id="personSpouse" class="form-group blu-margin">
+                            <select class="form-control" th:field="*{person.spouse}" >
+                                <option value="0">select</option>
+                                <option th:each="person : ${personsList}" th:value="${person.id}" th:text="${person.givenName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <label for="personKnows" class="col-sm-5 col-form-label"><h6>personKnows:</h6></label>
+                        <div id="personKnows" class="form-group blu-margin">
+                            <select class="form-control" th:field="*{person.knows}" >
+                                <option value="0">select</option>
+                                <option th:each="person : ${personsList}" th:value="${person.id}" th:text="${person.givenName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="personFollows" class="col-sm-5 col-form-label"><h6>personFollows:</h6></label>
+                        <div id="personFollows" class="form-group blu-margin">
+                            <select class="form-control" th:field="*{person.follows}" >
+                                <option value="0">select</option>
+                                <option th:each="person : ${personsList}" th:value="${person.id}" th:text="${person.givenName}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <hr>
+                    <hr>
+
+                    <div class="row">
+                        <label for="member_of_organization" class="col-sm-5 col-form-label"><h6>[[#{app.memberOfOrganization}]]:</h6></label>
+                        <div id="member_of_organization" class="form-group blu-margin">
+                            <select class="form-control" th:field="*{person.organization_members}" >
+                                <option value="0">select</option>
+                                <option th:each="organization : ${organizationList}" th:value="${organization.id}" th:text="${organization.legalName}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label for="sponsor_of_organization" class="col-sm-5 col-form-label"><h6>[[#{app.sponsorOfOrganization}]]:</h6></label>
+                        <div id="sponsor_of_organization" class="form-group blu-margin">
+                            <select class="form-control" th:field="*{person.organization_sponzor}" >
+                                <option value="0">select</option>
+                                <option th:each="organization : ${organizationList}" th:value="${organization.id}" th:text="${organization.legalName}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label for="funder_of_organization" class="col-sm-5 col-form-label"><h6>[[#{app.funderOfOrganization}]]:</h6></label>
+                        <div id="funder_of_organization" class="form-group blu-margin">
+                            <select class="form-control" th:field="*{person.funder_organization}" >
+                                <option value="0">select</option>
+                                <option th:each="organization : ${organizationList}" th:value="${organization.id}" th:text="${organization.legalName}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <hr>
                     <hr>
                     <div class="row">
                         <label for="passportNumber" class="col-sm-5 col-form-label">
@@ -298,16 +410,18 @@
                                name="personalImage"
                                type="file">
                     </div>
+                    <hr>
                     <button type="submit" class="btn btn-info btn-sm mt-3">
                         [[#{app.submit}]]
                     </button>
+                    <hr>
                 </div>
                 <div class="col d-flex justify-content-end">
                     <div class="col-sm-8 my-2">
                         <div class="card justify-content-end " th:if="${personalImageExist}">
                             <label class="card-body"><h6 class="text-muted">[[#{app.noPersonalImage}]] </h6></label>
                             <div class="card-body">
-                                <h5 class="card-title" th:text="${client.name} +' '+ ${client.lastName}">
+                                <h5 class="card-title" th:text="${person.givenName} +' '+ ${person.familyName}">
                                     [[#{app.name}]]
                                 </h5>
                             </div>
@@ -324,6 +438,35 @@
                 </div>
             </div>
         </form>
+        <div class="row">
+            <label for="personCollegue" class="col-sm-5 col-form-label"><h6>personCollegue:</h6></label>
+            <div id="personCollegue" class="form-group blu-margin">
+                <!--<select class="form-control" th:field="*{person.colleague}" multiple="multiple">
+                    <option th:each="person : ${personsList}"
+                            th:field="*{person.colleague}"
+                            th:value="${{person}}"
+                            th:text="${person.givenName}">Part name</option>
+                </select>-->
+                <!--                      <select class="form-control" th:field="*{person.colleague}">
+                                          <option value="0">select</option>
+                                          <option th:each="person : ${personsList}" th:value="${person.id}" th:text="${person.givenName}"></option>
+                                      </select>-->
+
+                <!-- Button trigger modal -->
+                <!--  <form th:action="@{/persons/showFormForAddPerson(personId = ${person.id})}" method="GET">
+                      <input type="hidden" name="personId" th:value="${person.id}"/>
+                      <button type="submit" class="btn btn-sm btn-info" > &lt;!&ndash;data-toggle="modal" data-target="#exampleModalCenter"&ndash;&gt;>[[#{app.add}]]</button>
+                  </form>
+                  <hr>
+                  <form th:action="@{/persons/showFormForAddPerson(personColleagueId = ${person.id})}" method="GET" class="form-inline form-group row d-flex justify-content-end mt-2 mb-3 mr-2 mt-md-0 position-relative">
+                      <input name="personColleagueId" th:value="${person.id}" type="hidden">
+                      <button type="submit" class="btn btn-sm btn-info"  data-toggle="modal" data-target="#exampleModalCenter" >[[#{app.addNewOrganization}]]</button>
+                  </form>-->
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">[[#{app.add}]]</button>
+                <div th:replace="addPerson :: modal"></div>
+            </div>
+
     </div>
     </div>
 </main>

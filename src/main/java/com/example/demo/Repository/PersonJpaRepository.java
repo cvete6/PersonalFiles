@@ -14,4 +14,5 @@ public interface PersonJpaRepository extends JpaRepository<Person, Integer> {
     Page<Person> findAll(Pageable pageable);
 
     Optional<Person> findBySocialNumber(String socialNumber);
+
 }

@@ -108,4 +108,5 @@ public interface PersonService {
      */
     void sendDataToEditModelView(Integer personId, Model model);
 
+    String addColleagues(Integer personId, Person colleaguePerson);
 }

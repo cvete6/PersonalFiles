@@ -1,9 +1,11 @@
 package com.example.demo.Service.PersonServiceImpl;
 
 import com.example.demo.DataMapper.PersonMapper;
+import com.example.demo.DomainModel.Organization;
 import com.example.demo.DomainModel.Person;
 import com.example.demo.EmployeeDataValidator.DataValidatorImpl;
 import com.example.demo.Exceptions.InvalidPersonIdException;
+import com.example.demo.Repository.OrganizationJpaRepository;
 import com.example.demo.Repository.PersonJpaRepository;
 import com.example.demo.Service.PersonService;
 import com.itextpdf.forms.PdfAcroForm;
@@ -33,10 +35,12 @@ public class PersonServiceImpl implements PersonService {
     private PersonJpaRepository personJpaRepository;
     private PersonMapper personMapper;
     private DataValidatorImpl dataValidatorImpl;
+    private OrganizationJpaRepository organizationJpaRepository;
 
-    public PersonServiceImpl(PersonJpaRepository personJpaRepository, DataValidatorImpl dataValidatorImpl) {
+    public PersonServiceImpl(PersonJpaRepository personJpaRepository, DataValidatorImpl dataValidatorImpl, OrganizationJpaRepository organizationJpaRepository) {
         this.personJpaRepository = personJpaRepository;
         this.dataValidatorImpl = dataValidatorImpl;
+        this.organizationJpaRepository = organizationJpaRepository;
     }
 
     @Override
@@ -139,6 +143,7 @@ public class PersonServiceImpl implements PersonService {
         Base64.Encoder encoder = Base64.getEncoder();
         String personalImage = "";
 
+
         byte[] personalImageByte = person.getImage();
 
         if (personalImageByte != null) {
@@ -149,7 +154,12 @@ public class PersonServiceImpl implements PersonService {
             model.addAttribute("personalImageExist", true);
         }
 
+        List<Person> personList = personJpaRepository.findAll();
+        List<Organization> organizationList = organizationJpaRepository.findAll();
+
         model.addAttribute("person", person);
+        model.addAttribute("personsList", personList);
+        model.addAttribute("organizationList",organizationList);
     }
 
     private Optional<Person> createPersonFromPdfData(MultipartFile uploadedMultipartPdfFile, Model model)
@@ -219,5 +229,43 @@ public class PersonServiceImpl implements PersonService {
             }
         }
         return personPage;
+    }
+
+    @Override
+    public String addColleagues(Integer personId, Person colleaguePerson) {
+        Optional<Person> existsPerson = personJpaRepository.findById(personId);
+        String colleagueSocialNumber = colleaguePerson.getSocialNumber();
+        Optional<Person> existColleaguePerson = personJpaRepository.findBySocialNumber(colleagueSocialNumber);
+
+        //this person always exist because we add colleagues for that person
+        if(existsPerson.isPresent()){
+            Person person = existsPerson.get();
+            List<Person> colleagues = person.getColleague();
+            //if colleague do NOT exist
+            if (!existColleaguePerson.isPresent()) {
+                //create colleague like a person
+                Person newColleague = addNewPerson(colleaguePerson);
+                //check if colleague is already in person colleagues
+                    if(!colleagues.contains(newColleague)){
+                        colleagues.add(newColleague);
+                    }
+                person.setColleague(colleagues);
+                personJpaRepository.save(person);
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            } else {
+                //if colleague that we want to add to person already exists in database we check is in colleagues of person if not we add to persons_collageue
+                //check if colleague is already in person colleagues
+                Person newColleague = existColleaguePerson.get();
+                if(!colleagues.contains(newColleague)){
+                    colleagues.add(newColleague);
+                }
+                person.setColleague(colleagues);
+                personJpaRepository.save(person);
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            }
+        }
+        else {
+            return "redirect:/persons/showFormForUpdate?personId=" + personId;
+        }
     }
 }

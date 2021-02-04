@@ -53,7 +53,7 @@
                 <td class="form-item font-weight-normal" th:text="${person.birthPlace}"></td>
                 <td class="text-right row">
                     <div class="btn-group" role="group">
-                        <div class="col-md-6 ">
+                        <div class="col-md-4 ">
                             <form action="#" th:action="@{/persons/showFormForUpdate(personId = ${person.id})}"
                                   method="GET">
                                 <input type="hidden" name="personId" th:value="${person.id}"/>
@@ -61,12 +61,20 @@
                                 <button type="submit" class="btn btn-sm btn-info ">[[#{app.edit}]]</button>
                             </form>
                         </div>
-                        <div class="col-md-7 ">
+                        <div class="col-md-5 ">
                             <form th:action="@{/persons/delete(personId = ${person.id})}" th:method="delete">
                                 <input name="personId" th:value="${person.id}" type="hidden">
                                 <i class="fa fa-fw fa-trash"></i>
                                 <button type="submit" class="btn btn-sm btn-danger" id="delete">[[#{app.delete}]]</button>
                             </form>
+                        </div>
+                        <div class="col-md-5 ">
+                            <div class=" justify-content-right ml-4 pl-2">
+                                <a th:href="@{/persons/exportRDFFile/{personId}(personId=${person.id})}"
+                                   class="btn-outline-info btn btn-sm btn-block "
+                                   role="button">RDF Export
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </td>
