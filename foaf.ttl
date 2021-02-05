@@ -1,0 +1,33 @@
+@prefix admin: <http://webns.net/mvcb/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://www.dropbox.com/s/mfmz3lbpez0sjyh/foaf.ttl?dl=1> a foaf:PersonalProfileDocument ;
+    admin:errorReportsTo <mailto:leigh@ldodds.com> ;
+    admin:generatorAgent <http://www.ldodds.com/foaf/foaf-a-matic> ;
+    foaf:maker <https://www.dropbox.com/s/mfmz3lbpez0sjyh/foaf.ttl?dl=1#me> ;
+    foaf:primaryTopic <https://www.dropbox.com/s/mfmz3lbpez0sjyh/foaf.ttl?dl=1#me> .
+
+<https://www.dropbox.com/s/mfmz3lbpez0sjyh/foaf.ttl?dl=1#me> a foaf:Person ;
+    foaf:family_name "Trajkovska" ;
+    foaf:givenname "cvete" ;
+    foaf:knows [ a foaf:Person ;
+            rdfs:seeAlso <https://www.dropbox.com/s/ep4kzz4lul95j2c/foaf.ttl?dl=1> ;
+            foaf:mbox_sha1sum "f4ee6bb4ab28266b322dc6f813ed079f837503b2" ;
+            foaf:name "Elena" ],
+        [ a foaf:Person ;
+            foaf:mbox_sha1sum "7221d9f40a03e0b6fd38b02ecc70aa5beb4f8907" ;
+            foaf:name "kate" ],
+        [ a foaf:Person ;
+            foaf:mbox_sha1sum "bb99e88ca2bf264248e137df8952397528bb3f7e" ;
+            foaf:name "Aleksandra" ] ;
+    foaf:mbox_sha1sum "4f0e34a0a6c2604e51db708057781794d7dbf19f" ;
+    foaf:name "cvete Trajkovska" ;
+    foaf:nick "cvete" ;
+    foaf:schoolHomepage <https://www.dropbox.com/s/mfmz3lbpez0sjyh/Gimpp> ;
+    foaf:title "Mrs" ;
+    foaf:workInfoHomepage <https://www.dropbox.com/s/mfmz3lbpez0sjyh/notwork> ;
+    foaf:workplaceHomepage <https://www.dropbox.com/s/mfmz3lbpez0sjyh/notwork> .

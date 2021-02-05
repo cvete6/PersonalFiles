@@ -109,4 +109,9 @@ public interface PersonService {
     void sendDataToEditModelView(Integer personId, Model model);
 
     String addColleagues(Integer personId, Person colleaguePerson);
+
+    String addChildren(Integer personId, Person childrenPerson);
+
+    String addParent(Integer personId, Person parentPerson);
+
 }

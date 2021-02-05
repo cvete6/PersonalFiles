@@ -1,20 +1,18 @@
 package com.example.demo.Controller;
 
-        import com.example.demo.DomainModel.Organization;
-        import com.example.demo.DomainModel.Person;
-        import com.example.demo.Service.PersonServiceImpl.PersonServiceImpl;
-        import com.example.demo.Service.RdfManipulationServiceImpl.RdfManipulationServiceImpl;
-        import org.apache.jena.base.Sys;
-        import org.springframework.http.ContentDisposition;
-        import org.springframework.http.HttpHeaders;
-        import org.springframework.http.MediaType;
-        import org.springframework.http.ResponseEntity;
-        import org.springframework.stereotype.Controller;
-        import org.springframework.ui.Model;
-        import org.springframework.web.bind.annotation.*;
-        import org.springframework.web.multipart.MultipartFile;
+import com.example.demo.DomainModel.Person;
+import com.example.demo.Service.PersonServiceImpl.PersonServiceImpl;
+import com.example.demo.Service.RdfManipulationServiceImpl.RdfManipulationServiceImpl;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-        import java.io.IOException;
+import java.io.IOException;
 
 /**
  * Controller for person
@@ -67,27 +65,11 @@ public class PersonController {
         return "redirect:/persons/person-list/page/1";
     }
 
+    //ova ne go koristam !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     @GetMapping("/showFormForAddPerson")
     public String showFormForAddPerson(@RequestParam("personColleagueId") Integer personColleagueId, Model model) {
-        System.out.println(personColleagueId);
         model.addAttribute("colleaguePerson", new Person());
-        return "addPerson";
-    }
-
-    /**
-     * Save new Person to database
-     *
-     * @param model         is used to get model attributes from view
-     * @return redirect to thymeleaf template for all Persons
-     * @throws IOException getBytes() from MultipartFile need not to be null
-     */
-    @PostMapping("/add")
-    public String addNewPerson(@ModelAttribute Person colleaguePerson,
-                               @RequestParam("personId") Integer personId,
-                               Model model) {
-        personService.addColleagues(personId,colleaguePerson);
-        return "redirect:/persons/showFormForUpdate?personId=" + personId;
-
+        return "addColleague";
     }
 
     /**
@@ -119,6 +101,8 @@ public class PersonController {
     public String showFormForUpdate(@RequestParam("personId") Integer personId, Model model) {
         personService.sendDataToEditModelView(personId, model);
         model.addAttribute("colleaguePerson", new Person());
+        model.addAttribute("childrenPerson", new Person());
+        model.addAttribute("parentPerson", new Person());
         return "editPerson";
     }
 
@@ -176,5 +160,53 @@ public class PersonController {
             throws Exception {
         Person person = rdfManipulationService.validateAndCreatePerson(uploadedMultipartRDFFile,model);
         return  personService.redirectToPersonDetailsView(person,model);
+    }
+
+    /**
+     * Save new Person to database
+     *
+     * @param model         is used to get model attributes from view
+     * @return redirect to thymeleaf template for all Persons
+     * @throws IOException getBytes() from MultipartFile need not to be null
+     */
+    @PostMapping("/addChildren")
+    public String addNewChildren(@ModelAttribute Person childrenPerson,
+                                 @RequestParam("personId") Integer personId,
+                                 Model model) {
+        personService.addChildren(personId,childrenPerson);
+        return "redirect:/persons/showFormForUpdate?personId=" + personId;
+
+    }
+
+    /**
+     * Save new Person to database
+     *
+     * @param model         is used to get model attributes from view
+     * @return redirect to thymeleaf template for all Persons
+     * @throws IOException getBytes() from MultipartFile need not to be null
+     */
+    @PostMapping("/addParent")
+    public String addNewParent(@ModelAttribute Person parentPerson,
+                               @RequestParam("personId") Integer personId,
+                               Model model) {
+        personService.addParent(personId,parentPerson);
+        return "redirect:/persons/showFormForUpdate?personId=" + personId;
+
+    }
+
+    /**
+     * Save new Person to database
+     *
+     * @param model         is used to get model attributes from view
+     * @return redirect to thymeleaf template for all Persons
+     * @throws IOException getBytes() from MultipartFile need not to be null
+     */
+    @PostMapping("/addColleague")
+    public String addNewPerson(@ModelAttribute Person colleaguePerson,
+                               @RequestParam("personId") Integer personId,
+                               Model model) {
+        personService.addColleagues(personId,colleaguePerson);
+        return "redirect:/persons/showFormForUpdate?personId=" + personId;
+
     }
 }

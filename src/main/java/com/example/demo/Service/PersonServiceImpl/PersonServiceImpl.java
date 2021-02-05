@@ -78,6 +78,14 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void deletePerson(Integer id) {
+        /*Optional<Person> existPerson = personJpaRepository.findById(id);
+        Person person = existPerson.get();
+        List<Person> personsList = personJpaRepository.findAll();
+        for( Person p : personsList){
+            if(p.getColleague().contains(person)){
+                p.getColleague().remove(person);
+            }
+        }*/
         personJpaRepository.deleteById(id);
     }
 
@@ -156,10 +164,16 @@ public class PersonServiceImpl implements PersonService {
 
         List<Person> personList = personJpaRepository.findAll();
         List<Organization> organizationList = organizationJpaRepository.findAll();
+        List<Person> colleaguesList = person.getColleague();
+        List<Person> childrenList = person.getChildren();
+        List<Person> parentList = person.getParent();
 
         model.addAttribute("person", person);
         model.addAttribute("personsList", personList);
         model.addAttribute("organizationList",organizationList);
+        model.addAttribute("colleaguesList",colleaguesList);
+        model.addAttribute("childrenList",childrenList);
+        model.addAttribute("parentList",parentList);
     }
 
     private Optional<Person> createPersonFromPdfData(MultipartFile uploadedMultipartPdfFile, Model model)
@@ -268,4 +282,81 @@ public class PersonServiceImpl implements PersonService {
             return "redirect:/persons/showFormForUpdate?personId=" + personId;
         }
     }
+
+    @Override
+    public String addChildren(Integer personId, Person childrenPerson) {
+        Optional<Person> existsPerson = personJpaRepository.findById(personId);
+        String childrenSocialNumber = childrenPerson.getSocialNumber();
+        Optional<Person> existChildrenPerson = personJpaRepository.findBySocialNumber(childrenSocialNumber);
+
+        //this person always exist because we add childrens for that person
+        if(existsPerson.isPresent()){
+            Person person = existsPerson.get();
+            List<Person> children = person.getChildren();
+            //if children do NOT exist
+            if (!existChildrenPerson.isPresent()) {
+                //create children like a person
+                Person newChildren = addNewPerson(childrenPerson);
+                //check if children is already in person childrens
+                if(!children.contains(newChildren)){
+                    children.add(newChildren);
+                }
+                person.setChildren(children);
+                personJpaRepository.save(person);
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            } else {
+                //if children that we want to add to person already exists in database we check is in childrens of person if not we add to persons_collageue
+                //check if children is already in person childrens
+                Person newChildren = existChildrenPerson.get();
+                if(!children.contains(newChildren)){
+                    children.add(newChildren);
+                }
+                person.setChildren(children);
+                personJpaRepository.save(person);
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            }
+        }
+        else {
+            return "redirect:/persons/showFormForUpdate?personId=" + personId;
+        }
+    }
+
+    @Override
+    public String addParent(Integer personId, Person parentPerson) {
+        Optional<Person> existsPerson = personJpaRepository.findById(personId);
+        String parentSocialNumber = parentPerson.getSocialNumber();
+        Optional<Person> existParentPerson = personJpaRepository.findBySocialNumber(parentSocialNumber);
+
+        //this person always exist because we add parents for that person
+        if(existsPerson.isPresent()){
+            Person person = existsPerson.get();
+            List<Person> parents = person.getParent();
+            //if parent do NOT exist
+            if (!existParentPerson.isPresent()) {
+                //create parent like a person
+                Person newParent = addNewPerson(parentPerson);
+                //check if parent is already in person parents
+                if(!parents.contains(newParent)){
+                    parents.add(newParent);
+                }
+                person.setParent(parents);
+                personJpaRepository.save(person);
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            } else {
+                //if parent that we want to add to person already exists in database we check is in parents of person if not we add to persons_collageue
+                //check if parent is already in person parents
+                Person newParent = existParentPerson.get();
+                if(!parents.contains(newParent)){
+                    parents.add(newParent);
+                }
+                person.setParent(parents);
+                personJpaRepository.save(person);
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            }
+        }
+        else {
+            return "redirect:/persons/showFormForUpdate?personId=" + personId;
+        }
+    }
+
 }

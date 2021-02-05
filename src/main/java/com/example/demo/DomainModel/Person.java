@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -53,11 +55,15 @@ public class Person {
     private String callSign;
 
     @JsonIgnore
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+            CascadeType.MERGE,CascadeType.DETACH})
+    @JoinColumn(name = "children_id")
     private List<Person> children;
 
-    @OneToMany(cascade=CascadeType.PERSIST)
     @JsonIgnore
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+                            CascadeType.MERGE,CascadeType.DETACH})
+    @JoinColumn(name = "colleague_id")
     private List<Person> colleague;
 
     private String contactPoint;
@@ -116,7 +122,9 @@ public class Person {
     private Organization funder_organization;
 
     @JsonIgnore
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+            CascadeType.MERGE,CascadeType.DETACH})
+    @JoinColumn(name = "parent_id")
     private List<Person> parent;
 
     //event or participant in
@@ -163,6 +171,5 @@ public class Person {
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "organization_id"))
     private List<Organization> organization_members;
-
 
 }
