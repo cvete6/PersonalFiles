@@ -75,11 +75,136 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Override
     public void sendDataToEditModelView(Integer organizationId, Model model) {
         Organization organization = getOrganizationById(organizationId);
+        List<Organization> departmentList = organization.getDepartments();
+        List<Organization> memberOfOrganizationList = organization.getMemberOf_organization();
+        List<Organization> subOrganizationOrganizationList = organization.getSubOrganization();
+
         model.addAttribute("organization", organization);
+        model.addAttribute("departmentList", departmentList);
+        model.addAttribute("memberOfOrganizationList", memberOfOrganizationList);
+        model.addAttribute("subOfOrganizationList", subOrganizationOrganizationList);
+
     }
 
     @Override
     public Organization addNewOrganization(Organization organization){
         return organizationJpaRepository.save(organization);
     }
+
+    @Override
+    public void deleteOrganization(Integer id) {
+        organizationJpaRepository.deleteById(id);
+    }
+
+    @Override
+    public String addDepartment(Integer organizationId, Organization departmentOrganization) {
+        Optional<Organization> existsOrganization = organizationJpaRepository.findById(organizationId);
+        String departmentEmail = departmentOrganization.getEmail();
+        Optional<Organization> existDepartmentOrganization = organizationJpaRepository.findByEmail(departmentEmail);
+        //this organization always exist because we add departments for that organization
+        if(existsOrganization.isPresent()){
+            Organization organization = existsOrganization.get();
+            List<Organization> departments = organization.getDepartments();
+            //if department do NOT exist
+            if (!existDepartmentOrganization.isPresent()) {
+                //create department like a organization
+                Organization newDepartment = addNewOrganization(departmentOrganization);
+                //check if department is already in organization departments
+                if(!departments.contains(newDepartment)){
+                    departments.add(newDepartment);
+                }
+                organization.setDepartments(departments);
+                organizationJpaRepository.save(organization);
+                return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+            } else {
+                //if department that we want to add to organization already exists in database we check is in departments of organization if not we add to organizations_collageue
+                //check if department is already in organization departments
+                Organization newDepartment = existDepartmentOrganization.get();
+                if(!departments.contains(newDepartment)){
+                    departments.add(newDepartment);
+                }
+                organization.setDepartments(departments);
+                organizationJpaRepository.save(organization);
+                return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+            }
+        }
+        else {
+            return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+        }
+    }
+
+    @Override
+    public String addSubOrganizationOrganization(Integer organizationId, Organization subOrganizationOrganization) {
+        Optional<Organization> existsOrganization = organizationJpaRepository.findById(organizationId);
+        String subOrganizationEmail = subOrganizationOrganization.getEmail();
+        Optional<Organization> existSubOrganizationOrganization = organizationJpaRepository.findByEmail(subOrganizationEmail);
+        //this organization always exist because we add subOrganizations for that organization
+        if(existsOrganization.isPresent()){
+            Organization organization = existsOrganization.get();
+            List<Organization> subOrganizations = organization.getSubOrganization();
+            //if subOrganization do NOT exist
+            if (!existSubOrganizationOrganization.isPresent()) {
+                //create subOrganization like a organization
+                Organization newSubOrganization = addNewOrganization(subOrganizationOrganization);
+                //check if subOrganization is already in organization subOrganizations
+                if(!subOrganizations.contains(newSubOrganization)){
+                    subOrganizations.add(newSubOrganization);
+                }
+                organization.setSubOrganization(subOrganizations);
+                organizationJpaRepository.save(organization);
+                return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+            } else {
+                //if subOrganization that we want to add to organization already exists in database we check is in subOrganizations of organization if not we add to organizations_collageue
+                //check if subOrganization is already in organization subOrganizations
+                Organization newSubOrganization = existSubOrganizationOrganization.get();
+                if(!subOrganizations.contains(newSubOrganization)){
+                    subOrganizations.add(newSubOrganization);
+                }
+                organization.setSubOrganization(subOrganizations);
+                organizationJpaRepository.save(organization);
+                return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+            }
+        }
+        else {
+            return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+        }
+    }
+
+    @Override
+    public String addMemberOfOrganization(Integer organizationId, Organization memberOfOrganization) {
+        Optional<Organization> existsOrganization = organizationJpaRepository.findById(organizationId);
+        String memberOfOrganizationEmail = memberOfOrganization.getEmail();
+        Optional<Organization> existMemberOfOrganizationOrganization = organizationJpaRepository.findByEmail(memberOfOrganizationEmail);
+        //this organization always exist because we add memberOfOrganizations for that organization
+        if(existsOrganization.isPresent()){
+            Organization organization = existsOrganization.get();
+            List<Organization> memberOfOrganizations = organization.getMemberOf_organization();
+            //if memberOfOrganization do NOT exist
+            if (!existMemberOfOrganizationOrganization.isPresent()) {
+                //create memberOfOrganization like a organization
+                Organization newMemberOfOrganization = addNewOrganization(memberOfOrganization);
+                //check if memberOfOrganization is already in organization memberOfOrganizations
+                if(!memberOfOrganizations.contains(newMemberOfOrganization)){
+                    memberOfOrganizations.add(newMemberOfOrganization);
+                }
+                organization.setMemberOf_organization(memberOfOrganizations);
+                organizationJpaRepository.save(organization);
+                return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+            } else {
+                //if memberOfOrganization that we want to add to organization already exists in database we check is in memberOfOrganizations of organization if not we add to organizations_collageue
+                //check if memberOfOrganization is already in organization memberOfOrganizations
+                Organization newMemberOfOrganization = existMemberOfOrganizationOrganization.get();
+                if(!memberOfOrganizations.contains(newMemberOfOrganization)){
+                    memberOfOrganizations.add(newMemberOfOrganization);
+                }
+                organization.setMemberOf_organization(memberOfOrganizations);
+                organizationJpaRepository.save(organization);
+                return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+            }
+        }
+        else {
+            return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+        }
+    }
+
 }

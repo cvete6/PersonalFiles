@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class Organization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotEmpty(message = "Address cannot be empty")
     private String address;
 
     private String areaServed;
@@ -39,13 +41,18 @@ public class Organization {
     private String correctionsPolicy;
 
     //Odeli od koi e sostavena organnizacijata koi i tie se organizacii
-    @OneToMany
+    @JsonIgnore
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+            CascadeType.MERGE,CascadeType.DETACH})
+    @JoinColumn(name = "department_id")
     private List<Organization> departments;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dissolutionDate;
 
+    @NotEmpty(message = "Email cannot be empty")
+    @Column(unique = true)
     private String email;
 
     private String faxNumber;
@@ -64,6 +71,7 @@ public class Organization {
 
     private String knowsAbout;
 
+    @NotEmpty(message = "Legal Name cannot be empty")
     private String legalName;
 
     private String location;
@@ -92,12 +100,16 @@ public class Organization {
     private String telephone;
 
     @JsonIgnore
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+            CascadeType.MERGE,CascadeType.DETACH})
+    @JoinColumn(name = "subOrganization_id")
     private List<Organization> subOrganization;
 
     // da bidi clen na nekoja druga organizacija
     @JsonIgnore
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+            CascadeType.MERGE,CascadeType.DETACH})
+    @JoinColumn(name = "memberOf_organization_id")
     private List<Organization> memberOf_organization;
 
     @ManyToMany

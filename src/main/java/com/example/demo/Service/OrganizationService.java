@@ -11,5 +11,10 @@ public interface OrganizationService {
     Organization editOrganization(Organization organization);
     void sendDataToEditModelView(Integer organizationId, Model model);
     Organization addNewOrganization(Organization organization);
+    void deleteOrganization(Integer id);
 
-    }
+    String addDepartment(Integer organizationId, Organization departmentOrganization);
+    String addSubOrganizationOrganization(Integer organizationId, Organization subOrganizationOrganization);
+    String addMemberOfOrganization(Integer organizationId, Organization memberOfOrganization);
+
+}

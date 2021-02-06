@@ -39,6 +39,7 @@
             <tr>
                 <th class="col-xs-5">[[#{app.legalName}]]</th>
                 <th class="col-xs-5">[[#{app.slogan}]]</th>
+                <th class="col-xs-5">[[#{app.email}]]</th>
                 <th class="col-xs-5"></th>
             </tr>
             </thead>
@@ -46,6 +47,7 @@
             <tr scope="row" class="form-group" th:each="organization : ${organizationsList}">
                 <td class="form-item font-weight-normal" th:text="${organization.legalName}"></td>
                 <td class="form-item font-weight-normal" th:text="${organization.slogan}"></td>
+                <td class="form-item font-weight-normal" th:text="${organization.email}"></td>
                 <td class="text-right row">
                     <div class="btn-group" role="group">
                         <div class="col-md-6 ">
