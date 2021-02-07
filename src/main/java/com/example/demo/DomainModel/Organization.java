@@ -84,8 +84,8 @@ public class Organization {
 
     private String ownershipFundingInfo;
 
-    @JsonIgnore
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+            CascadeType.MERGE,CascadeType.DETACH})
     private Organization parentOrganization;
 
     //ova e url nekoe koe ne nosi na javnite principi na organizacijata

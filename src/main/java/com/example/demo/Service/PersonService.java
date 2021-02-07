@@ -114,4 +114,7 @@ public interface PersonService {
 
     String addParent(Integer personId, Person parentPerson);
 
+    String addSpouse(Integer personId, Person spousePerson);
+
+
 }

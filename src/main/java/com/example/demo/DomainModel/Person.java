@@ -139,7 +139,8 @@ public class Person {
     @JoinColumn(name = "organization_id")
     private Organization organization_sponzor;
 
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+            CascadeType.MERGE,CascadeType.DETACH})
     private Person spouse;
 
     private String taxID;

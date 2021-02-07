@@ -167,6 +167,7 @@ public class PersonServiceImpl implements PersonService {
         List<Person> colleaguesList = person.getColleague();
         List<Person> childrenList = person.getChildren();
         List<Person> parentList = person.getParent();
+        Person spouse = person.getSpouse();
 
         model.addAttribute("person", person);
         model.addAttribute("personsList", personList);
@@ -174,6 +175,7 @@ public class PersonServiceImpl implements PersonService {
         model.addAttribute("colleaguesList",colleaguesList);
         model.addAttribute("childrenList",childrenList);
         model.addAttribute("parentList",parentList);
+        model.addAttribute("spouse",spouse);
     }
 
     private Optional<Person> createPersonFromPdfData(MultipartFile uploadedMultipartPdfFile, Model model)
@@ -359,4 +361,36 @@ public class PersonServiceImpl implements PersonService {
         }
     }
 
+    @Override
+    public String addSpouse(Integer personId, Person spousePerson) {
+        Optional<Person> existsPerson = personJpaRepository.findById(personId);
+        String spouseSocialNumber = spousePerson.getSocialNumber();
+        Optional<Person> existSpousePerson = personJpaRepository.findBySocialNumber(spouseSocialNumber);
+
+        //this person always exist because we add spouses for that person
+        if(existsPerson.isPresent()){
+            Person person = existsPerson.get();
+            //if spouse do NOT exist
+            if (!existSpousePerson.isPresent() ) {
+                //create spouse like a person
+                Person newSpouse = addNewPerson(spousePerson);
+                //check if spouse is already in person spouses
+                person.setSpouse(newSpouse);
+
+                personJpaRepository.save(person);
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            } else {
+                //if spouse that we want to add to person already exists in database we check is in spouses of person if not we add to persons_collageue
+                //check if spouse is already in person spouses
+                Person newSpouse = existSpousePerson.get();
+                person.setSpouse(newSpouse);
+
+                personJpaRepository.save(person);
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            }
+        }
+        else {
+            return "redirect:/persons/showFormForUpdate?personId=" + personId;
+        }
+    }
 }

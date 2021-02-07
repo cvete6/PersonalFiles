@@ -285,15 +285,6 @@
                                name="workLocation"
                                th:placeholder="#{app.workLocation}" >
                     </div>
-                    <div class="row">
-                        <label for="personSpouse" class="col-sm-5 col-form-label"><h6>personSpouse:</h6></label>
-                        <div id="personSpouse" class="form-group blu-margin">
-                            <select class="form-control" th:field="*{person.spouse}" >
-                                <option value="0">select</option>
-                                <option th:each="person : ${personsList}" th:value="${person.id}" th:text="${person.givenName}"></option>
-                            </select>
-                        </div>
-                    </div>
                     <hr>
                     <div class="row">
                         <label for="personKnows" class="col-sm-5 col-form-label"><h6>personKnows:</h6></label>
@@ -395,6 +386,16 @@
             </div>
         </form>
         <hr>
+        <div class="row">
+            <label for="personSpouse" class="col-sm-3 col-form-label"><h6>[[#{app.spouse}]]:</h6></label>
+            <ul class="col-2 col-form-label" th:field="*{person.spouse}">
+                <li th:each="person : ${spouse}" th:value="${person.id}" th:text="${person.givenName}"> </li>
+            </ul>
+            <div id="personSpouse" class="form-group blu-margin">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterSpouse">[[#{app.add}]]</button>
+                <div th:replace="addPerson/addSpouse  :: addSpouseModal"></div>
+            </div>
+        </div>
         <hr>
         <div class="row">
             <label for="personChildren" class="col-sm-3 col-form-label"><h6>[[#{app.children}]]:</h6></label>

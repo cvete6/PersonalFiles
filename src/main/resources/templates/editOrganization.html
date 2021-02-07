@@ -248,6 +248,18 @@
             </div>
         </div>
         <hr>
+        <hr>
+        <div class="row">
+            <label for="organizationParent" class="col-sm-3 col-form-label"><h6>[[#{app.parentOfOrganization}]]:</h6></label>
+            <ul class="col-2 col-form-label" th:field="*{organization.parentOrganization}">
+                <li th:each="organization : ${parentOfOrganizationExisted}" th:value="${organization.id}" th:text="${organization.legalName}"> </li>
+            </ul>
+            <div id="organizationParent" class="form-group blu-margin">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterParentOfOrganization">[[#{app.add}]]</button>
+                <div th:replace="addOrganization/addParentOfOrganization  :: addParentOfOrganizationModal"></div>
+            </div>
+        </div>
+        <hr>
     </div>
     </div>
 </main>

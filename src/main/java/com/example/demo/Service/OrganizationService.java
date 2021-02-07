@@ -16,5 +16,6 @@ public interface OrganizationService {
     String addDepartment(Integer organizationId, Organization departmentOrganization);
     String addSubOrganizationOrganization(Integer organizationId, Organization subOrganizationOrganization);
     String addMemberOfOrganization(Integer organizationId, Organization memberOfOrganization);
+    String addParentOfOrganization(Integer organizationId, Organization parentOfOrganization);
 
-}
+    }

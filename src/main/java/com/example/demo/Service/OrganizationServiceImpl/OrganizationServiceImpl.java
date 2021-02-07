@@ -78,11 +78,13 @@ public class OrganizationServiceImpl implements OrganizationService {
         List<Organization> departmentList = organization.getDepartments();
         List<Organization> memberOfOrganizationList = organization.getMemberOf_organization();
         List<Organization> subOrganizationOrganizationList = organization.getSubOrganization();
+        Organization parentIfOrganization = organization.getParentOrganization();
 
         model.addAttribute("organization", organization);
         model.addAttribute("departmentList", departmentList);
         model.addAttribute("memberOfOrganizationList", memberOfOrganizationList);
         model.addAttribute("subOfOrganizationList", subOrganizationOrganizationList);
+        model.addAttribute("parentOfOrganizationExisted", parentIfOrganization);
 
     }
 
@@ -207,4 +209,32 @@ public class OrganizationServiceImpl implements OrganizationService {
         }
     }
 
+    @Override
+    public String addParentOfOrganization(Integer organizationId, Organization parentOfOrganization) {
+        Optional<Organization> existsOrganization = organizationJpaRepository.findById(organizationId);
+        String parentOfOrganizationEmail = parentOfOrganization.getEmail();
+        Optional<Organization> existParentOfOrganization = organizationJpaRepository.findByEmail(parentOfOrganizationEmail);
+        //this organization always exist because we add parentOfOrganizations for that organization
+        if(existsOrganization.isPresent()){
+            Organization organization = existsOrganization.get();
+            //if parentOfOrganization do NOT exist
+            if (!existParentOfOrganization.isPresent()) {
+                //create parentOfOrganization like a organization
+                Organization newParentOfOrganization = addNewOrganization(parentOfOrganization);
+                organization.setParentOrganization(newParentOfOrganization);
+
+                organizationJpaRepository.save(organization);
+                return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+            } else {
+                //if parentOfOrganization that we want to add to organization already exists in database we check is in parentOfOrganizations of organization if not we add to organizations_collageue
+                Organization newParentOfOrganization = existParentOfOrganization.get();
+                organization.setParentOrganization(newParentOfOrganization);
+                organizationJpaRepository.save(organization);
+                return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+            }
+        }
+        else {
+            return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+        }
+    }
 }

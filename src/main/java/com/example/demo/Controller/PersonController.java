@@ -103,6 +103,7 @@ public class PersonController {
         model.addAttribute("colleaguePerson", new Person());
         model.addAttribute("childrenPerson", new Person());
         model.addAttribute("parentPerson", new Person());
+        model.addAttribute("spousePerson", new Person());
         return "editPerson";
     }
 
@@ -178,13 +179,6 @@ public class PersonController {
 
     }
 
-    /**
-     * Save new Person to database
-     *
-     * @param model         is used to get model attributes from view
-     * @return redirect to thymeleaf template for all Persons
-     * @throws IOException getBytes() from MultipartFile need not to be null
-     */
     @PostMapping("/addParent")
     public String addNewParent(@ModelAttribute Person parentPerson,
                                @RequestParam("personId") Integer personId,
@@ -194,18 +188,21 @@ public class PersonController {
 
     }
 
-    /**
-     * Save new Person to database
-     *
-     * @param model         is used to get model attributes from view
-     * @return redirect to thymeleaf template for all Persons
-     * @throws IOException getBytes() from MultipartFile need not to be null
-     */
     @PostMapping("/addColleague")
-    public String addNewPerson(@ModelAttribute Person colleaguePerson,
+    public String addNewColleague(@ModelAttribute Person colleaguePerson,
                                @RequestParam("personId") Integer personId,
                                Model model) {
         personService.addColleagues(personId,colleaguePerson);
+        return "redirect:/persons/showFormForUpdate?personId=" + personId;
+
+    }
+
+
+    @PostMapping("/addSpouse")
+    public String addNewSpouse(@ModelAttribute Person spousePerson,
+                               @RequestParam("personId") Integer personId,
+                               Model model) {
+        personService.addSpouse(personId,spousePerson);
         return "redirect:/persons/showFormForUpdate?personId=" + personId;
 
     }
