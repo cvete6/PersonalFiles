@@ -168,12 +168,15 @@ public class Person {
     @JoinColumn(name = "organization_sponsor_id")
     private Organization organization_sponsor;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+                          CascadeType.MERGE,CascadeType.DETACH})
+    @JoinColumn(name = "organization_worksIn_id")
     private Organization worksFor;
 
-    @ManyToMany
-    @JoinTable(name="organization_person",
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+                           CascadeType.MERGE,CascadeType.DETACH})
+    @JoinTable(name="person_organization",
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "organization_id"))
-    private List<Organization> organization_members;
+    private List<Organization> memberOf;
 }

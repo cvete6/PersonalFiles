@@ -57,10 +57,6 @@ public class Organization {
 
     private String faxNumber;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "worksFor")
-    private List<Person> employee;
-
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date foundingDate;
@@ -114,11 +110,17 @@ public class Organization {
     @JoinColumn(name = "memberOf_organization_id")
     private List<Organization> memberOf_organization;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "worksFor",
+               cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+                    CascadeType.MERGE,CascadeType.DETACH})
+    private List<Person> employee;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+                           CascadeType.MERGE,CascadeType.DETACH})
     @JoinTable(name="organization_person",
                joinColumns = @JoinColumn(name = "organization_id"),
                 inverseJoinColumns = @JoinColumn(name = "person_id"))
-    private List<Person> person_members;
+    private List<Person> member;
 
 
 }

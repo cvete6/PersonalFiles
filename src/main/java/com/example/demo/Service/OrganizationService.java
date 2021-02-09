@@ -20,4 +20,5 @@ public interface OrganizationService {
     String addParentOfOrganization(Integer organizationId, Organization parentOfOrganization);
 
     String addSponsorInOrganization(Integer organizationId, Person sponsorInOrganization);
+    String addEmployeeInOrganization(Integer organizationId, Person employee);
     }

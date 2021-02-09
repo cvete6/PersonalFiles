@@ -44,6 +44,7 @@ public class OrganizationController {
         model.addAttribute("subOrganizationOrganization", new Organization());
         model.addAttribute("parentOfOrganization", new Organization());
         model.addAttribute("sponsorInOrganization", new Person());
+        model.addAttribute("employee", new Person());
         return "editOrganization";
     }
 
@@ -123,5 +124,12 @@ public class OrganizationController {
         return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
     }
 
+    @PostMapping("/addEmployeeInOrganization")
+    public String addEmployeeInOrganization(@ModelAttribute Person employee,
+                             @RequestParam("organizationId") Integer organizationId,
+                             Model model) {
+        organizationService.addEmployeeInOrganization(organizationId, employee);
+        return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+    }
 
 }

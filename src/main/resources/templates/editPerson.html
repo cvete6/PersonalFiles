@@ -295,17 +295,6 @@
                             </select>
                         </div>
                     </div>
-
-                  <!--  <div class="row">
-                        <label for="funder_of_organization" class="col-sm-5 col-form-label"><h6>[[#{app.funderOfOrganization}]]:</h6></label>
-                        <div id="funder_of_organization" class="form-group blu-margin">
-                            <select class="form-control" th:field="*{person.funder_organization}" >
-                                <option value="0">select</option>
-                                <option th:each="organization : ${organizationList}" th:value="${organization.id}" th:text="${organization.legalName}"></option>
-                            </select>
-                        </div>
-                    </div>-->
-
                     <hr>
                     <hr>
                     <div class="row">
@@ -443,6 +432,19 @@
             <div id="organizationSponsor" class="form-group blu-margin">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterOrganizationSponsor">[[#{app.add}]]</button>
                 <div th:replace="addPerson/addOrganizationSponsor  :: addOrganizationSponsorModal"></div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <label for="worksForOrganization" class="col-sm-3 col-form-label"><h6>[[#{app.worksForOrganization}]]:</h6></label>
+            <ul class="col-2 col-form-label" th:field="*{person.worksFor}">
+                <li th:each="organization : ${worksFor}" th:value="${organization.id}">
+                    <a th:href="@{/organizations/showFormForUpdate(organizationId = ${organization.id})}" type="submit" th:text="${organization.legalName}"></a>
+                </li>
+            </ul>
+            <div id="worksForOrganization" class="form-group blu-margin">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterWorksFor">[[#{app.add}]]</button>
+                <div th:replace="addPerson/addWorksForOrganization  :: addWorksForOrganizationModal"></div>
             </div>
         </div>
         <hr>

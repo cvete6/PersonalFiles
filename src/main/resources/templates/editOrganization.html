@@ -268,20 +268,6 @@
             </div>
         </div>
         <hr>
-     <!--   <hr>
-        <div class="row">
-            <label for="employeeOrganization" class="col-sm-3 col-form-label"><h6>[[#{app.employeeOrganization}]]:</h6></label>
-            <ul class="col-2 col-form-label" th:field="*{organization.employee}">
-                <li th:each="person : ${employees}" th:value="${person.id}">
-                    <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit" th:text="${person.givenName}"></a>
-                </li>
-            </ul>
-            <div id="employeeOrganization" class="form-group blu-margin">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterEmployee">[[#{app.add}]]</button>
-                <div th:replace="addOrganization/addEmployee  :: addEmployeeModal"></div>
-            </div>
-        </div>
-        <hr>-->
         <hr>
         <div class="row">
             <label for="sponsorsInOrganization" class="col-sm-3 col-form-label"><h6>[[#{app.sponsorsInOrganization}]]:</h6></label>
@@ -293,6 +279,20 @@
             <div id="sponsorsInOrganization" class="form-group blu-margin">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterSponsor">[[#{app.add}]]</button>
                 <div th:replace="addOrganization/addSponsor  :: addSponsorModal"></div>
+            </div>
+        </div>
+        <hr>
+        <hr>
+        <div class="row">
+            <label for="employeesInOrganization" class="col-sm-3 col-form-label"><h6>[[#{app.employeesInOrganization}]]:</h6></label>
+            <ul class="col-2 col-form-label" th:field="*{organization.employee}">
+                <li th:each="person : ${employees}" th:value="${person.id}">
+                    <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit" th:text="${person.givenName}"></a>
+                </li>
+            </ul>
+            <div id="employeesInOrganization" class="form-group blu-margin">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterEmployee">[[#{app.add}]]</button>
+                <div th:replace="addOrganization/addEmployee  :: addEmployeeModal"></div>
             </div>
         </div>
         <hr>

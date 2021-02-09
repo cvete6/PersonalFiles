@@ -92,8 +92,18 @@ public class PersonServiceImpl implements PersonService {
                     }
                 }
             }
+            //delete person but this person is connected with work in organization
+            List<Organization> organizationList = organizationJpaRepository.findAll();
+            for( Organization o : organizationList){
+                List<Person> employees = o.getEmployee();
+                if(!employees.isEmpty()){
+                    if(employees.contains(person)){
+                        employees.remove(person);
+                    }
+                }
+                organizationJpaRepository.save(o);
+            }
         }
-
         personJpaRepository.deleteById(id);
     }
 
@@ -179,6 +189,7 @@ public class PersonServiceImpl implements PersonService {
         List<Person> followsList = person.getFollows();
         List<Person> knowsList = person.getKnows();
         Organization organizationSponsor = person.getOrganization_sponsor();
+        Organization worksForOrganization = person.getWorksFor();
 
         model.addAttribute("person", person);
         model.addAttribute("personsList", personList);
@@ -190,6 +201,7 @@ public class PersonServiceImpl implements PersonService {
         model.addAttribute("followsList",followsList);
         model.addAttribute("knowsList",knowsList);
         model.addAttribute("organizationSponsor", organizationSponsor);
+        model.addAttribute("worksFor", worksForOrganization);
     }
 
     private Optional<Person> createPersonFromPdfData(MultipartFile uploadedMultipartPdfFile, Model model)
@@ -487,6 +499,7 @@ public class PersonServiceImpl implements PersonService {
         }
     }
 
+    @Override
     public String addOrganizationSponsor(Integer personId, Organization organizationSponsor){
         Optional<Person> existsPerson = personJpaRepository.findById(personId);
         String organizationSponsorEmail = organizationSponsor.getEmail();
@@ -516,6 +529,46 @@ public class PersonServiceImpl implements PersonService {
                 List<Person> sponsorsInOrganization = organization.getSponsors();
                 sponsorsInOrganization.add(person);
                 organization.setSponsors(sponsorsInOrganization);
+                organizationJpaRepository.save(organization);
+
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            }
+        }
+        else {
+            return "redirect:/persons/showFormForUpdate?personId=" + personId;
+        }
+    }
+
+    @Override
+    public String addWorksForOrganization(Integer personId, Organization worksForOrganization){
+        Optional<Person> existsPerson = personJpaRepository.findById(personId);
+        String organizationPersonWorksForEmail = worksForOrganization.getEmail();
+        Optional<Organization> existOrganization = organizationJpaRepository.findByEmail(organizationPersonWorksForEmail);
+        if(existsPerson.isPresent()){
+            Person person = existsPerson.get();
+            //if organization do NOT exist
+            if (!existOrganization.isPresent() ) {
+                Organization newOrganization = organizationJpaRepository.save(worksForOrganization);
+                person.setWorksFor(newOrganization);
+                personJpaRepository.save(person);
+
+                //add bidirectional relationship
+                List<Person> employees = new ArrayList<>();
+                employees.add(person);
+                newOrganization.setEmployee(employees);
+                organizationJpaRepository.save(newOrganization);
+
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            } else {
+                //if Organization exist
+                Organization organization = existOrganization.get();
+                person.setWorksFor(organization);
+                personJpaRepository.save(person);
+
+                //add bidirectional relationship
+                List<Person> employees = organization.getEmployee();
+                employees.add(person);
+                organization.setEmployee(employees);
                 organizationJpaRepository.save(organization);
 
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;

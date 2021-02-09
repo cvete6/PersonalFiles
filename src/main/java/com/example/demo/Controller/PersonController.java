@@ -108,6 +108,7 @@ public class PersonController {
         model.addAttribute("followsPerson", new Person());
         model.addAttribute("knowsPerson", new Person());
         model.addAttribute("organizationSponsorPerson", new Organization());
+        model.addAttribute("worksForOrganization", new Organization());
         return "editPerson";
     }
 
@@ -227,10 +228,18 @@ public class PersonController {
     }
 
     @PostMapping("/addOrganizationSponsor")
-    public String addNewSpouse(@ModelAttribute Organization organizationSponsor,
+    public String addSponsorToOrganization(@ModelAttribute Organization organizationSponsor,
                                @RequestParam("personId") Integer personId,
                                Model model) {
         personService.addOrganizationSponsor(personId,organizationSponsor);
+        return "redirect:/persons/showFormForUpdate?personId=" + personId;
+    }
+
+    @PostMapping("/addWorksForOrganization")
+    public String addNewWorksForOrganization(@ModelAttribute Organization worksForOrganization,
+                               @RequestParam("personId") Integer personId,
+                               Model model) {
+        personService.addWorksForOrganization(personId,worksForOrganization);
         return "redirect:/persons/showFormForUpdate?personId=" + personId;
     }
 

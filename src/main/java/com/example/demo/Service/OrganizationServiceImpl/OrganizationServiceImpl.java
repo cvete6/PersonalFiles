@@ -84,6 +84,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         List<Organization> subOrganizationOrganizationList = organization.getSubOrganization();
         Organization parentIfOrganization = organization.getParentOrganization();
         List<Person> sponsorsList = organization.getSponsors();
+        List<Person> employees = organization.getEmployee();
 
         model.addAttribute("organization", organization);
         model.addAttribute("departmentList", departmentList);
@@ -91,6 +92,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         model.addAttribute("subOfOrganizationList", subOrganizationOrganizationList);
         model.addAttribute("parentOfOrganizationExisted", parentIfOrganization);
         model.addAttribute("sponsorsList",sponsorsList);
+        model.addAttribute("employees", employees);
 
     }
 
@@ -123,8 +125,17 @@ public class OrganizationServiceImpl implements OrganizationService {
                 p.setOrganization_sponsor(null);
                 personJpaRepository.save(p);
             }
-        }
 
+            //delete organization but this organization is connected with persons
+            List<Person> employees = personJpaRepository.findAll();
+            for( Person p : employees){
+                Organization personWorksForThisOrganization = p.getWorksFor();
+                    if(personWorksForThisOrganization != null ){
+                        p.setWorksFor(null);
+                    }
+                    personJpaRepository.save(p);
+                }
+            }
         organizationJpaRepository.deleteById(id);
     }
 
@@ -314,4 +325,49 @@ public class OrganizationServiceImpl implements OrganizationService {
         }
     }
 
+    @Override
+    public String addEmployeeInOrganization(Integer organizationId, Person employee ) {
+        Optional<Organization> existsOrganization = organizationJpaRepository.findById(organizationId);
+        String employeeSocialNumber = employee.getSocialNumber();
+        Optional<Person> existEmployee = personJpaRepository.findBySocialNumber(employeeSocialNumber);
+
+        //this organization always exist because we add parentOfOrganizations for that organization
+        if(existsOrganization.isPresent()){
+            Organization organization = existsOrganization.get();
+            //if sponsorInOrganization do NOT exist like a person
+            if (!existEmployee.isPresent()) {
+                Person newEmployeeInOrganization = personJpaRepository.save(employee);
+
+                //add new sponsor to existed sponsors list from organization
+                List<Person> employeesList = organization.getEmployee();
+                employeesList.add(newEmployeeInOrganization);
+                organization.setEmployee(employeesList);
+                organizationJpaRepository.save(organization);
+
+                //add organization in person
+                newEmployeeInOrganization.setWorksFor(organization);
+                personJpaRepository.save(newEmployeeInOrganization);
+
+                return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+            } else {
+                //if sponsorInOrganization exist like a person in database
+                Person newEmployeeInOrganization = existEmployee.get();
+
+                //add new sponsor to existed sponsors list from organization
+                List<Person> employeesList = organization.getEmployee();
+                employeesList.add(newEmployeeInOrganization);
+                organization.setEmployee(employeesList);
+                organizationJpaRepository.save(organization);
+
+                //add organization in person
+                newEmployeeInOrganization.setWorksFor(organization);
+                personJpaRepository.save(newEmployeeInOrganization);
+
+                return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+            }
+        }
+        else {
+            return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+        }
+    }
 }

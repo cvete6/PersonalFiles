@@ -122,4 +122,6 @@ public interface PersonService {
     String addKnowPerson(Integer personId, Person knowPerson);
 
     String addOrganizationSponsor(Integer personId, Organization organizationSponsor);
+
+    String addWorksForOrganization(Integer personId, Organization worksForOrganization);
 }
