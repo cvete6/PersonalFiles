@@ -1,5 +1,6 @@
 package com.example.demo.Controller;
 
+import com.example.demo.DomainModel.Organization;
 import com.example.demo.DomainModel.Person;
 import com.example.demo.Service.PersonServiceImpl.PersonServiceImpl;
 import com.example.demo.Service.RdfManipulationServiceImpl.RdfManipulationServiceImpl;
@@ -104,6 +105,9 @@ public class PersonController {
         model.addAttribute("childrenPerson", new Person());
         model.addAttribute("parentPerson", new Person());
         model.addAttribute("spousePerson", new Person());
+        model.addAttribute("followsPerson", new Person());
+        model.addAttribute("knowsPerson", new Person());
+        model.addAttribute("organizationSponsorPerson", new Organization());
         return "editPerson";
     }
 
@@ -204,6 +208,30 @@ public class PersonController {
                                Model model) {
         personService.addSpouse(personId,spousePerson);
         return "redirect:/persons/showFormForUpdate?personId=" + personId;
-
     }
+
+    @PostMapping("/addFollows")
+    public String addFollows(@ModelAttribute Person followPerson,
+                             @RequestParam("personId") Integer personId,
+                             Model model) {
+        personService.addFollowPerson(personId,followPerson);
+        return "redirect:/persons/showFormForUpdate?personId=" + personId;
+    }
+
+    @PostMapping("/addKnows")
+    public String addKnows(@ModelAttribute Person knowPerson,
+                           @RequestParam("personId") Integer personId,
+                           Model model) {
+        personService.addKnowPerson(personId, knowPerson);
+        return "redirect:/persons/showFormForUpdate?personId=" + personId;
+    }
+
+    @PostMapping("/addOrganizationSponsor")
+    public String addNewSpouse(@ModelAttribute Organization organizationSponsor,
+                               @RequestParam("personId") Integer personId,
+                               Model model) {
+        personService.addOrganizationSponsor(personId,organizationSponsor);
+        return "redirect:/persons/showFormForUpdate?personId=" + personId;
+    }
+
 }

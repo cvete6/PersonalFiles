@@ -61,15 +61,15 @@ public class PersonMapper {
             oldPerson.setImage(person.getImage());
         }
         oldPerson.setChildren(person.getChildren());
-       // oldPerson.setColleague(person.getColleague());
+        oldPerson.setColleague(person.getColleague());
         oldPerson.setParent(person.getParent());
         oldPerson.setSpouse(person.getSpouse());
         oldPerson.setFollows(person.getFollows());
         oldPerson.setKnows(person.getKnows());
 
         oldPerson.setOrganization_members(person.getOrganization_members());
-        oldPerson.setOrganization_sponzor(person.getOrganization_sponzor());
-        oldPerson.setFunder_organization(person.getFunder_organization());
+        oldPerson.setOrganization_sponsor(person.getOrganization_sponsor());
+        oldPerson.setWorksFor(person.getWorksFor());
 
         return oldPerson;
     }

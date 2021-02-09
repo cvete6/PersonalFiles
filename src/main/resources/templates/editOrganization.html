@@ -218,7 +218,9 @@
         <div class="row">
             <label for="organizationDepartments" class="col-sm-3 col-form-label"><h6>[[#{app.departments}]]:</h6></label>
             <ul class="col-2 col-form-label" th:field="*{organization.departments}">
-                <li th:each="organization : ${departmentList}" th:value="${organization.id}" th:text="${organization.legalName}"> </li>
+                <li th:each="organization : ${departmentList}" th:value="${organization.id}">
+                    <a th:href="@{/organizations/showFormForUpdate(organizationId = ${organization.id})}" type="submit" th:text="${organization.legalName}"></a>
+                </li>
             </ul>
             <div id="organizationDepartments" class="form-group blu-margin">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">[[#{app.add}]]</button>
@@ -229,7 +231,9 @@
         <div class="row">
             <label for="organizationMemberOfOrganization" class="col-sm-3 col-form-label"><h6>[[#{app.memberOfOrganization}]]:</h6></label>
             <ul class="col-2 col-form-label" th:field="*{organization.memberOf_organization}">
-                <li th:each="organization : ${memberOfOrganizationList}" th:value="${organization.id}" th:text="${organization.legalName}"> </li>
+                <li th:each="organization : ${memberOfOrganizationList}" th:value="${organization.id}">
+                    <a th:href="@{/organizations/showFormForUpdate(organizationId = ${organization.id})}" type="submit" th:text="${organization.legalName}"></a>
+                </li>
             </ul>
             <div id="organizationMemberOfOrganization" class="form-group blu-margin">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">[[#{app.add}]]</button>
@@ -240,7 +244,9 @@
         <div class="row">
             <label for="organizationSubOrganization" class="col-sm-3 col-form-label"><h6>[[#{app.subOrganization}]]:</h6></label>
             <ul class="col-2 col-form-label" th:field="*{organization.subOrganization}">
-                <li th:each="organization : ${subOfOrganizationList}" th:value="${organization.id}" th:text="${organization.legalName}"> </li>
+                <li th:each="organization : ${subOfOrganizationList}" th:value="${organization.id}">
+                    <a th:href="@{/organizations/showFormForUpdate(organizationId = ${organization.id})}" type="submit" th:text="${organization.legalName}"></a>
+                </li>
             </ul>
             <div id="organizationSubOrganization" class="form-group blu-margin">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">[[#{app.add}]]</button>
@@ -252,11 +258,41 @@
         <div class="row">
             <label for="organizationParent" class="col-sm-3 col-form-label"><h6>[[#{app.parentOfOrganization}]]:</h6></label>
             <ul class="col-2 col-form-label" th:field="*{organization.parentOrganization}">
-                <li th:each="organization : ${parentOfOrganizationExisted}" th:value="${organization.id}" th:text="${organization.legalName}"> </li>
+                <li th:each="organization : ${parentOfOrganizationExisted}" th:value="${organization.id}">
+                    <a th:href="@{/organizations/showFormForUpdate(organizationId = ${organization.id})}" type="submit" th:text="${organization.legalName}"></a>
+                </li>
             </ul>
             <div id="organizationParent" class="form-group blu-margin">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterParentOfOrganization">[[#{app.add}]]</button>
                 <div th:replace="addOrganization/addParentOfOrganization  :: addParentOfOrganizationModal"></div>
+            </div>
+        </div>
+        <hr>
+     <!--   <hr>
+        <div class="row">
+            <label for="employeeOrganization" class="col-sm-3 col-form-label"><h6>[[#{app.employeeOrganization}]]:</h6></label>
+            <ul class="col-2 col-form-label" th:field="*{organization.employee}">
+                <li th:each="person : ${employees}" th:value="${person.id}">
+                    <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit" th:text="${person.givenName}"></a>
+                </li>
+            </ul>
+            <div id="employeeOrganization" class="form-group blu-margin">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterEmployee">[[#{app.add}]]</button>
+                <div th:replace="addOrganization/addEmployee  :: addEmployeeModal"></div>
+            </div>
+        </div>
+        <hr>-->
+        <hr>
+        <div class="row">
+            <label for="sponsorsInOrganization" class="col-sm-3 col-form-label"><h6>[[#{app.sponsorsInOrganization}]]:</h6></label>
+            <ul class="col-2 col-form-label" th:field="*{organization.sponsors}">
+                <li th:each="person : ${sponsorsList}" th:value="${person.id}">
+                    <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit" th:text="${person.givenName}"></a>
+                </li>
+            </ul>
+            <div id="sponsorsInOrganization" class="form-group blu-margin">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterSponsor">[[#{app.add}]]</button>
+                <div th:replace="addOrganization/addSponsor  :: addSponsorModal"></div>
             </div>
         </div>
         <hr>

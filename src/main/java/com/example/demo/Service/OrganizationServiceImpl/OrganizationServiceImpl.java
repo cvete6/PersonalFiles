@@ -1,8 +1,10 @@
 package com.example.demo.Service.OrganizationServiceImpl;
 
 import com.example.demo.DomainModel.Organization;
+import com.example.demo.DomainModel.Person;
 import com.example.demo.Exceptions.InvalidOrganizationIdException;
 import com.example.demo.Repository.OrganizationJpaRepository;
+import com.example.demo.Repository.PersonJpaRepository;
 import com.example.demo.Service.OrganizationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,9 +22,11 @@ import static com.example.demo.DataMapper.OrganizationMapper.oldOrganizationMapT
 public class OrganizationServiceImpl implements OrganizationService {
 
     private OrganizationJpaRepository organizationJpaRepository;
+    private PersonJpaRepository personJpaRepository;
 
-    public OrganizationServiceImpl(OrganizationJpaRepository organizationJpaRepository) {
+    public OrganizationServiceImpl(OrganizationJpaRepository organizationJpaRepository, PersonJpaRepository personJpaRepository) {
         this.organizationJpaRepository = organizationJpaRepository;
+        this.personJpaRepository = personJpaRepository;
     }
 
     @Override
@@ -79,12 +83,14 @@ public class OrganizationServiceImpl implements OrganizationService {
         List<Organization> memberOfOrganizationList = organization.getMemberOf_organization();
         List<Organization> subOrganizationOrganizationList = organization.getSubOrganization();
         Organization parentIfOrganization = organization.getParentOrganization();
+        List<Person> sponsorsList = organization.getSponsors();
 
         model.addAttribute("organization", organization);
         model.addAttribute("departmentList", departmentList);
         model.addAttribute("memberOfOrganizationList", memberOfOrganizationList);
         model.addAttribute("subOfOrganizationList", subOrganizationOrganizationList);
         model.addAttribute("parentOfOrganizationExisted", parentIfOrganization);
+        model.addAttribute("sponsorsList",sponsorsList);
 
     }
 
@@ -95,6 +101,30 @@ public class OrganizationServiceImpl implements OrganizationService {
 
     @Override
     public void deleteOrganization(Integer id) {
+        Optional<Organization> existOrganization = organizationJpaRepository.findById(id);
+
+        //find all organizations in database and delete if somewhere in  is this person
+        if(existOrganization.isPresent()){
+            Organization organization = existOrganization.get();
+            //set null everywhere where organization that we want to delete ia parent to some other
+            List<Organization> organizationsList = organizationJpaRepository.findAll();
+            for( Organization o : organizationsList){
+                Organization parentOrganization = o.getParentOrganization();
+                if(parentOrganization != null){
+                    if( parentOrganization.getEmail().equals(organization.getEmail()) ){
+                        o.setParentOrganization(null);
+                        organizationJpaRepository.save(o);
+                    }
+                }
+            }
+
+            List<Person> sponsors = organization.getSponsors();
+            for(Person p : sponsors ){
+                p.setOrganization_sponsor(null);
+                personJpaRepository.save(p);
+            }
+        }
+
         organizationJpaRepository.deleteById(id);
     }
 
@@ -237,4 +267,51 @@ public class OrganizationServiceImpl implements OrganizationService {
             return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
         }
     }
+
+    @Override
+    public String addSponsorInOrganization(Integer organizationId, Person sponsorInOrganization ) {
+        Optional<Organization> existsOrganization = organizationJpaRepository.findById(organizationId);
+        String sponsorInOrganizationSocialNumber = sponsorInOrganization.getSocialNumber();
+        Optional<Person> existSponsorPerson = personJpaRepository.findBySocialNumber(sponsorInOrganizationSocialNumber);
+
+        //this organization always exist because we add parentOfOrganizations for that organization
+        if(existsOrganization.isPresent()){
+            Organization organization = existsOrganization.get();
+            //if sponsorInOrganization do NOT exist like a person
+            if (!existSponsorPerson.isPresent()) {
+                Person newSponsorInOrganization = personJpaRepository.save(sponsorInOrganization);
+
+                //add new sponsor to existed sponsors list from organization
+                List<Person> sponsorsList = organization.getSponsors();
+                sponsorsList.add(newSponsorInOrganization);
+                organization.setSponsors(sponsorsList);
+                organizationJpaRepository.save(organization);
+
+                //add organization in person
+                newSponsorInOrganization.setOrganization_sponsor(organization);
+                personJpaRepository.save(newSponsorInOrganization);
+
+                return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+            } else {
+                //if sponsorInOrganization exist like a person in database
+                Person newSponsorInOrganization = existSponsorPerson.get();
+
+                //add new sponsor to existed sponsors list from organization
+                List<Person> sponsorsList = organization.getSponsors();
+                sponsorsList.add(newSponsorInOrganization);
+                organization.setSponsors(sponsorsList);
+                organizationJpaRepository.save(organization);
+
+                //add organization in person
+                newSponsorInOrganization.setOrganization_sponsor(organization);
+                personJpaRepository.save(newSponsorInOrganization);
+
+                return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+            }
+        }
+        else {
+            return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+        }
+    }
+
 }

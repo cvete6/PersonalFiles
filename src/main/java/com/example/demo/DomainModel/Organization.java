@@ -58,8 +58,8 @@ public class Organization {
     private String faxNumber;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "funder_organization")
-    private List<Person> founder;
+    @OneToMany(mappedBy = "worksFor")
+    private List<Person> employee;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -94,7 +94,9 @@ public class Organization {
     //Slogan ili moto na organizacijata
     private String slogan;
 
-    @OneToMany(mappedBy = "organization_sponzor")
+    @OneToMany(mappedBy = "organization_sponsor",
+               cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+                          CascadeType.MERGE,CascadeType.DETACH})
     private List<Person> sponsors;
 
     private String telephone;

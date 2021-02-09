@@ -1,5 +1,6 @@
 package com.example.demo.Service;
 
+import com.example.demo.DomainModel.Organization;
 import com.example.demo.DomainModel.Person;
 import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
@@ -116,5 +117,9 @@ public interface PersonService {
 
     String addSpouse(Integer personId, Person spousePerson);
 
+    String addFollowPerson(Integer personId, Person followPerson);
 
+    String addKnowPerson(Integer personId, Person knowPerson);
+
+    String addOrganizationSponsor(Integer personId, Organization organizationSponsor);
 }

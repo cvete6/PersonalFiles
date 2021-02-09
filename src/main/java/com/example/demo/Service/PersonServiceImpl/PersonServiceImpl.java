@@ -78,14 +78,22 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void deletePerson(Integer id) {
-        /*Optional<Person> existPerson = personJpaRepository.findById(id);
-        Person person = existPerson.get();
-        List<Person> personsList = personJpaRepository.findAll();
-        for( Person p : personsList){
-            if(p.getColleague().contains(person)){
-                p.getColleague().remove(person);
+        Optional<Person> existPerson = personJpaRepository.findById(id);
+        if(existPerson.isPresent()){
+            Person person = existPerson.get();
+            //find all persons in database and delete if somewhere in spouse is this person
+            List<Person> personsList = personJpaRepository.findAll();
+            for( Person p : personsList){
+                Person spouse = p.getSpouse();
+                if(spouse != null){
+                    if( spouse.getSocialNumber().equals(person.getSocialNumber() ) ){
+                        p.setSpouse(null);
+                        personJpaRepository.save(p);
+                    }
+                }
             }
-        }*/
+        }
+
         personJpaRepository.deleteById(id);
     }
 
@@ -168,6 +176,9 @@ public class PersonServiceImpl implements PersonService {
         List<Person> childrenList = person.getChildren();
         List<Person> parentList = person.getParent();
         Person spouse = person.getSpouse();
+        List<Person> followsList = person.getFollows();
+        List<Person> knowsList = person.getKnows();
+        Organization organizationSponsor = person.getOrganization_sponsor();
 
         model.addAttribute("person", person);
         model.addAttribute("personsList", personList);
@@ -176,6 +187,9 @@ public class PersonServiceImpl implements PersonService {
         model.addAttribute("childrenList",childrenList);
         model.addAttribute("parentList",parentList);
         model.addAttribute("spouse",spouse);
+        model.addAttribute("followsList",followsList);
+        model.addAttribute("knowsList",knowsList);
+        model.addAttribute("organizationSponsor", organizationSponsor);
     }
 
     private Optional<Person> createPersonFromPdfData(MultipartFile uploadedMultipartPdfFile, Model model)
@@ -199,6 +213,7 @@ public class PersonServiceImpl implements PersonService {
         return Optional.empty();
 
     }
+
     private List<Person> findPersonByKeywordIgnoreCase(String keyword) {
         List<Person> persons = new ArrayList<>();
         for (Person person : personJpaRepository.findAll()) {
@@ -386,6 +401,123 @@ public class PersonServiceImpl implements PersonService {
                 person.setSpouse(newSpouse);
 
                 personJpaRepository.save(person);
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            }
+        }
+        else {
+            return "redirect:/persons/showFormForUpdate?personId=" + personId;
+        }
+    }
+
+    @Override
+    public String addFollowPerson(Integer personId, Person followPerson) {
+        Optional<Person> existsPerson = personJpaRepository.findById(personId);
+        String followPersonSocialNumber = followPerson.getSocialNumber();
+        Optional<Person> existFollowPerson = personJpaRepository.findBySocialNumber(followPersonSocialNumber);
+
+        if(existsPerson.isPresent()){
+            Person person = existsPerson.get();
+            List<Person> follows = person.getFollows();
+            if (!existFollowPerson.isPresent()) {
+                Person newFollowPerson = addNewPerson(followPerson);
+                if(!follows.contains(newFollowPerson)){
+                    follows.add(newFollowPerson);
+                }
+                person.setFollows(follows);
+                personJpaRepository.save(person);
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            } else {
+                Person newFollowPerson = existFollowPerson.get();
+                if(!follows.contains(newFollowPerson)){
+                    follows.add(newFollowPerson);
+                }
+                person.setFollows(follows);
+                personJpaRepository.save(person);
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            }
+        }
+        else {
+            return "redirect:/persons/showFormForUpdate?personId=" + personId;
+        }
+    }
+
+    @Override
+    public String addKnowPerson(Integer personId, Person knowPerson) {
+        Optional<Person> existsPerson = personJpaRepository.findById(personId);
+        String followPersonSocialNumber = knowPerson.getSocialNumber();
+        Optional<Person> existFollowPerson = personJpaRepository.findBySocialNumber(followPersonSocialNumber);
+
+        if(existsPerson.isPresent()){
+            Person person = existsPerson.get();
+            List<Person> knows = person.getKnows();
+            if (!existFollowPerson.isPresent()) {
+                Person newKnowPerson = addNewPerson(knowPerson);
+                if(!knows.contains(newKnowPerson)){
+                    knows.add(newKnowPerson);
+                }
+                person.setKnows(knows);
+                personJpaRepository.save(person);
+
+                List<Person> newKnows = new ArrayList<>();
+                newKnows.add(person);
+                //Add person like a knows in newKnowPerson
+                newKnowPerson.setKnows(newKnows);
+                personJpaRepository.save(newKnowPerson);
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            } else {
+                Person newKnowPerson = existFollowPerson.get();
+                if(!knows.contains(newKnowPerson)){
+                    knows.add(newKnowPerson);
+                }
+                person.setKnows(knows);
+                personJpaRepository.save(person);
+
+                //Add person like a knows in newKnowPerson
+                List<Person> newKnows = newKnowPerson.getKnows();
+                if(!newKnows.contains(person)){
+                    newKnows.add(person);
+                }
+                newKnowPerson.setKnows(newKnows);
+                personJpaRepository.save(newKnowPerson);
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            }
+        }
+        else {
+            return "redirect:/persons/showFormForUpdate?personId=" + personId;
+        }
+    }
+
+    public String addOrganizationSponsor(Integer personId, Organization organizationSponsor){
+        Optional<Person> existsPerson = personJpaRepository.findById(personId);
+        String organizationSponsorEmail = organizationSponsor.getEmail();
+        Optional<Organization> existOrganizationSponsor = organizationJpaRepository.findByEmail(organizationSponsorEmail);
+        if(existsPerson.isPresent()){
+            Person person = existsPerson.get();
+               //if organization do NOT exist
+            if (!existOrganizationSponsor.isPresent() ) {
+                Organization newOrganization = organizationJpaRepository.save(organizationSponsor);
+                person.setOrganization_sponsor(newOrganization);
+                personJpaRepository.save(person);
+
+                //add bidirectional relationship
+                List<Person> sponsorsInOrganization = new ArrayList<>();
+                sponsorsInOrganization.add(person);
+                newOrganization.setSponsors(sponsorsInOrganization);
+                organizationJpaRepository.save(newOrganization);
+
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            } else {
+                //if Organization exist
+                Organization organization = existOrganizationSponsor.get();
+                person.setOrganization_sponsor(organization);
+                personJpaRepository.save(person);
+
+                //add bidirectional relationship
+                List<Person> sponsorsInOrganization = organization.getSponsors();
+                sponsorsInOrganization.add(person);
+                organization.setSponsors(sponsorsInOrganization);
+                organizationJpaRepository.save(organization);
+
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             }
         }
