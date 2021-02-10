@@ -296,6 +296,20 @@
             </div>
         </div>
         <hr>
+        <hr>
+        <div class="row">
+            <label for="memberInOrganization" class="col-sm-3 col-form-label"><h6>[[#{app.memberInOrganization}]]:</h6></label>
+            <ul class="col-2 col-form-label" th:field="*{organization.member}">
+                <li th:each="person : ${members}" th:value="${person.id}">
+                    <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit" th:text="${person.givenName}"></a>
+                </li>
+            </ul>
+            <div id="memberInOrganization" class="form-group blu-margin">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterMember">[[#{app.add}]]</button>
+                <div th:replace="addOrganization/addMemberPerson  :: addMemberModal"></div>
+            </div>
+        </div>
+        <hr>
     </div>
     </div>
 </main>

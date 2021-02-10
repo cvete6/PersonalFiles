@@ -190,6 +190,7 @@ public class PersonServiceImpl implements PersonService {
         List<Person> knowsList = person.getKnows();
         Organization organizationSponsor = person.getOrganization_sponsor();
         Organization worksForOrganization = person.getWorksFor();
+        List<Organization> memberOfOrganizationList = person.getMemberOf();
 
         model.addAttribute("person", person);
         model.addAttribute("personsList", personList);
@@ -202,6 +203,7 @@ public class PersonServiceImpl implements PersonService {
         model.addAttribute("knowsList",knowsList);
         model.addAttribute("organizationSponsor", organizationSponsor);
         model.addAttribute("worksFor", worksForOrganization);
+        model.addAttribute("memberOfOrganizationList", memberOfOrganizationList);
     }
 
     private Optional<Person> createPersonFromPdfData(MultipartFile uploadedMultipartPdfFile, Model model)
@@ -570,6 +572,62 @@ public class PersonServiceImpl implements PersonService {
                 employees.add(person);
                 organization.setEmployee(employees);
                 organizationJpaRepository.save(organization);
+
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            }
+        }
+        else {
+            return "redirect:/persons/showFormForUpdate?personId=" + personId;
+        }
+    }
+
+    /**
+     * Person has property list<Organization> memberOf that means that person can em member of many organization
+     * in this function we add add new organization to person and also save old organization that person is member of
+     * and plus also add this person to ???????
+     *     *
+     * @param personId
+     * @param memberOfOrganization
+     * @return
+     */
+    @Override
+    public String addMemberOfOrganization(Integer personId, Organization memberOfOrganization){
+        Optional<Person> existsPerson = personJpaRepository.findById(personId);
+        String organizationPersonMemberOfEmail = memberOfOrganization.getEmail();
+        Optional<Organization> existOrganization = organizationJpaRepository.findByEmail(organizationPersonMemberOfEmail);
+        if(existsPerson.isPresent()){
+            Person person = existsPerson.get();
+            List<Organization> memberOf = person.getMemberOf();
+            //if organization do NOT exist
+            if (!existOrganization.isPresent() ) {
+                Organization newOrganization = organizationJpaRepository.save(memberOfOrganization);
+                memberOf.add(newOrganization);
+                person.setMemberOf(memberOf);
+                personJpaRepository.save(person);
+
+            /*    //add bidirectional relationship
+                List<Person> member = new ArrayList<>();
+                if(newOrganization.getMember()!=null){
+                    member = newOrganization.getMember();
+                }
+                member.add(person);
+                newOrganization.setMember(member);
+                organizationJpaRepository.save(newOrganization);*/
+
+                return "redirect:/persons/showFormForUpdate?personId=" + personId;
+            } else {
+                //if Organization exist
+                Organization organization = existOrganization.get();
+                memberOf.add(organization);
+                person.setMemberOf(memberOf);
+                personJpaRepository.save(person);
+
+           /*     //add bidirectional relationship
+                List<Person> member = new ArrayList<>();
+                member = organization.getMember();
+                member.add(person);
+                organization.setMember(member);
+                organizationJpaRepository.save(organization);*/
 
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             }

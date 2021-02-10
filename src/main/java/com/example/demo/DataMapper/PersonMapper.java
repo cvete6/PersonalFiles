@@ -67,7 +67,7 @@ public class PersonMapper {
         oldPerson.setFollows(person.getFollows());
         oldPerson.setKnows(person.getKnows());
 
-        oldPerson.setOrganization_members(person.getOrganization_members());
+        oldPerson.setMemberOf(person.getMemberOf());
         oldPerson.setOrganization_sponsor(person.getOrganization_sponsor());
         oldPerson.setWorksFor(person.getWorksFor());
 

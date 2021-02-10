@@ -85,6 +85,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         Organization parentIfOrganization = organization.getParentOrganization();
         List<Person> sponsorsList = organization.getSponsors();
         List<Person> employees = organization.getEmployee();
+        List<Person> members = organization.getMember();
 
         model.addAttribute("organization", organization);
         model.addAttribute("departmentList", departmentList);
@@ -93,6 +94,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         model.addAttribute("parentOfOrganizationExisted", parentIfOrganization);
         model.addAttribute("sponsorsList",sponsorsList);
         model.addAttribute("employees", employees);
+        model.addAttribute("members", members );
 
     }
 
@@ -368,6 +370,37 @@ public class OrganizationServiceImpl implements OrganizationService {
         }
         else {
             return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
+        }
+    }
+
+    @Override
+    public void addMemberInOrganization(Integer organizationId, Person member ) {
+        Optional<Organization> existsOrganization = organizationJpaRepository.findById(organizationId);
+        String memberSocialNumber = member.getSocialNumber();
+        Optional<Person> existMember = personJpaRepository.findBySocialNumber(memberSocialNumber);
+
+        if(existsOrganization.isPresent()){
+            Organization organization = existsOrganization.get();
+            List<Person> membersList = organization.getMember();
+
+            //if member do NOT exist like a person
+            if (!existMember.isPresent()) {
+                Person newMemberInOrganization = personJpaRepository.save(member);
+
+                //add new member to existed members list in this organization
+                membersList.add(newMemberInOrganization);
+                organization.setMember(membersList);
+                organizationJpaRepository.save(organization);
+
+            } else {
+                //if sponsorInOrganization exist like a person in database
+                Person newMemberInOrganization = existMember.get();
+
+                //add new sponsor to existed sponsors list from organization
+                membersList.add(newMemberInOrganization);
+                organization.setMember(membersList);
+                organizationJpaRepository.save(organization);
+            }
         }
     }
 }

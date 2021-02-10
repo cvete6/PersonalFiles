@@ -179,4 +179,5 @@ public class Person {
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "organization_id"))
     private List<Organization> memberOf;
+    
 }

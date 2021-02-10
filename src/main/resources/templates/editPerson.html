@@ -286,7 +286,7 @@
                                th:placeholder="#{app.workLocation}" >
                     </div>
                     <hr>
-                    <div class="row">
+                 <!--   <div class="row">
                         <label for="member_of_organization" class="col-sm-5 col-form-label"><h6>[[#{app.memberOfOrganization}]]:</h6></label>
                         <div id="member_of_organization" class="form-group blu-margin">
                             <select class="form-control" th:field="*{person.organization_members}" >
@@ -294,7 +294,7 @@
                                 <option th:each="organization : ${organizationList}" th:value="${organization.id}" th:text="${organization.legalName}"></option>
                             </select>
                         </div>
-                    </div>
+                    </div>-->
                     <hr>
                     <hr>
                     <div class="row">
@@ -445,6 +445,20 @@
             <div id="worksForOrganization" class="form-group blu-margin">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterWorksFor">[[#{app.add}]]</button>
                 <div th:replace="addPerson/addWorksForOrganization  :: addWorksForOrganizationModal"></div>
+            </div>
+        </div>
+        <hr>
+        <hr>
+        <div class="row">
+            <label for="memberOfOrganization" class="col-sm-3 col-form-label"><h6>[[#{app.memberPersonOfOrganization}]]:</h6></label>
+            <ul class="col-2 col-form-label" th:field="*{person.worksFor}">
+                <li th:each="organization : ${memberOfOrganizationList}" th:value="${organization.id}">
+                    <a th:href="@{/organizations/showFormForUpdate(organizationId = ${organization.id})}" type="submit" th:text="${organization.legalName}"></a>
+                </li>
+            </ul>
+            <div id="memberOfOrganization" class="form-group blu-margin">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterMemberOf">[[#{app.add}]]</button>
+                <div th:replace="addPerson/addMemberOfOrganization  :: addMemberOfOrganizationModal"></div>
             </div>
         </div>
         <hr>

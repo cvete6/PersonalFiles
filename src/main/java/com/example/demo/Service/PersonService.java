@@ -124,4 +124,6 @@ public interface PersonService {
     String addOrganizationSponsor(Integer personId, Organization organizationSponsor);
 
     String addWorksForOrganization(Integer personId, Organization worksForOrganization);
+
+    String addMemberOfOrganization(Integer personId, Organization memberOfOrganization);
 }

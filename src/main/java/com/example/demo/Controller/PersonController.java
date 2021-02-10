@@ -109,6 +109,7 @@ public class PersonController {
         model.addAttribute("knowsPerson", new Person());
         model.addAttribute("organizationSponsorPerson", new Organization());
         model.addAttribute("worksForOrganization", new Organization());
+        model.addAttribute("memberOfOrganization",new Organization());
         return "editPerson";
     }
 
@@ -240,6 +241,14 @@ public class PersonController {
                                @RequestParam("personId") Integer personId,
                                Model model) {
         personService.addWorksForOrganization(personId,worksForOrganization);
+        return "redirect:/persons/showFormForUpdate?personId=" + personId;
+    }
+
+    @PostMapping("/addMemberOfOrganization")
+    public String addNewMemberOfOrganization(@ModelAttribute Organization memberOfOrganization,
+                                             @RequestParam("personId") Integer personId,
+                                             Model model) {
+        personService.addMemberOfOrganization(personId, memberOfOrganization);
         return "redirect:/persons/showFormForUpdate?personId=" + personId;
     }
 

@@ -21,4 +21,5 @@ public interface OrganizationService {
 
     String addSponsorInOrganization(Integer organizationId, Person sponsorInOrganization);
     String addEmployeeInOrganization(Integer organizationId, Person employee);
-    }
+    void addMemberInOrganization( Integer organizationId, Person member);
+}

@@ -117,7 +117,7 @@ public class Organization {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
                            CascadeType.MERGE,CascadeType.DETACH})
-    @JoinTable(name="organization_person",
+    @JoinTable(name="person_organization",
                joinColumns = @JoinColumn(name = "organization_id"),
                 inverseJoinColumns = @JoinColumn(name = "person_id"))
     private List<Person> member;
