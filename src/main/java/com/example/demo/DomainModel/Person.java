@@ -47,7 +47,7 @@ public class Person {
 
     @Column(unique = true)
     @NotEmpty(message = "Social number cannot be empty")
-    @Size(min = 9)
+   // @Size(min = 9)
     private String socialNumber;
 
     private String callSign;
@@ -179,5 +179,5 @@ public class Person {
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "organization_id"))
     private List<Organization> memberOf;
-    
+
 }

@@ -1,5 +1,6 @@
 package com.example.demo.Service.RdfManipulationServiceImpl;
 
+import com.example.demo.DomainModel.Organization;
 import com.example.demo.DomainModel.Person;
 import com.example.demo.Repository.PersonJpaRepository;
 import com.example.demo.Service.RdfManipulationService;
@@ -19,6 +20,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static com.example.demo.DataMapper.RdfMapper.mapPersonFromRDFFile;
@@ -39,13 +42,76 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
     private Model model;
     private String personSchema = "http://schema.org/Person#";
 
-
+    /**
+     * Add statement with (subject - main person, property, object-literal)
+     *
+     * @param subject person
+     * @param property person characteristics
+     * @param object value of that characteristics-literal
+     */
     public void addStatement (String subject, String property, String object){
         Resource s = model.createResource(subject);
         Property p = model.createProperty(property);
         RDFNode o = model.createResource(object);
 
         Statement statement = model.createStatement(s,p,o);
+        model.add(statement);
+    }
+
+    /**
+     * Create statement in model where object from statement is new resource (new connected person) eg. person has child
+     * child is connected person
+     *
+     * @param personSubject main person
+     * @param personProperty property that has object like a resource
+     * @param connectPerson new resourced
+     */
+    public void addComplexStatement (Resource personSubject, Property personProperty, Person connectPerson){
+
+        Property propertyGivenName = model.createProperty(personSchema+"givenName");
+        RDFNode objectGivenName = model.createResource(personSchema+connectPerson.getGivenName());
+
+        Property propertyFamilyName = model.createProperty(personSchema+"familyName");
+        RDFNode objectFamilyName = model.createResource(personSchema+connectPerson.getFamilyName());
+
+        Property propertySocialNumber = model.createProperty(personSchema+"socialNumber");
+        RDFNode objectSocialNumber = model.createResource(personSchema+connectPerson.getSocialNumber());
+
+        Property propertyEmail = model.createProperty(personSchema+"email");
+        RDFNode objectEmail = model.createResource(personSchema+connectPerson.getEmail());
+
+        Statement statement = model.createStatement(personSubject,personProperty, model.createResource( )
+                .addProperty(propertyGivenName,objectGivenName)
+                .addProperty(propertyFamilyName,objectFamilyName)
+                .addProperty(propertySocialNumber,objectSocialNumber)
+                .addProperty(propertyEmail,objectEmail)
+        );
+        model.add(statement);
+    }
+
+    /**
+     * Create statement in model where object from statement is new resource (new connected organization) eg. person is sponsor to some organization
+     *
+     * @param personSubject main person
+     * @param personProperty property that has object like a resource
+     * @param connectOrganization new resourced
+     */
+    public void addComplexStatementOrganization (Resource personSubject, Property personProperty, Organization connectOrganization){
+
+        Property propertyGivenName = model.createProperty(personSchema + "legalName");
+        RDFNode objectGivenName = model.createResource(personSchema + connectOrganization.getLegalName());
+
+        Property propertyAddress = model.createProperty(personSchema + "address");
+        RDFNode objectAddress = model.createResource(personSchema + connectOrganization.getAddress());
+
+        Property propertyEmail = model.createProperty(personSchema + "email");
+        RDFNode objectEmail = model.createResource(personSchema + connectOrganization.getEmail());
+
+        Statement statement = model.createStatement(personSubject,personProperty, model.createResource( )
+                .addProperty(propertyGivenName, objectGivenName)
+                .addProperty(propertyAddress, objectAddress)
+                .addProperty(propertyEmail, objectEmail)
+        );
         model.add(statement);
     }
 
@@ -59,52 +125,139 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
     public byte[] createRdfFromPersonProfile(Person person) throws IOException {
 
        String localPath = "C:\\Users\\Cvete\\Documents\\DIPLOMSKA\\PersonalFiles\\profiles\\";
-       DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+       DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
        model = ModelFactory.createDefaultModel();
        String personSchema = "http://schema.org/Person#";
+       String personSubject =personSchema+person.getGivenName();
+       Resource resourcePerson = model.createResource(personSchema+person.getGivenName());
 
-       addStatement(personSchema+person.getGivenName(), personSchema+ "givenName",personSchema+person.getGivenName());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "additionalName", personSchema+person.getAdditionalName());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "address",personSchema+person.getAddress());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "familyName",personSchema+person.getFamilyName());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "award",personSchema+person.getAward());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "socialNumber",personSchema+person.getSocialNumber());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "callSign",personSchema+person.getCallSign());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "contactPoint",personSchema+person.getContactPoint());
-       String birthDateString = dateFormat.format(person.getBirthDate());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "birthDate",personSchema+birthDateString);
-       addStatement(personSchema+person.getGivenName(), personSchema+ "birthPlace",personSchema+person.getBirthPlace());
-       String deathDateString = dateFormat.format(person.getDeathDate());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "deathDate",personSchema+deathDateString);
-       addStatement(personSchema+person.getGivenName(), personSchema+ "deathPlace",personSchema+person.getDeathPlace());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "email",personSchema+person.getEmail());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "faxNumber",personSchema+person.getFaxNumber());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "gender",personSchema+person.getGender());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "globalLocationNumber",personSchema+person.getGlobalLocationNumber());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "height",personSchema+person.getHeight());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "weight", personSchema+person.getWeight());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "homeLocation",personSchema+person.getHomeLocation());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "workLocation",personSchema+person.getWorkLocation());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "honorifixPrefix",personSchema+person.getHonorificPrefix());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "honorifixSuffix",personSchema+person.getHonorificSuffix());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "jobTitle",personSchema+person.getJobTitle());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "knowsAbout",personSchema+person.getKnowsAbout());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "knowsLanguage",personSchema+person.getKnowsLanguage());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "nationality",personSchema+person.getNationality());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "performerIn",personSchema+person.getPerformerIn());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "publishingPrinciples",personSchema+person.getPublishingPrinciples());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "seek",personSchema+person.getSeeks());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "taxID",personSchema+person.getTaxID());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "telephone",personSchema+person.getTelephone());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "passportNumber",personSchema+person.getPassportNumber());
-       String dateOfIssuePassportInString = dateFormat.format(person.getDateOfIssuePassport());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "dateOfIssuePassport",personSchema+dateOfIssuePassportInString);
-       String dateOfExpiryPassportString = dateFormat.format(person.getDateOfExpiryPassport());
-       addStatement(personSchema+person.getGivenName(), personSchema+ "dateOfExpiryPassport",personSchema+dateOfExpiryPassportString);
+       addStatement(personSubject, personSchema+ "givenName",personSchema+person.getGivenName());
+       addStatement(personSubject, personSchema+ "additionalName", personSchema+person.getAdditionalName());
+       addStatement(personSubject, personSchema+ "address",personSchema+person.getAddress());
+       addStatement(personSubject, personSchema+ "familyName",personSchema+person.getFamilyName());
+       addStatement(personSubject, personSchema+ "award",personSchema+person.getAward());
+       addStatement(personSubject, personSchema+ "socialNumber",personSchema+person.getSocialNumber());
+       addStatement(personSubject, personSchema+ "callSign",personSchema+person.getCallSign());
+       addStatement(personSubject, personSchema+ "contactPoint",personSchema+person.getContactPoint());
+       String birthDateString = null;
+       if(person.getBirthDate()!=null){
+           dateFormat.format(person.getBirthDate());
+       }
+       addStatement(personSubject, personSchema+ "birthDate",personSchema+birthDateString);
+       addStatement(personSubject, personSchema+ "birthPlace",personSchema+person.getBirthPlace());
+       String deathDateString = null;
+       if(person.getDeathDate()!=null){
+           deathDateString = dateFormat.format(person.getDeathDate());
+       }
+       addStatement(personSubject, personSchema+ "deathDate",personSchema+deathDateString);
+       addStatement(personSubject, personSchema+ "deathPlace",personSchema+person.getDeathPlace());
+       addStatement(personSubject, personSchema+ "email",personSchema+person.getEmail());
+       addStatement(personSubject, personSchema+ "faxNumber",personSchema+person.getFaxNumber());
+       addStatement(personSubject, personSchema+ "gender",personSchema+person.getGender());
+       addStatement(personSubject, personSchema+ "globalLocationNumber",personSchema+person.getGlobalLocationNumber());
+       addStatement(personSubject, personSchema+ "height",personSchema+person.getHeight());
+       addStatement(personSubject, personSchema+ "weight", personSchema+person.getWeight());
+       addStatement(personSubject, personSchema+ "homeLocation",personSchema+person.getHomeLocation());
+       addStatement(personSubject, personSchema+ "workLocation",personSchema+person.getWorkLocation());
+       addStatement(personSubject, personSchema+ "honorifixPrefix",personSchema+person.getHonorificPrefix());
+       addStatement(personSubject, personSchema+ "honorifixSuffix",personSchema+person.getHonorificSuffix());
+       addStatement(personSubject, personSchema+ "jobTitle",personSchema+person.getJobTitle());
+       addStatement(personSubject, personSchema+ "knowsAbout",personSchema+person.getKnowsAbout());
+       addStatement(personSubject, personSchema+ "knowsLanguage",personSchema+person.getKnowsLanguage());
+       addStatement(personSubject, personSchema+ "nationality",personSchema+person.getNationality());
+       addStatement(personSubject, personSchema+ "performerIn",personSchema+person.getPerformerIn());
+       addStatement(personSubject, personSchema+ "publishingPrinciples",personSchema+person.getPublishingPrinciples());
+       addStatement(personSubject, personSchema+ "seek",personSchema+person.getSeeks());
+       addStatement(personSubject, personSchema+ "taxID",personSchema+person.getTaxID());
+       addStatement(personSubject, personSchema+ "telephone",personSchema+person.getTelephone());
+       addStatement(personSubject, personSchema+ "passportNumber",personSchema+person.getPassportNumber());
+       String dateOfIssuePassportInString = null;
+       if(person.getDateOfIssuePassport()!=null){
+           dateFormat.format(person.getDateOfIssuePassport());
+       }
+       addStatement(personSubject, personSchema+ "dateOfIssuePassport",personSchema+dateOfIssuePassportInString);
+       String dateOfExpiryPassportString = null;
+       if(person.getDateOfExpiryPassport()!=null){
+           dateFormat.format(person.getDateOfExpiryPassport());
+       }
+       addStatement(personSubject, personSchema+ "dateOfExpiryPassport",personSchema+dateOfExpiryPassportString);
 
-       addStatement(personSchema+person.getGivenName(), personSchema+ "children", personSchema+person.getChildren());
-       //DA SE DODADAT OVDE ZA SITE PRI KREIRAJNE NA RDF FILE
+
+        //Add children property
+        List<Person> children = person.getChildren();
+        if(!children.isEmpty()){
+            Property propertyChildPerson = model.createProperty(personSchema + "children");
+            children.forEach(child -> {
+                addComplexStatement(resourcePerson, propertyChildPerson, child);
+            });
+        }
+
+        //Add colleague property
+        List<Person> colleagues = person.getColleague();
+        if(!colleagues.isEmpty()){
+            Property propertyPerson = model.createProperty(personSchema + "colleague");
+            colleagues.forEach(colleague ->{
+                addComplexStatement(resourcePerson, propertyPerson, colleague );
+            });
+        }
+
+        //Add parent property
+        List<Person> parents = person.getParent();
+        if(!parents.isEmpty()){
+            Property propertyPerson = model.createProperty(personSchema + "parent");
+            parents.forEach(parent ->{
+                addComplexStatement(resourcePerson, propertyPerson, parent);
+            });
+        }
+
+        //Add spouse property
+        Person spouse = person.getSpouse();
+        if(spouse!=null){
+            Property propertySpousePerson = model.createProperty(personSchema + "spouse");
+            addComplexStatement(resourcePerson, propertySpousePerson, person.getSpouse());
+        }
+
+        //Add follows property
+        List<Person> follows = person.getFollows();
+        if(!follows.isEmpty()){
+            Property propertyPerson = model.createProperty(personSchema + "follows");
+            follows.forEach(follow ->{
+                addComplexStatement(resourcePerson, propertyPerson, follow);
+            });
+        }
+
+        //Add follows property
+        List<Person> knows = person.getFollows();
+        if(!knows.isEmpty()){
+            Property propertyPerson = model.createProperty(personSchema + "knows");
+            knows.forEach(know ->{
+                addComplexStatement(resourcePerson, propertyPerson, know);
+            });
+        }
+
+        //Add organization sponsor
+        Organization sponsorToOrganization = person.getOrganization_sponsor();
+        if(sponsorToOrganization!=null){
+            Property propertyPerson = model.createProperty(personSchema + "sponsor");
+            addComplexStatementOrganization(resourcePerson, propertyPerson, sponsorToOrganization);
+        }
+
+        //Add works for organization
+        Organization worksForOrganization = person.getOrganization_sponsor();
+        if(worksForOrganization!=null){
+            Property propertyPerson = model.createProperty(personSchema + "worksFor");
+            addComplexStatementOrganization(resourcePerson, propertyPerson, worksForOrganization);
+        }
+
+        //Add memberOf organization property
+        List<Organization> membersOf = person.getMemberOf();
+        if(!membersOf.isEmpty()){
+            Property propertyPerson = model.createProperty(personSchema + "memberOf");
+            membersOf.forEach(memberOf ->{
+                addComplexStatementOrganization(resourcePerson, propertyPerson, memberOf);
+            });
+        }
 
         //Add unique name for all profile
         int length = 10;
@@ -128,8 +281,7 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
 
     @Override
     public Person validateAndCreatePerson(MultipartFile uploadedMultipartRDFFile, org.springframework.ui.Model model) throws IOException, ParseException {
-        Person person = createPersonFromRDFFile(uploadedMultipartRDFFile, model);
-        return  person;
+        return  createPersonFromRDFFile(uploadedMultipartRDFFile, model);
     }
 
     @Override

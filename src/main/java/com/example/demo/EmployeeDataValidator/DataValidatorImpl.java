@@ -16,15 +16,16 @@ public class DataValidatorImpl implements DataValidator {
     public ArrayList<String> validatePdfForm(Map<String, PdfFormField> fields) {
         String name = fields.get("givenName").getValueAsString();
         String lastName = fields.get("familyName").getValueAsString();
-        String address = fields.get("address").getValueAsString();
         String socialNumber = fields.get("socialNumber").getValueAsString();
+        String email = fields.get("email").getValueAsString();
+
+     /*   String address = fields.get("address").getValueAsString();
         String dateOfBirth = fields.get("dateOfBirth").getValueAsString();
         String placeOfBirth = fields.get("placeOfBirth").getValueAsString();
-        String email = fields.get("email").getValueAsString();
         String jobTitle = fields.get("jobTitle").getValueAsString();
         String dateOfExpiryPassport = fields.get("dateOfExpiryPassport").getValueAsString();
         String dateOfIssuePassport = fields.get("dateOfIssuePassport").getValueAsString();
-        String passportNumber = fields.get("passportNumber").getValueAsString();
+        String passportNumber = fields.get("passportNumber").getValueAsString();*/
 
         //check if some fields are empty and if they are add them to empty list to know which one is empty
         ArrayList<String> emptyFieldsList = new ArrayList<>();
@@ -35,14 +36,22 @@ public class DataValidatorImpl implements DataValidator {
         if (lastName.isEmpty()) {
             emptyFieldsList.add("Last Name");
         }
+        if (email.isEmpty()) {
+            emptyFieldsList.add("Email");
+        }
+
+        if (socialNumber.isEmpty()) {
+            emptyFieldsList.add("Social number");
+        }
+
+      /*
         if (address.isEmpty()) {
             emptyFieldsList.add("Address");
         }
         if (placeOfBirth.isEmpty()) {
             emptyFieldsList.add("Place Of Birth");
         }
-        if (email.isEmpty()) {
-            emptyFieldsList.add("Email");
+
         }
         if (jobTitle.isEmpty()) {
             emptyFieldsList.add("Job Title");
@@ -50,8 +59,6 @@ public class DataValidatorImpl implements DataValidator {
         if (passportNumber.isEmpty()) {
             emptyFieldsList.add("Passport number");
         }
-        if (socialNumber.isEmpty()) {
-            emptyFieldsList.add("Social number");
         }
         if (dateOfBirth.isEmpty() || !isDateValid(dateOfBirth)) {
             emptyFieldsList.add("Date of birth");
@@ -61,12 +68,12 @@ public class DataValidatorImpl implements DataValidator {
         }
 
         if (dateOfIssuePassport.isEmpty() || !isDateValid(dateOfIssuePassport)) {
-            emptyFieldsList.add("Date of issue passport");
-        }
-        return emptyFieldsList;
-    }
+            emptyFieldsList.add("Date of issue passport");*/
 
-    @Override
+            return emptyFieldsList;
+        }
+
+/*    @Override
     public boolean isDateValid(String dateString) {
         String dateFormat = "dd-MM-yyyy";
         DateFormat sdf = new SimpleDateFormat(dateFormat);
@@ -77,5 +84,5 @@ public class DataValidatorImpl implements DataValidator {
             return false;
         }
         return true;
-    }
+    }*/
 }

@@ -137,6 +137,11 @@ public class PersonController {
         return personService.validateAndCreateEmployee(uploadedMultipartPdfFile,model);
     }
 
+
+
+
+
+
     @RequestMapping(value = "/exportRDFFile/{personId}")
     public ResponseEntity<byte[]> rdfExport(@PathVariable("personId") Integer personId) throws IOException {
 
@@ -168,6 +173,12 @@ public class PersonController {
         Person person = rdfManipulationService.validateAndCreatePerson(uploadedMultipartRDFFile,model);
         return  personService.redirectToPersonDetailsView(person,model);
     }
+
+
+
+
+
+
 
     /**
      * Save new Person to database
@@ -202,7 +213,6 @@ public class PersonController {
         return "redirect:/persons/showFormForUpdate?personId=" + personId;
 
     }
-
 
     @PostMapping("/addSpouse")
     public String addNewSpouse(@ModelAttribute Person spousePerson,
