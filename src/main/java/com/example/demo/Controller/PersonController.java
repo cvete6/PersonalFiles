@@ -142,15 +142,49 @@ public class PersonController {
 
 
 
-    @RequestMapping(value = "/exportRDFFile/{personId}")
+    @RequestMapping(value = "/exportRDFFileInTURTLEFormat/{personId}")
     public ResponseEntity<byte[]> rdfExport(@PathVariable("personId") Integer personId) throws IOException {
 
         Person person = personService.getPersonById(personId);
-        byte[] documentContent = rdfManipulationService.createRdfFromPersonProfile(person);//call function to create new rdf
+        byte[] documentContent = rdfManipulationService.createRdfFileInTURTLEFormat(person);//call function to create new rdf
 
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         headers.setContentDisposition(ContentDisposition.parse("attachment; filename=RDFProfile.ttl"));
+        headers.setContentLength(documentContent.length);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(documentContent.length)
+                .contentType(MediaType.parseMediaType("application/rdf+xml"))
+                .body(documentContent);
+    }
+
+    @RequestMapping(value = "/exportRDFFileInRDFXMLFormat/{personId}")
+    public ResponseEntity<byte[]> exportRDFFileInRDFXMLFormat(@PathVariable("personId") Integer personId) throws IOException {
+
+        Person person = personService.getPersonById(personId);
+        byte[] documentContent = rdfManipulationService.createRdfFileInRDFXMLFormat(person);//call function to create new rdf file in rdf/XML format
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setContentDisposition(ContentDisposition.parse("attachment; filename=RDFProfile.xml"));
+        headers.setContentLength(documentContent.length);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(documentContent.length)
+                .contentType(MediaType.parseMediaType("application/rdf+xml"))
+                .body(documentContent);
+    }
+
+    @RequestMapping(value = "/exportRDFFileInNTriplesFormat/{personId}")
+    public ResponseEntity<byte[]> exportRDFFileInNTriples(@PathVariable("personId") Integer personId) throws IOException {
+
+        Person person = personService.getPersonById(personId);
+        byte[] documentContent = rdfManipulationService.createRdfFileInNTriplesFormat(person);//call function to create new rdf file in rdf/XML format
+
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.setContentDisposition(ContentDisposition.parse("attachment; filename=RDFProfile.rdf"));
         headers.setContentLength(documentContent.length);
         return ResponseEntity.ok()
                 .headers(headers)

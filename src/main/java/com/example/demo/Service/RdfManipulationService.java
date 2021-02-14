@@ -9,7 +9,13 @@ import java.text.ParseException;
 
 public interface RdfManipulationService {
 
-    byte[] createRdfFromPersonProfile(Person person) throws IOException;
+    void createRdfFromPersonProfile(Person person) throws IOException;
+
+    byte[] createRdfFileInRDFXMLFormat(Person person) throws IOException;
+
+    byte[] createRdfFileInTURTLEFormat(Person person) throws IOException;
+
+    byte[] createRdfFileInNTriplesFormat(Person person) throws IOException;
 
     Person validateAndCreatePerson(MultipartFile uploadedMultipartRDFFile, org.springframework.ui.Model model) throws IOException, ParseException;
 

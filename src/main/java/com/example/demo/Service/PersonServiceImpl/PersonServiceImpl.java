@@ -439,6 +439,13 @@ public class PersonServiceImpl implements PersonService {
                 }
                 person.setFollows(follows);
                 personJpaRepository.save(person);
+
+                List<Person> newFollows = new ArrayList<>();
+                newFollows.add(person);
+                //Add person like a follow in newFollowPerson
+                newFollowPerson.setFollows(newFollows);
+                personJpaRepository.save(newFollowPerson);
+
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             } else {
                 Person newFollowPerson = existFollowPerson.get();
@@ -447,6 +454,15 @@ public class PersonServiceImpl implements PersonService {
                 }
                 person.setFollows(follows);
                 personJpaRepository.save(person);
+
+                //Add person like a knows in newKnowPerson
+                List<Person> newFollows = newFollowPerson.getFollows();
+                if(!newFollows.contains(person)){
+                    newFollows.add(person);
+                }
+                newFollowPerson.setFollows(newFollows);
+                personJpaRepository.save(newFollowPerson);
+
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             }
         }

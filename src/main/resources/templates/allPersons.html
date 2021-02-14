@@ -70,10 +70,18 @@
                         </div>
                         <div class="col-md-5 ">
                             <div class=" justify-content-right ml-4 pl-2">
-                                <a th:href="@{/persons/exportRDFFile/{personId}(personId=${person.id})}"
-                                   class="btn-outline-info btn btn-sm btn-block "
-                                   role="button">RDF Export
-                                </a>
+
+                                <div class="dropdown show">
+                                    <a class="btn btn-sm btn-success dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Choose format
+                                    </a>
+
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                        <a class="dropdown-item" th:href="@{/persons/exportRDFFileInTURTLEFormat/{personId}(personId=${person.id})}">TURTLE</a>
+                                        <a class="dropdown-item" th:href="@{/persons/exportRDFFileInRDFXMLFormat/{personId}(personId=${person.id})}">RDF/XML</a>
+                                        <a class="dropdown-item" th:href="@{/persons/exportRDFFileInNTriplesFormat/{personId}(personId=${person.id})}">N-TRIPLES</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

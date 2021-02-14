@@ -34,7 +34,7 @@ public class PersonMapper {
         oldPerson.setDeathDate(person.getDeathDate());
         oldPerson.setDeathPlace(person.getDeathPlace());
         oldPerson.setBirthDate(person.getBirthDate());
-        oldPerson.setBirthDate(person.getBirthDate());
+        oldPerson.setBirthPlace(person.getBirthPlace());
         oldPerson.setEmail(person.getEmail());
         oldPerson.setFaxNumber(person.getFaxNumber());
         oldPerson.setGender(person.getGender());
