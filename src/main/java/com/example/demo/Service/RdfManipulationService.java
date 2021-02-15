@@ -17,7 +17,7 @@ public interface RdfManipulationService {
 
     byte[] createRdfFileInNTriplesFormat(Person person) throws IOException;
 
-    Person validateAndCreatePerson(MultipartFile uploadedMultipartRDFFile, org.springframework.ui.Model model) throws IOException, ParseException;
+    Person validateAndCreatePerson(MultipartFile uploadedMultipartRDFFile, String uploadFormat, org.springframework.ui.Model model) throws IOException, ParseException;
 
     File convertMultipartFileToFile(MultipartFile multipartPdfFile) throws IOException;
 

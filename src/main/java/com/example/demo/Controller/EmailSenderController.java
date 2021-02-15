@@ -1,5 +1,6 @@
 package com.example.demo.Controller;
 
+import com.example.demo.DomainModel.Person;
 import com.example.demo.Service.EmailSenderServiceImpl.EmailSenderServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +28,8 @@ public class EmailSenderController {
      * @return view with email input field
      */
     @GetMapping("/email")
-    public String showFormForInsertEmail(){
+    public String showFormForInsertEmail(Model model){
+        model.addAttribute("uploadFormat", 1);
         return "insertEmail";
     }
 

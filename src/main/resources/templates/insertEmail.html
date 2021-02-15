@@ -28,7 +28,7 @@
 <div th:replace="menuFragments :: menu"></div>
 
 <body>
-<main role="main" class="background">
+<main role="main" class="background mb-5">
     <!-- SEND EMAIL -->
     <div class="container">
     <div class="row h-100 position-relative">
@@ -105,8 +105,8 @@
 
 
 
-    <!--UPLOAD RDF (TTL) FILE -->
-    <div class="container mt-5">
+    <!--UPLOAD RDF FILE -->
+    <div class="container mt-5 mb-5">
         <div class="row h-100 position-relative">
             <div class="mt-5">
                 <div class="row">
@@ -123,6 +123,17 @@
                         </label>&nbsp;
                         <input id="uploadedMultipartRDFFile" class="form-control-file form-control-sm mb-4 col-4 responsive-width" type="file"
                                name="uploadedMultipartRDFFile">
+                    </div>
+                    <div class="form-group row mt-4 mb-0 container">
+                        <label for="uploadedMultipartPdfFileFormat" class="text">
+                            <h6 >[[#{app.choseUploadRDFFile}]]:</h6>
+                        </label>&nbsp;
+                        <select id="uploadedMultipartPdfFileFormat" class="form-control form-control-sm mb-4 col-4 responsive-width" name="uploadFormat">
+                            <option value="">Choose...</option>
+                            <option value="TURTLE">TURTLE</option>
+                            <option value="RDF/XML">RDF/XML</option>
+                            <option value="N-TRIPLES">N-TRIPLES</option>
+                        </select>
                     </div>
                     <div class="text-right">
                         <button type="submit" class="btn btn-info btn-sm mb-3 text-center col-2 responsive-width" disabled>[[#{app.submit}]]</button>

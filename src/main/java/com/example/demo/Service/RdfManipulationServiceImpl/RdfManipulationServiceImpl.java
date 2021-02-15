@@ -2,14 +2,13 @@ package com.example.demo.Service.RdfManipulationServiceImpl;
 
 import com.example.demo.DomainModel.Organization;
 import com.example.demo.DomainModel.Person;
+import com.example.demo.Repository.OrganizationJpaRepository;
 import com.example.demo.Repository.PersonJpaRepository;
 import com.example.demo.Service.RdfManipulationService;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.jena.base.Sys;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.util.FileManager;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -30,9 +29,11 @@ import java.util.*;
 public class RdfManipulationServiceImpl implements RdfManipulationService {
 
     private PersonJpaRepository personJpaRepository;
+    private OrganizationJpaRepository organizationJpaRepository;
 
-    public RdfManipulationServiceImpl(PersonJpaRepository personJpaRepository) {
+    public RdfManipulationServiceImpl(PersonJpaRepository personJpaRepository, OrganizationJpaRepository organizationJpaRepository) {
         this.personJpaRepository = personJpaRepository;
+        this.organizationJpaRepository = organizationJpaRepository;
     }
 
     private Model model;
@@ -223,8 +224,8 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
             });
         }
 
-        //Add follows property
-        List<Person> knows = person.getFollows();
+        //Add knows property
+        List<Person> knows = person.getKnows();
         if(!knows.isEmpty()){
             Property propertyPerson = model.createProperty(personSchema + "knows");
             knows.forEach(know ->{
@@ -328,8 +329,8 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
     }
 
     @Override
-    public Person validateAndCreatePerson(MultipartFile uploadedMultipartRDFFile, org.springframework.ui.Model model) throws IOException, ParseException {
-        return  createPersonFromRDFFile(uploadedMultipartRDFFile, model);
+    public Person validateAndCreatePerson(MultipartFile uploadedMultipartRDFFile, String uploadFormat, org.springframework.ui.Model model) throws IOException, ParseException {
+        return  createPersonFromRDFFile(uploadedMultipartRDFFile, uploadFormat, model);
     }
 
     @Override
@@ -342,16 +343,15 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
         return file;
     }
 
-    private Person createPersonFromRDFFile(MultipartFile uploadedMultipartRDFFile, org.springframework.ui.Model m)
+    private Person createPersonFromRDFFile(MultipartFile uploadedMultipartRDFFile, String uploadFormat, org.springframework.ui.Model m)
             throws IOException, ParseException {
 
         File uploadedRDFFile = convertMultipartFileToFile(uploadedMultipartRDFFile);
         InputStream in = FileManager.get().open(uploadedRDFFile.getAbsolutePath());
         Model model = ModelFactory.createDefaultModel();
-        model.read(in,null,"TURTLE");
-        //model.write(System.out,"TURTLE");
+        model.read(in,null,uploadFormat);
 
-        //model read from ttl file
+        //model read from file
         Person person = mapPersonFromRDFFile(model,uploadedRDFFile.getAbsolutePath());
 
         return person;
@@ -362,20 +362,6 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Person person = new Person();
 
-      //  Model m = FileManager.get().loadModel(path);
-        //Property socialNumberProperty = model.getProperty(personSchema+"socialNumber");
-        //Property givenNameProperty = model.getProperty(personSchema+"givenName");
-
-     /*   Property socialNumberPropertyM = m.getProperty(personSchema+"socialNumber");
-        Property givenNamePropertyM = m.getProperty(personSchema+"givenName");*/
-
-   /*     ResIterator iter = model.listSubjectsWithProperty(givenNamePropertyM);
-        Resource r = iter.nextResource();
-        String socNum = r.getProperty(socialNumberPropertyM).getString();
-        System.out.println("maIN NEW SOCNUM: " + socNum);*/
-
-        //Proba//
-
         StmtIterator iter = model.listStatements();
         Resource personResource = null;
         while(iter.hasNext()){
@@ -384,29 +370,28 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
             Property predicate = stmt.getPredicate();
             RDFNode object = stmt.getObject();
 
-            System.out.print("SUBEJCT: "+subject.toString());
-            System.out.print(" " + predicate.toString() + " " );
+            //System.out.print("SUBEJCT: "+subject.toString());
+            //System.out.print(" " + predicate.toString() + " " );
             if(object instanceof Resource) {
-                System.out.print(object.toString());
+               // System.out.print(object.toString());
             }
             else {
                 //object as a literal
-                System.out.print(" \" " + object.toString() +" \"");
+                //System.out.print(" \" " + object.toString() +" \"");
             }
 
-            System.out.println(" .");
+            //System.out.println(" .");
             if(subject.toString().equals(object.toString())){
-                System.out.println("IME NA SUBJECTO GLAVEN NA RDF FILE: "+subject.toString() + " object imeee:"+ object.toString());
+                //System.out.println("IME NA SUBJECTO GLAVEN NA RDF FILE: "+subject.toString() + " object imeee:"+ object.toString());
                 personResource = subject;
             }
-
         }
 
         Property socialNumberProperty = model.getProperty(personSchema+"socialNumber");
         String uploadRdfSocialNumber = personResource.getProperty(socialNumberProperty).getResource().toString();
         String[] socialNumber = uploadRdfSocialNumber.split("#");
         if(socialNumber.length != 1 && !socialNumber[1].equals("null")){
-            System.out.println("social number main man: "+socialNumber[1]);
+            //System.out.println("social number main man: "+socialNumber[1]);
             String sn = socialNumber[1];
             person.setSocialNumber(sn);
         }
@@ -455,8 +440,7 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
         }
 
         Property addressProperty = model.getProperty(personSchema+"address");
-        NodeIterator iteraddress = model.listObjectsOfProperty(addressProperty);
-        String uploadRdfaddress = iteraddress.nextNode().toString();
+        String uploadRdfaddress = personResource.getProperty(addressProperty).getResource().toString();
         String[] address = uploadRdfaddress.split("#");
         if(address.length != 1 && !address[1].equals("null")){
             String a = address[1];
@@ -499,7 +483,7 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
         String uploadRdfemail = personResource.getProperty(emailProperty).getResource().toString();
         String[] email = uploadRdfemail.split("#");
         if(email.length != 1 && !email[1].equals("null")){
-            System.out.println("email main: "+ email[1]);
+           // System.out.println("email main: "+ email[1]);
             String e = email[1];
             person.setEmail(e);
         }
@@ -720,50 +704,113 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
             person.setWorkLocation(WorkLocationValue);
         }
 
+        //children
         Property childrenProperty = model.getProperty(personSchema+"children");
         List<Person> children = addConnectedPerson(model,childrenProperty);
         if(!children.isEmpty()){
             person.setChildren(children);
         }
 
+        //spouse
         Property spouseProperty = model.getProperty(personSchema+"spouse");
         List<Person> spouse = addConnectedPerson(model, spouseProperty);
         if (!spouse.isEmpty()){
             person.setSpouse(spouse.get(0));
         }
 
+        //colleague
         Property colleagueProperty = model.getProperty(personSchema+"colleague");
         List<Person> colleague = addConnectedPerson(model,colleagueProperty);
         if(!colleague.isEmpty()){
             person.setColleague(colleague);
         }
 
+        //parent
         Property parentProperty = model.getProperty(personSchema+"parent");
         List<Person> parent = addConnectedPerson(model,parentProperty);
         if(!parent.isEmpty()){
             person.setParent(parent);
         }
 
-
-
-        //!!! NE E DOBRO RESENO VIDI PAK
+        //follows
         Property followsProperty = model.getProperty(personSchema+"follows");
-        List<Person> follows = addConnectedPerson(model,followsProperty);
+        List<Person> follows = addConnectedPerson(model, followsProperty);
         if(!follows.isEmpty()){
             person.setFollows(follows);
             //Add this main person to be followed from person follows (make bidirectional relationship)
             for(Person f : follows){
                 List<Person> fFollowers = f.getFollows();
-                    if(!fFollowers.contains(person)){
-                        fFollowers.add(person);
-                    }
+                if(fFollowers == null){
+                    fFollowers = new ArrayList<>();
+                }
+                if(!fFollowers.contains(person)){
+                    fFollowers.add(person);
+                }
                 f.setFollows(fFollowers);
-                personJpaRepository.save(f);
+                //personJpaRepository.save(f);
             }
         }
 
-        return person;
+        //knows
+        Property knowsProperty = model.getProperty(personSchema+"knows");
+        List<Person> knows = addConnectedPerson(model, knowsProperty);
+        if(!knows.isEmpty()){
+            person.setKnows(knows);
+            //Add this main person to be knowed from person knows (make bidirectional relationship)
+            for(Person k : knows){
+                List<Person> kKnowers = k.getKnows();
+                if(kKnowers == null){
+                    kKnowers = new ArrayList<>();
+                }
+                if(!kKnowers.contains(person)){
+                    kKnowers.add(person);
+                }
+                k.setKnows(kKnowers);
+               //personJpaRepository.save(k);
+            }
+        }
 
+        //organization_sponsor
+        Property organizationSponsorProperty = model.getProperty(personSchema+"sponsor");
+        List<Organization> sponsors = addConnectedOrganization(model, organizationSponsorProperty);
+        if(!sponsors.isEmpty()){
+            Organization organization = sponsors.get(0);
+            person.setOrganization_sponsor(organization);
+
+            //Add this main person to be connected with organization in organization (make bidirectional relationship)
+            List<Person> organizationSponsors = organization.getSponsors();
+            if(organizationSponsors == null){
+                organizationSponsors = new ArrayList<>();
+            }
+            organizationSponsors.add(person);
+            organization.setSponsors(organizationSponsors);
+        }
+
+        //worksFor
+        Property organizationWorksForProperty = model.getProperty(personSchema+"worksFor");
+        List<Organization> worksFors = addConnectedOrganization(model, organizationWorksForProperty);
+        if(!worksFors.isEmpty()){
+            Organization organization = worksFors.get(0);
+            person.setWorksFor(organization);
+
+            //Add this main person to be connected with organization in organization (make bidirectional relationship)
+            List<Person> employers = organization.getEmployee();
+            if(employers == null){
+                employers = new ArrayList<>();
+            }
+            employers.add(person);
+            organization.setEmployee(employers);
+        }
+
+        //memberOf
+        Property organizationMemberOfProperty = model.getProperty(personSchema+"memberOf");
+        List<Organization> memberOfOrganizations = addConnectedOrganization(model, organizationMemberOfProperty);
+        if(!memberOfOrganizations.isEmpty()){
+            person.setMemberOf(memberOfOrganizations);
+            personJpaRepository.save(person);
+        }
+
+        return person;
     }
 
     /**
@@ -817,8 +864,60 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
                 persons.add(unExistPerson);
             }
         }
+
         return persons;
     }
 
+    /**
+     * For specific properties for main person in rdf file
+     * add organization_sponsor, worksFor..these are from type Organization (add organization = organization resource in object from statement)
+     *
+     * @param model rdf model
+     * @param property resource has property that have object like a new resource (new organization)
+     * @return list od organization that is added to that property from main person (the rdf file is intended for main person)
+     */
+
+    private List<Organization> addConnectedOrganization(Model model, Property property ){
+        NodeIterator iterator = model.listObjectsOfProperty(property);
+        List<Organization> organizations = new ArrayList<>();
+        while(iterator.hasNext()){
+            Resource resource = (Resource) iterator.nextNode();
+            Property legalNameProperty = model.createProperty(personSchema+"legalName");
+            Property emailProperty = model.createProperty(personSchema+"email");
+            Property addressProperty = model.createProperty(personSchema+"address");
+
+            //Child Social Number
+            String givenEmail = String.valueOf(resource.getProperty(emailProperty).getObject());
+            String [] email = givenEmail.split("#");
+            String emailAddress = email[1];
+
+            Optional<Organization> existOrganization = organizationJpaRepository.findByEmail(emailAddress);
+
+            if(existOrganization.isPresent()){
+                //if organization already exist in database add this organization as property to main person
+                organizations.add(existOrganization.get());
+            }
+            else{
+                //Email
+                Organization unExistOrganization = new Organization();
+                unExistOrganization.setEmail(emailAddress);
+
+                //legalName
+                String legalName = String.valueOf(resource.getProperty(legalNameProperty).getObject());
+                String[] name = legalName.split("#");
+                unExistOrganization.setLegalName(name[1]);
+
+                //address
+                String address = String.valueOf(resource.getProperty(addressProperty).getObject());
+                String[] addressList = address.split("#");
+                unExistOrganization.setAddress(addressList[1]);
+
+                organizationJpaRepository.save(unExistOrganization);
+                organizations.add(unExistOrganization);
+            }
+        }
+
+        return organizations;
+    }
 
 }

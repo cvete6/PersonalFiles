@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -201,10 +202,13 @@ public class PersonController {
      * @return redirect to edit view for new person or show details if person already exists in the database
      */
     @PostMapping("/uploadRDFFile")
-    public String uploadAndSaveDataFromRDFFile(
-            @RequestParam("uploadedMultipartRDFFile") MultipartFile uploadedMultipartRDFFile, Model model)
+    public String uploadAndSaveDataFromRDFFile(HttpServletRequest request,
+                                               @RequestParam("uploadedMultipartRDFFile") MultipartFile uploadedMultipartRDFFile,
+                                               Model model)
             throws Exception {
-        Person person = rdfManipulationService.validateAndCreatePerson(uploadedMultipartRDFFile,model);
+        System.out.println("uploadFormat: "+ request.getParameter("uploadFormat"));
+        String uploadFormat = request.getParameter("uploadFormat");
+        Person person = rdfManipulationService.validateAndCreatePerson(uploadedMultipartRDFFile, uploadFormat, model);
         return  personService.redirectToPersonDetailsView(person,model);
     }
 
