@@ -60,16 +60,6 @@ public class PersonMapper {
         if (person.getImage().length != 0) {
             oldPerson.setImage(person.getImage());
         }
-        //oldPerson.setChildren(person.getChildren());
-        //oldPerson.setColleague(person.getColleague());
-        //oldPerson.setParent(person.getParent());
-        //oldPerson.setSpouse(person.getSpouse());
-        //oldPerson.setFollows(person.getFollows());
-        //oldPerson.setKnows(person.getKnows());
-        //oldPerson.setMemberOf(person.getMemberOf());
-        //oldPerson.setOrganization_sponsor(person.getOrganization_sponsor());
-        //oldPerson.setWorksFor(person.getWorksFor());
-
         return oldPerson;
     }
 
@@ -110,7 +100,6 @@ public class PersonMapper {
         person.setFaxNumber(fields.get("faxNumber").getValueAsString());
         person.setGender(fields.get("gender").getValueAsString());
         person.setGlobalLocationNumber(fields.get("globalLocationNumber").getValueAsString());
-        person.setHeight(Integer.valueOf(fields.get("height").getValueAsString()));
         person.setHomeLocation(fields.get("homeLocation").getValueAsString());
         person.setHonorificPrefix(fields.get("honorificPrefix").getValueAsString());
         person.setHonorificSuffix(fields.get("honorificSuffix").getValueAsString());
@@ -123,7 +112,12 @@ public class PersonMapper {
         person.setSeeks(fields.get("seek").getValueAsString());
         person.setTaxID(fields.get("taxID").getValueAsString());
         person.setTelephone(fields.get("telephone").getValueAsString());
-        person.setWeight(Integer.valueOf(fields.get("weight").getValueAsString()));
+        if(!fields.get("height").getValueAsString().equals("")){
+            person.setHeight(Integer.valueOf(fields.get("height").getValueAsString()));
+        }
+        if(!fields.get("weight").getValueAsString().equals("")){
+            person.setWeight(Integer.valueOf(fields.get("weight").getValueAsString()));
+        }
         person.setWorkLocation(fields.get("workLocation").getValueAsString());
         person.setKnowsAbout(fields.get("knowsAbout").getValueAsString());
         person.setPassportNumber(fields.get("passportNumber").getValueAsString());

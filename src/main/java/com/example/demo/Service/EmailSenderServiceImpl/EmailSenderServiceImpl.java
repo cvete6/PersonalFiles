@@ -2,7 +2,7 @@ package com.example.demo.Service.EmailSenderServiceImpl;
 
 
 import com.example.demo.Configuration.EmailPropertiesConfiguration;
-import com.example.demo.Configuration.EmployeePassportAndInsuranceCardValidityConfiguration;
+import com.example.demo.Configuration.EmployeePassportValidityConfiguration;
 import com.example.demo.DomainModel.Person;
 import com.example.demo.Exceptions.EmailNotSentException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +25,11 @@ public class EmailSenderServiceImpl {
 
     public EmailPropertiesConfiguration configurationEmailProperties;
 
-    public EmployeePassportAndInsuranceCardValidityConfiguration employeePassportAndInsuranceCardValidityConfiguration;
+    public EmployeePassportValidityConfiguration employeePassportValidityConfiguration;
 
-    public EmailSenderServiceImpl(EmailPropertiesConfiguration configurationEmailProperties, EmployeePassportAndInsuranceCardValidityConfiguration employeePassportAndInsuranceCardValidityConfiguration) {
+    public EmailSenderServiceImpl(EmailPropertiesConfiguration configurationEmailProperties, EmployeePassportValidityConfiguration employeePassportValidityConfiguration) {
         this.configurationEmailProperties = configurationEmailProperties;
-        this.employeePassportAndInsuranceCardValidityConfiguration = employeePassportAndInsuranceCardValidityConfiguration;
+        this.employeePassportValidityConfiguration = employeePassportValidityConfiguration;
     }
 
     public void sendMessageWithAttachment(String email) throws MessagingException {
@@ -51,7 +51,7 @@ public class EmailSenderServiceImpl {
 
             StringBuilder messageContent = new StringBuilder();
             String introMessageContent = configurationEmailProperties.getMessageContentForExpiredPassport();
-            String numberOfDaysBeforePassportExpires = employeePassportAndInsuranceCardValidityConfiguration
+            String numberOfDaysBeforePassportExpires = employeePassportValidityConfiguration
                     .getNumberOfDaysBeforePassportExpires();
             messageContent =
                     messageContent.append(String.format(introMessageContent, numberOfDaysBeforePassportExpires));
@@ -66,30 +66,6 @@ public class EmailSenderServiceImpl {
         }
     }
 
-    public void sendNotificationMessageForInvalidInsuranceCard(List<? extends Person> personList)
-            throws MessagingException {
-        String to = configurationEmailProperties.getTo();
-        if (!to.isEmpty() && !personList.isEmpty()) {
-            String from = configurationEmailProperties.getFrom();
-            String[] toList = to.split(",");
-            String subject = configurationEmailProperties.getSubjectForExpiredInsuranceCard();
-
-            StringBuilder messageContent = new StringBuilder();
-            String introMessageContent = configurationEmailProperties.getMessageContentForInsuranceCard();
-            String numberOfDaysBeforeInsuranceCardExpires =
-                    employeePassportAndInsuranceCardValidityConfiguration.getNumberOfDaysBeforeInsuranceCardExpires();
-            messageContent =
-                    messageContent.append(String.format(introMessageContent, numberOfDaysBeforeInsuranceCardExpires));
-
-            for (Person c : personList) {
-                String messageStructureForEmployeesList =
-                        configurationEmailProperties.getEmployeesListWithInvalidInsuranceCard();
-                messageContent.append(String.format(messageStructureForEmployeesList,
-                        c.getGivenName(), c.getFamilyName(), c.getSocialNumber(),c.getSocialNumber()));
-            }
-            sendMail(from, toList, subject, messageContent.toString(), null);
-        }
-    }
 
     private void sendMail(String from, String[] to, String subject, String body, FileSystemResource attachmentFile)
             throws MessagingException {

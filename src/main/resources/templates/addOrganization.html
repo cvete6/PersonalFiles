@@ -26,7 +26,7 @@
 <div th:replace="menuFragments :: menu"></div>
 
 <main role="main" class="background mb-5">
-    <div class="container mb-5 position-relative ">
+    <div class="container mb-5 pt-5 position-relative ">
         <h2>[[#{app.organizationDetails}]]:</h2>
         <form class="form mt-5" enctype="multipart/form-data" method="post" th:object="${organization}" th:action="@{/organizations/addOrganization}">
             <div class="form-group">
@@ -35,8 +35,9 @@
                        required>
             </div>
 
-            <div class="row">
+            <div class="row pb-5">
                 <div class="col-6">
+                    <hr>
                     <div class="row">
                         <label for="organizationAddres" class="col-sm-5 col-form-label"><h6>[[#{app.address}]]:</h6></label>
                         <input id="organizationAddres" class="form-control form-control-sm col-6" type="text"
@@ -122,6 +123,11 @@
                                name="foundingDate"
                                th:placeholder="#{app.foundingDate}">
                     </div>
+                    <br>
+                    <hr>
+                </div>
+                <div class="col-6">
+                    <hr>
                     <div class="row">
                         <label for="organizationFoundingLocation"
                                class="col-sm-5 col-form-label"><h6>[[#{app.foundingLocation}]]:</h6></label>
@@ -194,7 +200,7 @@
                                name="slogan"
                                th:placeholder="#{app.slogan}">
                     </div>
-                    <div class="row">
+                    <div class="row  mb-3">
                         <label for="organizationTelephone"
                                class="col-sm-5 col-form-label"><h6>[[#{app.telephone}]]:</h6></label>
                         <input id="organizationTelephone" class="form-control form-control-sm col-6 " type="text"
@@ -202,14 +208,14 @@
                                name="telephone"
                                th:placeholder="#{app.telephone}">
                     </div>
-                    <hr>
-                    <button type="submit" class="btn btn-info btn-sm mt-3">
-                        [[#{app.submit}]]
-                    </button>
-                </div>
-                <div class="col d-flex justify-content-end">
-                    <div class="col-sm-8 my-2">
-
+                    <br>
+                    <br>
+                    <hr class="pt-2">
+                    <div class="row">
+                        <div class="col-9"></div>
+                        <button type="submit" class="btn btn-info btn-sm mt-3 col-auto">
+                            [[#{app.submit}]]
+                        </button>
                     </div>
                 </div>
             </div>

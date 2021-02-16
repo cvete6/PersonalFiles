@@ -6,17 +6,14 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Class to set values when checking employees passports (example once a day) and the passport
- * expires in the next x numberOfDaysBeforePassportAndInsuranceCardExpires
+ * expires in the next x numberOfDaysBeforePassport
  */
 @ConfigurationProperties("validity")
 @Configuration
-public class EmployeePassportAndInsuranceCardValidityConfiguration {
+public class EmployeePassportValidityConfiguration {
 
     @Value("numberOfDaysBeforePassportExpires")
     private String numberOfDaysBeforePassportExpires;
-
-    @Value("numberOfDaysBeforeInsuranceCardExpires")
-    private String numberOfDaysBeforeInsuranceCardExpires;
 
     public String getNumberOfDaysBeforePassportExpires() {
         return numberOfDaysBeforePassportExpires;
@@ -26,11 +23,4 @@ public class EmployeePassportAndInsuranceCardValidityConfiguration {
         this.numberOfDaysBeforePassportExpires = numberOfDaysBeforePassportExpires;
     }
 
-    public String getNumberOfDaysBeforeInsuranceCardExpires() {
-        return numberOfDaysBeforeInsuranceCardExpires;
-    }
-
-    public void setNumberOfDaysBeforeInsuranceCardExpires(String numberOfDaysBeforeInsuranceCardExpires) {
-        this.numberOfDaysBeforeInsuranceCardExpires = numberOfDaysBeforeInsuranceCardExpires;
-    }
 }

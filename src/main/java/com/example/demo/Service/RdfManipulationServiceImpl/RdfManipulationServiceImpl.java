@@ -330,7 +330,9 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
 
     @Override
     public Person validateAndCreatePerson(MultipartFile uploadedMultipartRDFFile, String uploadFormat, org.springframework.ui.Model model) throws IOException, ParseException {
-        return  createPersonFromRDFFile(uploadedMultipartRDFFile, uploadFormat, model);
+        Person p =  createPersonFromRDFFile(uploadedMultipartRDFFile, uploadFormat, model);
+        personJpaRepository.save(p);
+        return  p;
     }
 
     @Override
@@ -349,7 +351,7 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
         File uploadedRDFFile = convertMultipartFileToFile(uploadedMultipartRDFFile);
         InputStream in = FileManager.get().open(uploadedRDFFile.getAbsolutePath());
         Model model = ModelFactory.createDefaultModel();
-        model.read(in,null,uploadFormat);
+        model.read(in,null, uploadFormat);
 
         //model read from file
         Person person = mapPersonFromRDFFile(model,uploadedRDFFile.getAbsolutePath());
@@ -370,19 +372,19 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
             Property predicate = stmt.getPredicate();
             RDFNode object = stmt.getObject();
 
-            //System.out.print("SUBEJCT: "+subject.toString());
-            //System.out.print(" " + predicate.toString() + " " );
+            System.out.print("SUBEJCT: "+subject.toString());
+            System.out.print(" " + predicate.toString() + " " );
             if(object instanceof Resource) {
-               // System.out.print(object.toString());
+                System.out.print(object.toString());
             }
             else {
                 //object as a literal
-                //System.out.print(" \" " + object.toString() +" \"");
+                System.out.print(" \" " + object.toString() +" \"");
             }
 
-            //System.out.println(" .");
+            System.out.println(" .");
             if(subject.toString().equals(object.toString())){
-                //System.out.println("IME NA SUBJECTO GLAVEN NA RDF FILE: "+subject.toString() + " object imeee:"+ object.toString());
+                System.out.println("IME NA SUBJECTO GLAVEN NA RDF FILE: "+subject.toString() + " object imeee:"+ object.toString());
                 personResource = subject;
             }
         }
@@ -393,6 +395,10 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
         if(socialNumber.length != 1 && !socialNumber[1].equals("null")){
             //System.out.println("social number main man: "+socialNumber[1]);
             String sn = socialNumber[1];
+            Optional<Person> person1 = personJpaRepository.findBySocialNumber(sn);
+            if(person1.isPresent()){
+                person = person1.get();
+            }
             person.setSocialNumber(sn);
         }
 

@@ -29,7 +29,7 @@ import static com.itextpdf.kernel.pdf.action.PdfAction.createJavaScript;
  */
 public class GeneratePdf {
 
-    public static final String destinationFile = "PdfFormForEmployment.pdf";
+    public static final String destinationFile = "PersonalFile.pdf";
 
     /**
      * Initialize new pdf document
@@ -73,6 +73,12 @@ public class GeneratePdf {
         textInfoMessage.setRelativePosition(0, 7, 0, 10);
         textInfoMessage.setFontColor(LIGHT_GRAY);
 
+        Text integerValueInfoMessage = new Text("(Please enter integer value)");
+        integerValueInfoMessage.setFontSize(6);
+        integerValueInfoMessage.setTextAlignment(TextAlignment.LEFT);
+        integerValueInfoMessage.setRelativePosition(0, 7, 0, 10);
+        integerValueInfoMessage.setFontColor(LIGHT_GRAY);
+
         Text dateInfoMessage = new Text("(Please enter the date in the format dd-mm-yyyy)");
         dateInfoMessage.setFontSize(6);
         dateInfoMessage.setTextAlignment(TextAlignment.CENTER);
@@ -87,6 +93,17 @@ public class GeneratePdf {
                         "var dateFormat=/(0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-](19|20)\\d\\d/;" +
                         "if(date.match(dateFormat)) {" +
                         "event.value=date;" +
+                        "}" +
+                        "else {" +
+                        "event.value=\"\";" +
+                        "}"
+        );
+        //Create javascript
+        PdfAction actionValidateIntegerValue = createJavaScript(
+                "var number = event.value; " +
+                        "var numberFormat=/^[0-9]+$/;" +
+                        "if(number.match(numberFormat)) {" +
+                        "event.value=number;" +
                         "}" +
                         "else {" +
                         "event.value=\"\";" +
@@ -242,12 +259,13 @@ public class GeneratePdf {
         form.addField(globalLocationNumberField);
 
         Paragraph heightParagraph = new Paragraph("Height:");
-        addParagraphCharacteristic(heightParagraph, textInfoMessage);
+        addParagraphCharacteristic(heightParagraph, integerValueInfoMessage);
         document.add(heightParagraph);
 
         PdfTextFormField heightField = PdfTextFormField.createText(document.getPdfDocument(),
                 new Rectangle(170, 337, 240, 15), "height");
         heightField.setFontSize(10);
+        heightField.setAdditionalAction(PdfName.V, actionValidateIntegerValue);
         form.addField(heightField);
 
         Paragraph homeLocationParagraph = new Paragraph("Home Location:");
@@ -359,12 +377,13 @@ public class GeneratePdf {
         form.addField(telephoneField);
 
         Paragraph weightParagraph = new Paragraph("Weight:");
-        addParagraphCharacteristic(weightParagraph, textInfoMessage);
+        addParagraphCharacteristic(weightParagraph, integerValueInfoMessage);
         document.add(weightParagraph);
 
         PdfTextFormField weightField = PdfTextFormField.createText(document.getPdfDocument(),
                 new Rectangle(170, 753, 240, 15), "weight");
         weightField.setFontSize(10);
+        weightField.setAdditionalAction(PdfName.V, actionValidateIntegerValue);
         form.addField(weightField);
 
 

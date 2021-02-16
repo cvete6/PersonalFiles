@@ -46,19 +46,23 @@
         <div class="row text-center d-flex align-items-center">
             <div class="col-4">
                 <div class="card border-success mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Header</div>
+                    <div class="card-header">
+                        <a class="text-dark border border-light rounded bg-light pr-2 mr-2 " th:href="@{/persons/person-list/page/1}">[[#{app.title}]]</a>
+                    </div>
                     <div class="card-body text-success">
-                        <h5 class="card-title">Success card title</h5>
-                        <p class="card-text">Quick sample text to create the card title and make up the body of the card's content.</p>
+                        <h5 class="card-title">[[#{app.listAllPersons}]]</h5>
+                        <p class="card-text">[[#{app.listAllPersonCardDetails}]]</p>
                     </div>
                 </div>
             </div>
             <div class="col-4">
                 <div class="card border-success mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Header</div>
+                    <div class="card-header">
+                        <a class="text-dark border border-light pr-2 mr-2 rounded bg-light" th:href="@{/organizations/organization-list/page/1}">[[#{app.organization}]]</a>
+                    </div>
                     <div class="card-body text-success">
-                        <h5 class="card-title">Success card title</h5>
-                        <p class="card-text">Quick sample text to create the card title and make up the body of the card's content.</p>
+                        <h5 class="card-title">[[#{app.listAllOrganizations}]]</h5>
+                        <p class="card-text">[[#{app.listAllOrganizationsCardDetails}]]</p>
                     </div>
                 </div>
             </div>

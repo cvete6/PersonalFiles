@@ -25,25 +25,16 @@ public class EmailPropertiesConfiguration {
     @Value("subjectForExpiredPassport")
     private String subjectForExpiredPassport;
 
-    @Value("subjectForExpiredInsuranceCard")
-    private String subjectForExpiredInsuranceCard;
-
     @Value("messageContentForNewEmployee")
     private String messageContentForNewEmployee;
 
     @Value("messageContentForExpiredPassport")
     private String messageContentForExpiredPassport;
 
-    @Value("messageContentForInsuranceCard")
-    private String messageContentForInsuranceCard;
-
     @Value("employeesListWithInvalidPassport")
     private String employeesListWithInvalidPassport;
 
-    @Value("employeesListWithInvalidInsuranceCard")
-    private String employeesListWithInvalidInsuranceCard;
-
-    private File emptyPDFFile = new File("PdfFormForEmployment.pdf");
+    private File emptyPDFFile = new File("PersonalFile.pdf");
 
     public String getFrom() {
         return from;
@@ -97,21 +88,6 @@ public class EmailPropertiesConfiguration {
         return new FileSystemResource(emptyPDFFile);
     }
 
-    public String getSubjectForExpiredInsuranceCard() {
-        return subjectForExpiredInsuranceCard;
-    }
-
-    public void setSubjectForExpiredInsuranceCard(String subjectForExpiredInsuranceCard) {
-        this.subjectForExpiredInsuranceCard = subjectForExpiredInsuranceCard;
-    }
-
-    public String getMessageContentForInsuranceCard() {
-        return messageContentForInsuranceCard;
-    }
-
-    public void setMessageContentForInsuranceCard(String messageContentForInsuranceCard) {
-        this.messageContentForInsuranceCard = messageContentForInsuranceCard;
-    }
 
     public String getEmployeesListWithInvalidPassport() {
         return employeesListWithInvalidPassport;
@@ -121,11 +97,4 @@ public class EmailPropertiesConfiguration {
         this.employeesListWithInvalidPassport = employeesListWithInvalidPassport;
     }
 
-    public String getEmployeesListWithInvalidInsuranceCard() {
-        return employeesListWithInvalidInsuranceCard;
-    }
-
-    public void setEmployeesListWithInvalidInsuranceCard(String employeesListWithInvalidInsuranceCard) {
-        this.employeesListWithInvalidInsuranceCard = employeesListWithInvalidInsuranceCard;
-    }
 }

@@ -195,6 +195,16 @@ public class PersonController {
     }
 
     /**
+     * Show view where can upload rdf file
+     *
+     * @return view template where can upload the rdf file
+     */
+    @GetMapping("/showFormForUploadRDFFile")
+    public String showFormForUploadRDFFile() {
+        return "uploadRdfFile";
+    }
+
+    /**
      * Get data from uploaded file and create new entry in database if person with that rdf does not exist
      *
      * @param uploadedMultipartRDFFile a file that we upload
@@ -204,19 +214,11 @@ public class PersonController {
     @PostMapping("/uploadRDFFile")
     public String uploadAndSaveDataFromRDFFile(HttpServletRequest request,
                                                @RequestParam("uploadedMultipartRDFFile") MultipartFile uploadedMultipartRDFFile,
-                                               Model model)
-            throws Exception {
-        System.out.println("uploadFormat: "+ request.getParameter("uploadFormat"));
+                                               Model model) throws Exception {
         String uploadFormat = request.getParameter("uploadFormat");
         Person person = rdfManipulationService.validateAndCreatePerson(uploadedMultipartRDFFile, uploadFormat, model);
-        return  personService.redirectToPersonDetailsView(person,model);
+        return "redirect:/persons/showFormForUpdate?personId=" + person.getId();
     }
-
-
-
-
-
-
 
     /**
      * Save new Person to database
