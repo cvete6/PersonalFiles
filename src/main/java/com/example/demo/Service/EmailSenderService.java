@@ -28,12 +28,16 @@ public interface EmailSenderService {
      */
     void sendNotificationMessageForInvalidPassport(List<? extends Person> personList) throws MessagingException;
 
-    /**
+/*
+    */
+/**
      * Create email structure for a message that need to inform for not valid insurance card and send that mail
      *
      * @param personList list of employees whose insurance card expires for some period of time
-     */
+     *//*
+
     void sendNotificationMessageForAlmostInvalidInsuranceCard(List<? extends Person> personList);
+*/
 
 
 }

@@ -30,7 +30,7 @@
 <body>
 <main role="main" class="background mb-5">
     <!-- SEND EMAIL -->
-    <div class="container">
+<div class="container">
     <div class="row h-100 position-relative">
         <div class="mt-5">
             <div class="row">
@@ -60,88 +60,48 @@
 </div>
 
     <!--UPLOAD PDF FILE -->
-    <div class="container mt-5">
-        <div class="row h-100 position-relative">
-            <div class="mt-5">
-                <div class="row">
-                    <i class="far fa-check-circle fa-2x"></i>
-                    <h4 class="mt-1" >&nbsp;[[#{app.uploadPdfTitle}]]</h4>
-                </div>
-                <p class="text-muted ml-1 mt-1">[[#{app.uploadPdfDescription}]]</p>
+<div class="container mt-5">
+    <div class="row h-100 position-relative">
+        <div class="mt-5">
+            <div class="row">
+                <i class="far fa-check-circle fa-2x"></i>
+                <h4 class="mt-1" >&nbsp;[[#{app.uploadPdfTitle}]]</h4>
             </div>
-            <div class="col-sm-12 my-auto mt-3">
-                <form class="form  border rounded col-5 responsive-width" enctype="multipart/form-data" method="post" th:action="@{/persons/uploadPdfFile}">
-                    <div class="form-group row mt-4 mb-0 container">
-                        <label for="uploadedMultipartPdfFile" class="text">
-                            <h6 >[[#{app.uploadPdfFile}]]:</h6>
-                        </label>&nbsp;
-                        <input id="uploadedMultipartPdfFile" class="form-control-file form-control-sm mb-4 col-4 responsive-width" type="file"
-                               name="uploadedMultipartPdfFile">
-                    </div>
-                    <div class="text-right">
-                            <button type="submit" class="btn btn-info btn-sm mb-3 text-center col-2 responsive-width" disabled>[[#{app.submit}]]</button>
-                    </div>
-                </form>
-            </div>
-            <div class="row container mt-2 ml-1">
-                <div class="form-group col-5 alert alert-success" th:if="${exists}" role="alert">
-                    <h5 class="text">[[#{app.existEmployeeMessage}]]</h5>
-                    <a th:href="@{/persons/showFormForUpdate(personId = ${personId})}" class="btn btn-info  btn-sm"
-                       role="button">[[#{app.seeDetails}]]</a>
+            <p class="text-muted ml-1 mt-1">[[#{app.uploadPdfDescription}]]</p>
+        </div>
+        <div class="col-sm-12 my-auto mt-3">
+            <form class="form  border rounded col-5 responsive-width" enctype="multipart/form-data" method="post" th:action="@{/persons/uploadPdfFile}">
+                <div class="form-group row mt-4 mb-0 container">
+                    <label for="uploadedMultipartPdfFile" class="text">
+                        <h6 >[[#{app.uploadPdfFile}]]:</h6>
+                    </label>&nbsp;
+                    <input id="uploadedMultipartPdfFile" class="form-control-file form-control-sm mb-4 col-4 responsive-width" type="file"
+                           name="uploadedMultipartPdfFile">
                 </div>
-                <div class="form-group col-5 alert alert-danger" th:if="${invalidUploadPdf}" role="alert">
-                    <h5 class="text">[[#{app.invalidPdfFile}]]</h5>
-                    <div class="form-group">
-                        <table>
-                            <tr th:each="error, iterstat: ${invalidInputFields}">
-                                <td th:text="${error}" th:id="|td${iterstat.index}|"></td>
-                            </tr>
-                        </table>
-                    </div>
+                <div class="text-right">
+                        <button type="submit" class="btn btn-info btn-sm mb-3 text-center col-2 responsive-width" disabled>[[#{app.submit}]]</button>
+                </div>
+            </form>
+        </div>
+        <div class="row container mt-2 ml-1">
+            <div class="form-group col-5 alert alert-success" th:if="${exists}" role="alert">
+                <h5 class="text">[[#{app.existEmployeeMessage}]]</h5>
+                <a th:href="@{/persons/showFormForUpdate(personId = ${personId})}" class="btn btn-info  btn-sm"
+                   role="button">[[#{app.seeDetails}]]</a>
+            </div>
+            <div class="form-group col-5 alert alert-danger" th:if="${invalidUploadPdf}" role="alert">
+                <h5 class="text">[[#{app.invalidPdfFile}]]</h5>
+                <div class="form-group">
+                    <table>
+                        <tr th:each="error, iterstat: ${invalidInputFields}">
+                            <td th:text="${error}" th:id="|td${iterstat.index}|"></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-
-
-
-<!--    &lt;!&ndash;UPLOAD RDF FILE &ndash;&gt;
-    <div class="container mt-5 mb-5">
-        <div class="row h-100 position-relative">
-            <div class="mt-5">
-                <div class="row">
-                    <i class="far fa-check-circle fa-2x"></i>
-                    <h4 class="mt-1" >&nbsp;[[#{app.uploadRDFFileTitle}]]</h4>
-                </div>
-                <p class="text-muted ml-1 mt-1">[[#{app.uploadRDFFileDescription}]]</p>
-            </div>
-            <div class="col-sm-12 my-auto mt-3">
-                <form class="form  border rounded col-5 responsive-width" enctype="multipart/form-data" method="post" th:action="@{/persons/uploadRDFFile}">
-                    <div class="form-group row mt-4 mb-0 container">
-                        <label for="uploadedMultipartPdfFile" class="text">
-                            <h6 >[[#{app.uploadRDFFile}]]:</h6>
-                        </label>&nbsp;
-                        <input id="uploadedMultipartRDFFile" class="form-control-file form-control-sm mb-4 col-4 responsive-width" type="file"
-                               name="uploadedMultipartRDFFile">
-                    </div>
-                    <div class="form-group row mt-4 mb-0 container">
-                        <label for="uploadedMultipartPdfFileFormat" class="text">
-                            <h6 >[[#{app.choseUploadRDFFile}]]:</h6>
-                        </label>&nbsp;
-                        <select id="uploadedMultipartPdfFileFormat" class="form-control form-control-sm mb-4 col-4 responsive-width" name="uploadFormat">
-                            <option value="">Choose...</option>
-                            <option value="TURTLE">TURTLE</option>
-                            <option value="RDF/XML">RDF/XML</option>
-                            <option value="N-TRIPLES">N-TRIPLES</option>
-                        </select>
-                    </div>
-                    <div class="text-right">
-                        <button type="submit" class="btn btn-info btn-sm mb-3 text-center col-2 responsive-width" disabled>[[#{app.submit}]]</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>-->
+</div>
 </main>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package com.example.demo.Controller;
 
-import com.example.demo.DomainModel.Person;
 import com.example.demo.Service.EmailSenderServiceImpl.EmailSenderServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

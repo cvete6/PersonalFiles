@@ -40,22 +40,6 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
     private String personSchema = "http://schema.org/Person#";
 
     /**
-     * Add statement with (subject - main person, property, object-literal)
-     *
-     * @param subject person
-     * @param property person characteristics
-     * @param object value of that characteristics-literal
-     */
-    public void addStatement (String subject, String property, String object){
-        Resource s = model.createResource(subject);
-        Property p = model.createProperty(property);
-        Resource o = model.createResource(object);
-
-        Statement statement = model.createStatement(s,p,o);
-        model.add(statement);
-    }
-
-    /**
      * Create statement in model where object from statement is new resource (new connected person) eg. person has child
      * child is connected person
      *
@@ -109,6 +93,22 @@ public class RdfManipulationServiceImpl implements RdfManipulationService {
                 .addProperty(propertyAddress, objectAddress)
                 .addProperty(propertyEmail, objectEmail)
         );
+        model.add(statement);
+    }
+
+    /**
+     * Add statement with (subject - main person, property, object-literal)
+     *
+     * @param subject person
+     * @param property person characteristics
+     * @param object value of that characteristics-literal
+     */
+    public void addStatement (String subject, String property, String object){
+        Resource s = model.createResource(subject);
+        Property p = model.createProperty(property);
+        Resource o = model.createResource(object);
+
+        Statement statement = model.createStatement(s,p,o);
         model.add(statement);
     }
 
