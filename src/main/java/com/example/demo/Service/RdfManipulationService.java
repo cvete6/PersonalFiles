@@ -21,5 +21,4 @@ public interface RdfManipulationService {
 
     File convertMultipartFileToFile(MultipartFile multipartPdfFile) throws IOException;
 
-    //String redirectToPersonDetailsView(Person person, org.springframework.ui.Model model);
-    }
+}

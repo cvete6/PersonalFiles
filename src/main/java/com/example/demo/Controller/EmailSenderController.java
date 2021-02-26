@@ -27,7 +27,7 @@ public class EmailSenderController {
      * @return view with email input field
      */
     @GetMapping("/email")
-    public String showFormForInsertEmail(Model model){
+    public String showFormForInsertEmail(Model model) {
         model.addAttribute("uploadFormat", 1);
         return "insertEmail";
     }
@@ -43,7 +43,7 @@ public class EmailSenderController {
     @PostMapping("/send")
     public String sendMail(@ModelAttribute("email") String email, Model model) throws MessagingException {
         emailService.sendMessageWithAttachment(email);
-        model.addAttribute("successfulSendMail", true );
+        model.addAttribute("successfulSendMail", true);
         return "insertEmail";
     }
 }

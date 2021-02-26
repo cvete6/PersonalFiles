@@ -86,7 +86,6 @@ public class GeneratePdf {
         dateInfoMessage.setFontColor(LIGHT_GRAY);
 
 
-
         //Create javascript
         PdfAction actionValidateDate = createJavaScript(
                 "var date = event.value; " +
@@ -354,7 +353,7 @@ public class GeneratePdf {
         document.add(seekParagraph);
 
         PdfTextFormField seekField = PdfTextFormField.createText(document.getPdfDocument(),
-                new Rectangle(170, 77 , 240, 15), "seek");
+                new Rectangle(170, 77, 240, 15), "seek");
         seekField.setFontSize(10);
         form.addField(seekField);
 
@@ -433,7 +432,7 @@ public class GeneratePdf {
         PdfButtonFormField button = PdfFormField.createPushButton(document.getPdfDocument(),
                 new Rectangle(479, 545, 45, 15), "reset", "RESET");
         button.setAction(PdfAction.createResetForm(
-                new String[] {"name", "lastName", "address", "dateOfBirth", "placeOfBirth", "socialNumber",
+                new String[]{"name", "lastName", "address", "dateOfBirth", "placeOfBirth", "socialNumber",
                         "municipality",
                         "identityCardNumber", "passportNumber",
                         "dateOfIssuePassport", "dateOfExpiryPassport", "education",

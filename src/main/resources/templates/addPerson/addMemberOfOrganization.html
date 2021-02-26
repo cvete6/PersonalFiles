@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" http-equiv=refresh>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+
+    <script type="text/javascript" th:inline="javascript" th:src="@{/validateInsuranceCardDetails.js}"></script>
+    <script type="text/javascript" th:inline="javascript" th:src="@{/model.js}"></script>
+    <link th:href="@{/styles/startStyle.css}" rel="stylesheet">
+    <title>Title</title>
+</head>
+<body>
+<!-- Modal -->
+<div th:fragment="addMemberOfOrganizationModal" class="modal fade" id="exampleModalCenterMemberOf" tabindex="-1"
+     role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form role="form" class="form mt-5" enctype="multipart/form-data" method="post"
+                  th:action="@{/persons/addMemberOfOrganization(personId = ${person.id})}">
+                <input type="hidden" name="personId" th:value="${person.id}"/>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">[[#{app.addMemberPersonOfOrganization}]]</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input id="memberOfOrganizationId" type="hidden" class="form-control mb-4 col-6"
+                               th:field="${memberOfOrganization.id}"
+                               name="memberOfOrganizationId">
+                    </div>
+                    <div class="row">
+                        <label for="memberOfOrganizationName" class="col-sm-5 col-form-label"><h6>[[#{app.name}]]:</h6>
+                        </label>
+                        <input id="memberOfOrganizationName" type="text" class="form-control form-control-sm col-6 "
+                               th:field="${memberOfOrganization.legalName}"
+                               name="legalName"
+                               th:placeholder="#{app.name}" required>
+                    </div>
+                    <div class="row">
+                        <label for="memberOfOrganizationAddress"
+                               class="col-sm-5 col-form-label"><h6>[[#{app.address}]]:</h6></label>
+                        <input id="memberOfOrganizationAddress" class="form-control form-control-sm col-6" type="text"
+                               th:field="${memberOfOrganization.address}"
+                               name="address"
+                               th:placeholder="#{app.address}" required>
+                    </div>
+                    <div class="row">
+                        <label for="email"
+                               class="col-sm-5 col-form-label"><h6>[[#{app.email}]]:</h6></label>
+                        <input id="email" class="form-control form-control-sm col-6" type="text"
+                               th:field="${memberOfOrganization.email}"
+                               name="email"
+                               th:placeholder="#{app.email}" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">[[#{app.close}]]</button>
+                    <button type="submit" class="btn btn-primary">[[#{app.saveChanges}]]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

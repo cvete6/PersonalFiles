@@ -43,7 +43,7 @@ public class Organization {
     //Odeli od koi e sostavena organnizacijata koi i tie se organizacii
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-            CascadeType.MERGE,CascadeType.DETACH})
+            CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "department_id")
     private List<Organization> departments;
 
@@ -81,7 +81,7 @@ public class Organization {
     private String ownershipFundingInfo;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-            CascadeType.MERGE,CascadeType.DETACH})
+            CascadeType.MERGE, CascadeType.DETACH})
     private Organization parentOrganization;
 
     //ova e url nekoe koe ne nosi na javnite principi na organizacijata
@@ -91,35 +91,35 @@ public class Organization {
     private String slogan;
 
     @OneToMany(mappedBy = "organization_sponsor",
-               cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-                          CascadeType.MERGE,CascadeType.DETACH})
+            cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+                    CascadeType.MERGE, CascadeType.DETACH})
     private List<Person> sponsors;
 
     private String telephone;
 
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-            CascadeType.MERGE,CascadeType.DETACH})
+            CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "subOrganization_id")
     private List<Organization> subOrganization;
 
     // da bidi clen na nekoja druga organizacija
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-            CascadeType.MERGE,CascadeType.DETACH})
+            CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "memberOf_organization_id")
     private List<Organization> memberOf_organization;
 
     @OneToMany(mappedBy = "worksFor",
-               cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-                    CascadeType.MERGE,CascadeType.DETACH})
+            cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+                    CascadeType.MERGE, CascadeType.DETACH})
     private List<Person> employee;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-                           CascadeType.MERGE,CascadeType.DETACH})
-    @JoinTable(name="person_organization",
-               joinColumns = @JoinColumn(name = "organization_id"),
-                inverseJoinColumns = @JoinColumn(name = "person_id"))
+            CascadeType.MERGE, CascadeType.DETACH})
+    @JoinTable(name = "person_organization",
+            joinColumns = @JoinColumn(name = "organization_id"),
+            inverseJoinColumns = @JoinColumn(name = "person_id"))
     private List<Person> member;
 
 

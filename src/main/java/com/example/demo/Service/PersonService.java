@@ -1,5 +1,6 @@
 package com.example.demo.Service;
 
+import com.example.demo.DomainModel.AuthenticationProvider;
 import com.example.demo.DomainModel.Organization;
 import com.example.demo.DomainModel.Person;
 import org.springframework.data.domain.Page;
@@ -28,6 +29,13 @@ public interface PersonService {
      * @return data for person with that id
      */
     Person getPersonById(Integer id);
+
+    /**
+     * Return person that have that mail address
+     *
+     * @return person
+     */
+    Person getPersonByEmail(String email);
 
     /**
      * Find if there is a search keyword and list all items according to keyword and list
@@ -64,11 +72,23 @@ public interface PersonService {
     Person addNewPerson(Person person);
 
     /**
-     * Edit existed person
+     * Add new person login with google
      *
-     * @param person person with editable field
-     * @return edited person
+     * @param email mail from gmail account
+     * @param name name from gmail account
+     * @param authenticationProvider provider that is set
      */
+    void addNewPersonAfterOAuthLoginSuccess(String email, String name, AuthenticationProvider authenticationProvider);
+
+    void updateCustomerAfterOAuthLoginSuccess(Person person, String name, AuthenticationProvider authenticationProvider);
+
+
+        /**
+         * Edit existed person
+         *
+         * @param person person with editable field
+         * @return edited person
+         */
     Person editPerson(Person person);
 
     /**

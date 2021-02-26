@@ -31,8 +31,8 @@ public class OrganizationController {
     @PostMapping("/edit")
     public String editOrganization(@ModelAttribute Organization organization, Model model) throws IOException {
         organizationService.editOrganization(organization);
-        Integer organizationID=organization.getId();
-        return "redirect:/organizations/showFormForUpdate?organizationId="+organizationID;
+        Integer organizationID = organization.getId();
+        return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationID;
     }
 
     @GetMapping("/showFormForUpdate")
@@ -63,8 +63,8 @@ public class OrganizationController {
     /**
      * Save new Person to database
      *
-     * @param organization   Organization that is save to model in AddOrganization form
-     * @param model         is used to get model attributes from view
+     * @param organization Organization that is save to model in AddOrganization form
+     * @param model        is used to get model attributes from view
      * @return redirect to thymeleaf template for all Organizations
      */
     @PostMapping("/addOrganization")
@@ -72,6 +72,7 @@ public class OrganizationController {
         organizationService.addNewOrganization(organization);
         return "redirect:/organizations/organization-list/page/1";
     }
+
     /**
      * Delete organization
      *
@@ -83,27 +84,28 @@ public class OrganizationController {
         organizationService.deleteOrganization(organizationId);
         return "redirect:/organizations/organization-list/page/1";
     }
+
     @PostMapping("/addDepartment")
     public String addDepartment(@ModelAttribute Organization departmentOrganization,
-                                 @RequestParam("organizationId") Integer organizationId,
-                                 Model model) {
-        organizationService.addDepartment(organizationId,departmentOrganization);
+                                @RequestParam("organizationId") Integer organizationId,
+                                Model model) {
+        organizationService.addDepartment(organizationId, departmentOrganization);
         return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
     }
 
     @PostMapping("/addSubOrganization")
     public String addSubOrganizationOrganization(@ModelAttribute Organization subOrganizationOrganization,
-                                @RequestParam("organizationId") Integer organizationId,
-                                Model model) {
-        organizationService.addSubOrganizationOrganization(organizationId,subOrganizationOrganization);
+                                                 @RequestParam("organizationId") Integer organizationId,
+                                                 Model model) {
+        organizationService.addSubOrganizationOrganization(organizationId, subOrganizationOrganization);
         return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
 
     }
 
     @PostMapping("/addMemberOfOrganization")
     public String addMemberOfOrganization(@ModelAttribute Organization memberOfOrganization,
-                                 @RequestParam("organizationId") Integer organizationId,
-                                 Model model) {
+                                          @RequestParam("organizationId") Integer organizationId,
+                                          Model model) {
         organizationService.addMemberOfOrganization(organizationId, memberOfOrganization);
         return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
     }

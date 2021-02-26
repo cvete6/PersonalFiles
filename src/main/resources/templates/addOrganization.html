@@ -28,7 +28,8 @@
 <main role="main" class="background mb-5">
     <div class="container mb-5 pt-5 position-relative ">
         <h2>[[#{app.organizationDetails}]]:</h2>
-        <form class="form mt-5" enctype="multipart/form-data" method="post" th:object="${organization}" th:action="@{/organizations/addOrganization}">
+        <form class="form mt-5" enctype="multipart/form-data" method="post" th:object="${organization}"
+              th:action="@{/organizations/addOrganization}">
             <div class="form-group">
                 <input id="organizationId" type="hidden" class="form-control mb-4 col-6" th:field="*{id}"
                        name="organizationId"
@@ -39,17 +40,18 @@
                 <div class="col-6">
                     <hr>
                     <div class="row">
-                        <label for="organizationAddres" class="col-sm-5 col-form-label"><h6>[[#{app.address}]]:</h6></label>
-                        <input id="organizationAddres" class="form-control form-control-sm col-6" type="text"
-                               th:field="*{address}"
-                               name="address"
-                               th:placeholder="#{app.address}">
-                    </div>
-                    <div class="row">
                         <label for="name" class="col-sm-5 col-form-label"><h6>[[#{app.name}]]:</h6></label>
                         <input id="name" type="text" class="form-control form-control-sm col-6 "
                                th:field="*{legalName}"
                                name="name" th:placeholder="#{app.legalName}" required>
+                    </div>
+                    <div class="row">
+                        <label for="organizationAddres" class="col-sm-5 col-form-label"><h6>[[#{app.address}]]:</h6>
+                        </label>
+                        <input id="organizationAddres" class="form-control form-control-sm col-6" type="text"
+                               th:field="*{address}"
+                               name="address"
+                               th:placeholder="#{app.address}" required>
                     </div>
                     <div class="row">
                         <label for="organizationareaServed"
@@ -105,7 +107,7 @@
                         <input id="organizationEmail" class="form-control form-control-sm col-6 " type="text"
                                th:field="*{email}"
                                name="email"
-                               th:placeholder="#{app.email}">
+                               th:placeholder="#{app.email}" required>
                     </div>
                     <div class="row">
                         <label for="organizationFaxNumber"
@@ -139,7 +141,8 @@
                     <div class="row">
                         <label for="organizationGlobalLocationNumber"
                                class="col-sm-5 col-form-label"><h6>[[#{app.globalLocationNumber}]]:</h6></label>
-                        <input id="organizationGlobalLocationNumber" class="form-control form-control-sm col-6 " type="text"
+                        <input id="organizationGlobalLocationNumber" class="form-control form-control-sm col-6 "
+                               type="text"
                                th:field="*{globalLocationNumber}"
                                name="globalLocationNumber"
                                th:placeholder="#{app.globalLocationNumber}">
@@ -179,7 +182,8 @@
                     <div class="row">
                         <label for="organizationMemberOfEmployees"
                                class="col-sm-5 col-form-label"><h6>[[#{app.numberOfEmployees}]]:</h6></label>
-                        <input id="organizationMemberOfEmployees" class="form-control form-control-sm col-6 " type="text"
+                        <input id="organizationMemberOfEmployees" class="form-control form-control-sm col-6 "
+                               type="text"
                                th:field="*{numberOfEmployees}"
                                name="numberOfEmployees"
                                th:placeholder="#{app.numberOfEmployees}">
@@ -187,7 +191,8 @@
                     <div class="row">
                         <label for="organizationOwnerShipFundingInfo"
                                class="col-sm-5 col-form-label"><h6>[[#{app.ownershipFundingInfo}]]:</h6></label>
-                        <input id="organizationOwnerShipFundingInfo" class="form-control form-control-sm col-6 " type="text"
+                        <input id="organizationOwnerShipFundingInfo" class="form-control form-control-sm col-6 "
+                               type="text"
                                th:field="*{ownershipFundingInfo}"
                                name="ownershipFundingInfo"
                                th:placeholder="#{app.ownershipFundingInfo}">

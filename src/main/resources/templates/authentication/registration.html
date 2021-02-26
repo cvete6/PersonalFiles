@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>[[#{app.ApplicationTitle}]]</title>
+
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+</head>
+<body>
+<!-- create navigation bar ( header) -->
+<nav class="navbar navbar-inverse navbar-fixed-top" style="height: 100px;">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Personal files</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand text-white pb-5" href="#" th:href="@{/}" >
+                <h2>[[#{app.ApplicationTitle}]]</h2>
+                <h5>[[#{app.ApplicationDescription}]]</h5>
+                <div> <br> </div>
+            </a>
+        </div>
+    </div>
+</nav>
+<div style="height: 150px;"></div>
+<!-- Create HTML registration form -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <!-- success message -->
+            <div th:if="${param.success}">
+                <div class="alert alert-info mt-5">[[#{app.successfulRegister}]]</div>
+            </div>
+
+            <h1>[[#{app.registration}]]</h1>
+
+            <form th:action="@{/registration}" method="post" th:object="${user}">
+                <div class="form-group">
+                    <label class="control-label" for="firstName">[[#{app.firstName}]] </label>
+                    <input id="firstName" class="form-control" th:field="*{firstName}"
+                           required autofocus="autofocus"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="lastName"> [[#{app.lastName}]] </label> <input
+                        id="lastName" class="form-control" th:field="*{lastName}"
+                        required autofocus="autofocus"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="email"> [[#{app.email}]] </label> <input
+                        id="email" class="form-control" th:field="*{email}" required
+                        autofocus="autofocus"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="password"> [[#{app.password}]] </label> <input
+                        id="password" class="form-control" type="password"
+                        th:field="*{password}" required autofocus="autofocus"/>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">[[#{app.register}]]</button>
+                    <span>[[#{app.alreadyRegistered}]]
+                        <a href="/" th:href="@{/login}">
+                            [[#{app.loginHere}]]
+                        </a>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

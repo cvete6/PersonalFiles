@@ -4,7 +4,7 @@ import com.example.demo.DomainModel.Organization;
 
 public class OrganizationMapper {
 
-    public static Organization oldOrganizationMapToNewOrganization (Organization organization, Organization oldOrganization){
+    public static Organization oldOrganizationMapToNewOrganization(Organization organization, Organization oldOrganization) {
         oldOrganization.setId(organization.getId());
         oldOrganization.setAddress(organization.getAddress());
         oldOrganization.setAreaServed(organization.getAreaServed());
@@ -23,7 +23,7 @@ public class OrganizationMapper {
         oldOrganization.setLocation(organization.getLocation());
         oldOrganization.setLogo(organization.getLogo());
         oldOrganization.setNonprofitStatus(organization.getNonprofitStatus());
-        oldOrganization.setNumberOfEmployees(100);
+        oldOrganization.setNumberOfEmployees(organization.getNumberOfEmployees());
         oldOrganization.setOwnershipFundingInfo(organization.getOwnershipFundingInfo());
         oldOrganization.setPublishingPrinciples(organization.getPublishingPrinciples());
         oldOrganization.setSlogan(organization.getSlogan());

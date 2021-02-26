@@ -26,132 +26,137 @@
 
 <main role="main" class="background ">
     <div class="container position-relative">
-    <h4 class="ml-2 mt-3 position-relative">[[#{app.organization}]]:</h4>
+        <h4 class="ml-2 mt-3 position-relative">[[#{app.organization}]]:</h4>
         <form th:action="@{/organizations/organization-list/page/1}"
-             class="form-inline form-group row d-flex justify-content-end mt-2 mb-3 mr-2 mt-md-0 position-relative" method="GET">
+              class="form-inline form-group row d-flex justify-content-end mt-2 mb-3 mr-2 mt-md-0 position-relative"
+              method="GET">
         </form>
-        <form th:action="@{/organizations/showFormForAddOrganization}" method="GET" class="form-inline form-group row d-flex justify-content-end mt-2 mb-3 mr-2 mt-md-0 position-relative">
+        <form th:action="@{/organizations/showFormForAddOrganization}" method="GET"
+              class="form-inline form-group row d-flex justify-content-end mt-2 mb-3 mr-2 mt-md-0 position-relative">
             <button type="submit" class="btn btn-sm btn-info">[[#{app.addNewOrganization}]]</button>
         </form>
         <div class="container table-responsive position-relative">
             <table class="table table-hover table-sm">
-            <thead>
-            <tr>
-                <th class="col-xs-5">[[#{app.legalName}]]</th>
-                <th class="col-xs-5">[[#{app.slogan}]]</th>
-                <th class="col-xs-5">[[#{app.email}]]</th>
-                <th class="col-xs-5"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr scope="row" class="form-group" th:each="organization : ${organizationsList}">
-                <td class="form-item font-weight-normal" th:text="${organization.legalName}"></td>
-                <td class="form-item font-weight-normal" th:text="${organization.slogan}"></td>
-                <td class="form-item font-weight-normal" th:text="${organization.email}"></td>
-                <td class="text-right row">
-                    <div class="btn-group" role="group">
-                        <div class="col-md-6 ">
-                            <form action="#" th:action="@{/organizations/showFormForUpdate(organizationId = ${organization.id})}"
-                                  method="GET">
-                                <input type="hidden" name="organizationId" th:value="${organization.id}"/>
-                                <i class="fa fa-fw fa-edit"></i>
-                                <button type="submit" class="btn btn-sm btn-info ">[[#{app.edit}]]</button>
-                            </form>
+                <thead>
+                <tr>
+                    <th class="col-xs-5">[[#{app.legalName}]]</th>
+                    <th class="col-xs-5">[[#{app.slogan}]]</th>
+                    <th class="col-xs-5">[[#{app.email}]]</th>
+                    <th class="col-xs-5"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr scope="row" class="form-group" th:each="organization : ${organizationsList}">
+                    <td class="form-item font-weight-normal" th:text="${organization.legalName}"></td>
+                    <td class="form-item font-weight-normal" th:text="${organization.slogan}"></td>
+                    <td class="form-item font-weight-normal" th:text="${organization.email}"></td>
+                    <td class="text-right row">
+                        <div class="btn-group" role="group">
+                            <div class="col-md-6 ">
+                                <form action="#"
+                                      th:action="@{/organizations/showFormForUpdate(organizationId = ${organization.id})}"
+                                      method="GET">
+                                    <input type="hidden" name="organizationId" th:value="${organization.id}"/>
+                                    <i class="fa fa-fw fa-edit"></i>
+                                    <button type="submit" class="btn btn-sm btn-info ">[[#{app.edit}]]</button>
+                                </form>
+                            </div>
+                            <div class="col-md-7 ">
+                                <form th:action="@{/organizations/delete(organizationId = ${organization.id})}"
+                                      th:method="delete">
+                                    <input name="organizationId" th:value="${organization.id}" type="hidden">
+                                    <i class="fa fa-fw fa-trash"></i>
+                                    <button type="submit" class="btn btn-sm btn-danger" id="delete">[[#{app.delete}]]
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="col-md-7 ">
-                            <form th:action="@{/organizations/delete(organizationId = ${organization.id})}" th:method="delete">
-                                <input name="organizationId" th:value="${organization.id}" type="hidden">
-                                <i class="fa fa-fw fa-trash"></i>
-                                <button type="submit" class="btn btn-sm btn-danger" id="delete">[[#{app.delete}]]</button>
-                            </form>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
             <div class="row" th:fragment="pagination">
                 <div class=" col-4 justify-content-left">[[#{app.totalItems}]]: [[${totalItems}]] - [[#{app.page}]]
-                 [[${currentPage}]] [[#{app.of}]] [[${totalPages}]]
+                    [[${currentPage}]] [[#{app.of}]] [[${totalPages}]]
                 </div>
                 <div class="col-8 d-flex justify-content-right">
-                <ul class=" pagination pagination-sm">
-                    <li class="page-item">
-                        <div th:if="${currentPage == 1}">
+                    <ul class=" pagination pagination-sm">
+                        <li class="page-item">
+                            <div th:if="${currentPage == 1}">
+                                <div th:if="${keyword == null}">
+                                    <a class="page-link text-secondary"
+                                       th:href="@{|/persons/person-list/page/${currentPage}|}">
+                                        [[#{app.previous}]]
+                                    </a>
+                                </div>
+                                <div th:unless="${keyword == null}">
+                                    <a class="page-link text-secondary"
+                                       th:href="@{|/persons/person-list/page/${currentPage}?keyword=${keyword}|}">
+                                        [[#{app.previous}]]
+                                    </a>
+                                </div>
+                            </div>
+                            <div th:unless="${currentPage == 1}">
+                                <div th:if="${keyword == null}">
+                                    <a class="page-link "
+                                       th:href="@{|/persons/person-list/page/${currentPage - 1}|}">
+                                        [[#{app.previous}]]
+                                    </a>
+                                </div>
+                                <div th:unless="${keyword == null}">
+                                    <a class="page-link "
+                                       th:href="@{|/persons/person-list/page/${currentPage - 1}?keyword=${keyword}|}">
+                                        [[#{app.previous}]]
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="page-item" th:each="pageNumber : ${pageNumbers}">
                             <div th:if="${keyword == null}">
-                                <a class="page-link text-secondary"
-                                   th:href="@{|/persons/person-list/page/${currentPage}|}">
-                                    [[#{app.previous}]]
-                                </a>
+                                <a class="page-link"
+                                   th:href="@{|/persons/person-list/page/${pageNumber}|}"
+                                   th:text=${pageNumber}>1</a>
                             </div>
                             <div th:unless="${keyword == null}">
-                                <a class="page-link text-secondary"
-                                   th:href="@{|/persons/person-list/page/${currentPage}?keyword=${keyword}|}">
-                                    [[#{app.previous}]]
-                                </a>
+                                <a class="page-link"
+                                   th:href="@{|/persons/person-list/page/${pageNumber}?keyword=${keyword}|}"
+                                   th:text=${pageNumber}>1</a>
                             </div>
-                        </div>
-                        <div th:unless="${currentPage == 1}">
-                            <div th:if="${keyword == null}">
-                                <a class="page-link "
-                                   th:href="@{|/persons/person-list/page/${currentPage - 1}|}">
-                                    [[#{app.previous}]]
-                                </a>
-                            </div>
-                            <div th:unless="${keyword == null}">
-                                <a class="page-link "
-                                   th:href="@{|/persons/person-list/page/${currentPage - 1}?keyword=${keyword}|}">
-                                    [[#{app.previous}]]
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="page-item" th:each="pageNumber : ${pageNumbers}">
-                        <div th:if="${keyword == null}">
-                            <a class="page-link"
-                               th:href="@{|/persons/person-list/page/${pageNumber}|}"
-                               th:text=${pageNumber}>1</a>
-                        </div>
-                        <div th:unless="${keyword == null}">
-                            <a class="page-link"
-                               th:href="@{|/persons/person-list/page/${pageNumber}?keyword=${keyword}|}"
-                               th:text=${pageNumber}>1</a>
-                        </div>
-                    </li>
+                        </li>
 
-                    <li class="page-item">
-                        <div th:if="${currentPage == totalPages || totalItems == 0 }">
-                            <div th:if="${keyword == null}">
-                                <a class="page-link text-secondary"
-                                   th:href="@{|/persons/person-list/page/${currentPage}|}">
-                                    [[#{app.next}]]
-                                </a>
+                        <li class="page-item">
+                            <div th:if="${currentPage == totalPages || totalItems == 0 }">
+                                <div th:if="${keyword == null}">
+                                    <a class="page-link text-secondary"
+                                       th:href="@{|/persons/person-list/page/${currentPage}|}">
+                                        [[#{app.next}]]
+                                    </a>
+                                </div>
+                                <div th:unless="${keyword == null}">
+                                    <a class="page-link text-secondary"
+                                       th:href="@{|/persons/person-list/page/${currentPage}?keyword=${keyword}|}">
+                                        [[#{app.next}]]
+                                    </a>
+                                </div>
                             </div>
-                            <div th:unless="${keyword == null}">
-                                <a class="page-link text-secondary"
-                                   th:href="@{|/persons/person-list/page/${currentPage}?keyword=${keyword}|}">
-                                    [[#{app.next}]]
-                                </a>
+                            <div th:unless="${currentPage == totalPages || totalItems == 0}">
+                                <div th:if="${keyword == null}">
+                                    <a class="page-link"
+                                       th:href="@{|/persons/person-list/page/${currentPage  + 1}|}">
+                                        [[#{app.next}]]
+                                    </a>
+                                </div>
+                                <div th:unless="${keyword == null}">
+                                    <a class="page-link"
+                                       th:href="@{|/persons/person-list/page/${currentPage  + 1}?keyword=${keyword}|}">
+                                        [[#{app.next}]]
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div th:unless="${currentPage == totalPages || totalItems == 0}">
-                            <div th:if="${keyword == null}">
-                                <a class="page-link"
-                                   th:href="@{|/persons/person-list/page/${currentPage  + 1}|}">
-                                    [[#{app.next}]]
-                                </a>
-                            </div>
-                            <div th:unless="${keyword == null}">
-                                <a class="page-link"
-                                   th:href="@{|/persons/person-list/page/${currentPage  + 1}?keyword=${keyword}|}">
-                                    [[#{app.next}]]
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

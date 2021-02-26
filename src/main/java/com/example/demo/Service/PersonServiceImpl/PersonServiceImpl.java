@@ -1,6 +1,7 @@
 package com.example.demo.Service.PersonServiceImpl;
 
 import com.example.demo.DataMapper.PersonMapper;
+import com.example.demo.DomainModel.AuthenticationProvider;
 import com.example.demo.DomainModel.Organization;
 import com.example.demo.DomainModel.Person;
 import com.example.demo.EmployeeDataValidator.DataValidatorImpl;
@@ -49,6 +50,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public Person getPersonByEmail(String email){
+        return personJpaRepository.findByEmail(email);
+    }
+
+    @Override
     public Person getPersonById(Integer id) {
         Optional<Person> result = personJpaRepository.findById(id);
         Person person = new Person();
@@ -79,14 +85,14 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void deletePerson(Integer id) {
         Optional<Person> existPerson = personJpaRepository.findById(id);
-        if(existPerson.isPresent()){
+        if (existPerson.isPresent()) {
             Person person = existPerson.get();
             //find all persons in database and delete if somewhere in spouse is this person
             List<Person> personsList = personJpaRepository.findAll();
-            for( Person p : personsList){
+            for (Person p : personsList) {
                 Person spouse = p.getSpouse();
-                if(spouse != null){
-                    if( spouse.getSocialNumber().equals(person.getSocialNumber() ) ){
+                if (spouse != null) {
+                    if (spouse.getSocialNumber().equals(person.getSocialNumber())) {
                         p.setSpouse(null);
                         personJpaRepository.save(p);
                     }
@@ -94,10 +100,10 @@ public class PersonServiceImpl implements PersonService {
             }
             //delete person but this person is connected with work in organization
             List<Organization> organizationList = organizationJpaRepository.findAll();
-            for( Organization o : organizationList){
+            for (Organization o : organizationList) {
                 List<Person> employees = o.getEmployee();
-                if(!employees.isEmpty()){
-                    if(employees.contains(person)){
+                if (!employees.isEmpty()) {
+                    if (employees.contains(person)) {
                         employees.remove(person);
                     }
                 }
@@ -117,6 +123,25 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Person addNewPerson(Person person) {
         return personJpaRepository.save(person);
+    }
+
+    @Override
+    public void addNewPersonAfterOAuthLoginSuccess(String email, String name, AuthenticationProvider authenticationProvider){
+        Person person = new Person();
+        person.setEmail(email);
+        person.setGivenName(name);
+        person.setSocialNumber("000000000");
+        person.setFamilyName("empty");
+        person.setAuthProvider(authenticationProvider);
+
+        personJpaRepository.save(person);
+    }
+    @Override
+    public void updateCustomerAfterOAuthLoginSuccess(Person person, String name, AuthenticationProvider authenticationProvider){
+        person.setGivenName(name);
+        person.setAuthProvider(authenticationProvider);
+
+        personJpaRepository.save(person);
     }
 
     @Override
@@ -194,13 +219,13 @@ public class PersonServiceImpl implements PersonService {
 
         model.addAttribute("person", person);
         model.addAttribute("personsList", personList);
-        model.addAttribute("organizationList",organizationList);
-        model.addAttribute("colleaguesList",colleaguesList);
-        model.addAttribute("childrenList",childrenList);
-        model.addAttribute("parentList",parentList);
-        model.addAttribute("spouse",spouse);
-        model.addAttribute("followsList",followsList);
-        model.addAttribute("knowsList",knowsList);
+        model.addAttribute("organizationList", organizationList);
+        model.addAttribute("colleaguesList", colleaguesList);
+        model.addAttribute("childrenList", childrenList);
+        model.addAttribute("parentList", parentList);
+        model.addAttribute("spouse", spouse);
+        model.addAttribute("followsList", followsList);
+        model.addAttribute("knowsList", knowsList);
         model.addAttribute("organizationSponsor", organizationSponsor);
         model.addAttribute("worksFor", worksForOrganization);
         model.addAttribute("memberOfOrganizationList", memberOfOrganizationList);
@@ -283,7 +308,7 @@ public class PersonServiceImpl implements PersonService {
         Optional<Person> existColleaguePerson = personJpaRepository.findBySocialNumber(colleagueSocialNumber);
 
         //this person always exist because we add colleagues for that person
-        if(existsPerson.isPresent()){
+        if (existsPerson.isPresent()) {
             Person person = existsPerson.get();
             List<Person> colleagues = person.getColleague();
             //if colleague do NOT exist
@@ -291,9 +316,9 @@ public class PersonServiceImpl implements PersonService {
                 //create colleague like a person
                 Person newColleague = addNewPerson(colleaguePerson);
                 //check if colleague is already in person colleagues
-                    if(!colleagues.contains(newColleague)){
-                        colleagues.add(newColleague);
-                    }
+                if (!colleagues.contains(newColleague)) {
+                    colleagues.add(newColleague);
+                }
                 person.setColleague(colleagues);
                 personJpaRepository.save(person);
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
@@ -301,15 +326,14 @@ public class PersonServiceImpl implements PersonService {
                 //if colleague that we want to add to person already exists in database we check is in colleagues of person if not we add to persons_collageue
                 //check if colleague is already in person colleagues
                 Person newColleague = existColleaguePerson.get();
-                if(!colleagues.contains(newColleague)){
+                if (!colleagues.contains(newColleague)) {
                     colleagues.add(newColleague);
                 }
                 person.setColleague(colleagues);
                 personJpaRepository.save(person);
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             }
-        }
-        else {
+        } else {
             return "redirect:/persons/showFormForUpdate?personId=" + personId;
         }
     }
@@ -321,7 +345,7 @@ public class PersonServiceImpl implements PersonService {
         Optional<Person> existChildrenPerson = personJpaRepository.findBySocialNumber(childrenSocialNumber);
 
         //this person always exist because we add childrens for that person
-        if(existsPerson.isPresent()){
+        if (existsPerson.isPresent()) {
             Person person = existsPerson.get();
             List<Person> children = person.getChildren();
             //if children do NOT exist
@@ -329,7 +353,7 @@ public class PersonServiceImpl implements PersonService {
                 //create children like a person
                 Person newChildren = addNewPerson(childrenPerson);
                 //check if children is already in person childrens
-                if(!children.contains(newChildren)){
+                if (!children.contains(newChildren)) {
                     children.add(newChildren);
                 }
                 person.setChildren(children);
@@ -339,15 +363,14 @@ public class PersonServiceImpl implements PersonService {
                 //if children that we want to add to person already exists in database we check is in childrens of person if not we add to persons_collageue
                 //check if children is already in person childrens
                 Person newChildren = existChildrenPerson.get();
-                if(!children.contains(newChildren)){
+                if (!children.contains(newChildren)) {
                     children.add(newChildren);
                 }
                 person.setChildren(children);
                 personJpaRepository.save(person);
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             }
-        }
-        else {
+        } else {
             return "redirect:/persons/showFormForUpdate?personId=" + personId;
         }
     }
@@ -359,7 +382,7 @@ public class PersonServiceImpl implements PersonService {
         Optional<Person> existParentPerson = personJpaRepository.findBySocialNumber(parentSocialNumber);
 
         //this person always exist because we add parents for that person
-        if(existsPerson.isPresent()){
+        if (existsPerson.isPresent()) {
             Person person = existsPerson.get();
             List<Person> parents = person.getParent();
             //if parent do NOT exist
@@ -367,7 +390,7 @@ public class PersonServiceImpl implements PersonService {
                 //create parent like a person
                 Person newParent = addNewPerson(parentPerson);
                 //check if parent is already in person parents
-                if(!parents.contains(newParent)){
+                if (!parents.contains(newParent)) {
                     parents.add(newParent);
                 }
                 person.setParent(parents);
@@ -377,15 +400,14 @@ public class PersonServiceImpl implements PersonService {
                 //if parent that we want to add to person already exists in database we check is in parents of person if not we add to persons_collageue
                 //check if parent is already in person parents
                 Person newParent = existParentPerson.get();
-                if(!parents.contains(newParent)){
+                if (!parents.contains(newParent)) {
                     parents.add(newParent);
                 }
                 person.setParent(parents);
                 personJpaRepository.save(person);
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             }
-        }
-        else {
+        } else {
             return "redirect:/persons/showFormForUpdate?personId=" + personId;
         }
     }
@@ -397,10 +419,10 @@ public class PersonServiceImpl implements PersonService {
         Optional<Person> existSpousePerson = personJpaRepository.findBySocialNumber(spouseSocialNumber);
 
         //this person always exist because we add spouses for that person
-        if(existsPerson.isPresent()){
+        if (existsPerson.isPresent()) {
             Person person = existsPerson.get();
             //if spouse do NOT exist
-            if (!existSpousePerson.isPresent() ) {
+            if (!existSpousePerson.isPresent()) {
                 //create spouse like a person
                 Person newSpouse = addNewPerson(spousePerson);
                 //check if spouse is already in person spouses
@@ -417,8 +439,7 @@ public class PersonServiceImpl implements PersonService {
                 personJpaRepository.save(person);
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             }
-        }
-        else {
+        } else {
             return "redirect:/persons/showFormForUpdate?personId=" + personId;
         }
     }
@@ -429,12 +450,12 @@ public class PersonServiceImpl implements PersonService {
         String followPersonSocialNumber = followPerson.getSocialNumber();
         Optional<Person> existFollowPerson = personJpaRepository.findBySocialNumber(followPersonSocialNumber);
 
-        if(existsPerson.isPresent()){
+        if (existsPerson.isPresent()) {
             Person person = existsPerson.get();
             List<Person> follows = person.getFollows();
             if (!existFollowPerson.isPresent()) {
                 Person newFollowPerson = addNewPerson(followPerson);
-                if(!follows.contains(newFollowPerson)){
+                if (!follows.contains(newFollowPerson)) {
                     follows.add(newFollowPerson);
                 }
                 person.setFollows(follows);
@@ -449,7 +470,7 @@ public class PersonServiceImpl implements PersonService {
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             } else {
                 Person newFollowPerson = existFollowPerson.get();
-                if(!follows.contains(newFollowPerson)){
+                if (!follows.contains(newFollowPerson)) {
                     follows.add(newFollowPerson);
                 }
                 person.setFollows(follows);
@@ -457,7 +478,7 @@ public class PersonServiceImpl implements PersonService {
 
                 //Add person like a knows in newKnowPerson
                 List<Person> newFollows = newFollowPerson.getFollows();
-                if(!newFollows.contains(person)){
+                if (!newFollows.contains(person)) {
                     newFollows.add(person);
                 }
                 newFollowPerson.setFollows(newFollows);
@@ -465,8 +486,7 @@ public class PersonServiceImpl implements PersonService {
 
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             }
-        }
-        else {
+        } else {
             return "redirect:/persons/showFormForUpdate?personId=" + personId;
         }
     }
@@ -477,12 +497,12 @@ public class PersonServiceImpl implements PersonService {
         String followPersonSocialNumber = knowPerson.getSocialNumber();
         Optional<Person> existFollowPerson = personJpaRepository.findBySocialNumber(followPersonSocialNumber);
 
-        if(existsPerson.isPresent()){
+        if (existsPerson.isPresent()) {
             Person person = existsPerson.get();
             List<Person> knows = person.getKnows();
             if (!existFollowPerson.isPresent()) {
                 Person newKnowPerson = addNewPerson(knowPerson);
-                if(!knows.contains(newKnowPerson)){
+                if (!knows.contains(newKnowPerson)) {
                     knows.add(newKnowPerson);
                 }
                 person.setKnows(knows);
@@ -496,7 +516,7 @@ public class PersonServiceImpl implements PersonService {
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             } else {
                 Person newKnowPerson = existFollowPerson.get();
-                if(!knows.contains(newKnowPerson)){
+                if (!knows.contains(newKnowPerson)) {
                     knows.add(newKnowPerson);
                 }
                 person.setKnows(knows);
@@ -504,28 +524,27 @@ public class PersonServiceImpl implements PersonService {
 
                 //Add person like a knows in newKnowPerson
                 List<Person> newKnows = newKnowPerson.getKnows();
-                if(!newKnows.contains(person)){
+                if (!newKnows.contains(person)) {
                     newKnows.add(person);
                 }
                 newKnowPerson.setKnows(newKnows);
                 personJpaRepository.save(newKnowPerson);
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             }
-        }
-        else {
+        } else {
             return "redirect:/persons/showFormForUpdate?personId=" + personId;
         }
     }
 
     @Override
-    public String addOrganizationSponsor(Integer personId, Organization organizationSponsor){
+    public String addOrganizationSponsor(Integer personId, Organization organizationSponsor) {
         Optional<Person> existsPerson = personJpaRepository.findById(personId);
         String organizationSponsorEmail = organizationSponsor.getEmail();
         Optional<Organization> existOrganizationSponsor = organizationJpaRepository.findByEmail(organizationSponsorEmail);
-        if(existsPerson.isPresent()){
+        if (existsPerson.isPresent()) {
             Person person = existsPerson.get();
-               //if organization do NOT exist
-            if (!existOrganizationSponsor.isPresent() ) {
+            //if organization do NOT exist
+            if (!existOrganizationSponsor.isPresent()) {
                 Organization newOrganization = organizationJpaRepository.save(organizationSponsor);
                 person.setOrganization_sponsor(newOrganization);
                 personJpaRepository.save(person);
@@ -551,21 +570,20 @@ public class PersonServiceImpl implements PersonService {
 
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             }
-        }
-        else {
+        } else {
             return "redirect:/persons/showFormForUpdate?personId=" + personId;
         }
     }
 
     @Override
-    public String addWorksForOrganization(Integer personId, Organization worksForOrganization){
+    public String addWorksForOrganization(Integer personId, Organization worksForOrganization) {
         Optional<Person> existsPerson = personJpaRepository.findById(personId);
         String organizationPersonWorksForEmail = worksForOrganization.getEmail();
         Optional<Organization> existOrganization = organizationJpaRepository.findByEmail(organizationPersonWorksForEmail);
-        if(existsPerson.isPresent()){
+        if (existsPerson.isPresent()) {
             Person person = existsPerson.get();
             //if organization do NOT exist
-            if (!existOrganization.isPresent() ) {
+            if (!existOrganization.isPresent()) {
                 Organization newOrganization = organizationJpaRepository.save(worksForOrganization);
                 person.setWorksFor(newOrganization);
                 personJpaRepository.save(person);
@@ -591,8 +609,7 @@ public class PersonServiceImpl implements PersonService {
 
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             }
-        }
-        else {
+        } else {
             return "redirect:/persons/showFormForUpdate?personId=" + personId;
         }
     }
@@ -601,21 +618,22 @@ public class PersonServiceImpl implements PersonService {
      * Person has property list<Organization> memberOf that means that person can em member of many organization
      * in this function we add add new organization to person and also save old organization that person is member of
      * and plus also add this person to ???????
-     *     *
+     * *
+     *
      * @param personId
      * @param memberOfOrganization
      * @return
      */
     @Override
-    public String addMemberOfOrganization(Integer personId, Organization memberOfOrganization){
+    public String addMemberOfOrganization(Integer personId, Organization memberOfOrganization) {
         Optional<Person> existsPerson = personJpaRepository.findById(personId);
         String organizationPersonMemberOfEmail = memberOfOrganization.getEmail();
         Optional<Organization> existOrganization = organizationJpaRepository.findByEmail(organizationPersonMemberOfEmail);
-        if(existsPerson.isPresent()){
+        if (existsPerson.isPresent()) {
             Person person = existsPerson.get();
             List<Organization> memberOf = person.getMemberOf();
             //if organization do NOT exist
-            if (!existOrganization.isPresent() ) {
+            if (!existOrganization.isPresent()) {
                 Organization newOrganization = organizationJpaRepository.save(memberOfOrganization);
                 memberOf.add(newOrganization);
                 person.setMemberOf(memberOf);
@@ -647,8 +665,7 @@ public class PersonServiceImpl implements PersonService {
 
                 return "redirect:/persons/showFormForUpdate?personId=" + personId;
             }
-        }
-        else {
+        } else {
             return "redirect:/persons/showFormForUpdate?personId=" + personId;
         }
     }

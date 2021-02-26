@@ -1,5 +1,0 @@
-<http://schema.org/Person#33>
-        <http://schema.org/Person#familyName>
-                <http://schema.org/Person#trajkovska> ;
-        <http://schema.org/Person#givenName>
-                <http://schema.org/Person#Irena> .

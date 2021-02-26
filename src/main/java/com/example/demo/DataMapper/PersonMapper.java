@@ -16,7 +16,7 @@ public class PersonMapper {
     /**
      * Edit oldClient with data from new person
      *
-     * @param person client that we want to edit with new values of data
+     * @param person    client that we want to edit with new values of data
      * @param oldPerson the same client that exist in database with old values of data
      * @return edited client
      */
@@ -83,14 +83,14 @@ public class PersonMapper {
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         String dateOfBirth = fields.get("dateOfBirth").getValueAsString();
-        if(!dateOfBirth.equals("")){
+        if (!dateOfBirth.equals("")) {
             Date parseDateOfBirth = simpleDateFormat.parse(dateOfBirth);
             person.setBirthDate(parseDateOfBirth);
             person.setBirthPlace(fields.get("placeOfBirth").getValueAsString());
         }
 
         String dateOfDeath = fields.get("dateOfDeath").getValueAsString();
-        if(!dateOfDeath.equals("")){
+        if (!dateOfDeath.equals("")) {
             Date parseDateOfDeath = simpleDateFormat.parse(dateOfDeath);
             person.setDeathDate(parseDateOfDeath);
             person.setDeathPlace(fields.get("placeOfDeath").getValueAsString());
@@ -112,10 +112,10 @@ public class PersonMapper {
         person.setSeeks(fields.get("seek").getValueAsString());
         person.setTaxID(fields.get("taxID").getValueAsString());
         person.setTelephone(fields.get("telephone").getValueAsString());
-        if(!fields.get("height").getValueAsString().equals("")){
+        if (!fields.get("height").getValueAsString().equals("")) {
             person.setHeight(Integer.valueOf(fields.get("height").getValueAsString()));
         }
-        if(!fields.get("weight").getValueAsString().equals("")){
+        if (!fields.get("weight").getValueAsString().equals("")) {
             person.setWeight(Integer.valueOf(fields.get("weight").getValueAsString()));
         }
         person.setWorkLocation(fields.get("workLocation").getValueAsString());
@@ -123,13 +123,13 @@ public class PersonMapper {
         person.setPassportNumber(fields.get("passportNumber").getValueAsString());
 
         String dateOfExpiryPassport = fields.get("dateOfExpiryPassport").getValueAsString();
-        if(!dateOfDeath.equals("")){
+        if (!dateOfExpiryPassport.equals("")) {
             Date parseDateOfExpiryPassport = simpleDateFormat.parse(dateOfExpiryPassport);
             person.setDateOfExpiryPassport(parseDateOfExpiryPassport);
         }
 
         String dateOfIssuePassport = fields.get("dateOfIssuePassport").getValueAsString();
-        if(!dateOfDeath.equals("")){
+        if (!dateOfIssuePassport.equals("")) {
             Date parseDateOfIssuePassport = simpleDateFormat.parse(dateOfIssuePassport);
             person.setDateOfIssuePassport(parseDateOfIssuePassport);
         }

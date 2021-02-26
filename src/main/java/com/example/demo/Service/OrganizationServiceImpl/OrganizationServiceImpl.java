@@ -30,7 +30,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     @Override
-    public Page<Organization> getPaginatedOrganizations(int page,Model model) {
+    public Page<Organization> getPaginatedOrganizations(int page, Model model) {
         PageRequest pageable = PageRequest.of(page - 1, 10);
 
         Page<Organization> organizationPage = calculateNumberOfPages(model, pageable);
@@ -62,10 +62,10 @@ public class OrganizationServiceImpl implements OrganizationService {
         organizationPage = organizationJpaRepository.findAll(pageable);
         totalPages = organizationPage.getTotalPages();
 
-            if (totalPages > 0) {
-                List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
-                model.addAttribute("pageNumbers", pageNumbers);
-            }
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
         return organizationPage;
     }
 
@@ -76,6 +76,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         Organization modifiedOrganization = oldOrganizationMapToNewOrganization(organization, oldOrganization);
         return organizationJpaRepository.save(modifiedOrganization);
     }
+
     @Override
     public void sendDataToEditModelView(Integer organizationId, Model model) {
         Organization organization = getOrganizationById(organizationId);
@@ -92,14 +93,14 @@ public class OrganizationServiceImpl implements OrganizationService {
         model.addAttribute("memberOfOrganizationList", memberOfOrganizationList);
         model.addAttribute("subOfOrganizationList", subOrganizationOrganizationList);
         model.addAttribute("parentOfOrganizationExisted", parentIfOrganization);
-        model.addAttribute("sponsorsList",sponsorsList);
+        model.addAttribute("sponsorsList", sponsorsList);
         model.addAttribute("employees", employees);
-        model.addAttribute("members", members );
+        model.addAttribute("members", members);
 
     }
 
     @Override
-    public Organization addNewOrganization(Organization organization){
+    public Organization addNewOrganization(Organization organization) {
         return organizationJpaRepository.save(organization);
     }
 
@@ -108,14 +109,14 @@ public class OrganizationServiceImpl implements OrganizationService {
         Optional<Organization> existOrganization = organizationJpaRepository.findById(id);
 
         //find all organizations in database and delete if somewhere in  is this person
-        if(existOrganization.isPresent()){
+        if (existOrganization.isPresent()) {
             Organization organization = existOrganization.get();
             //set null everywhere where organization that we want to delete ia parent to some other
             List<Organization> organizationsList = organizationJpaRepository.findAll();
-            for( Organization o : organizationsList){
+            for (Organization o : organizationsList) {
                 Organization parentOrganization = o.getParentOrganization();
-                if(parentOrganization != null){
-                    if( parentOrganization.getEmail().equals(organization.getEmail()) ){
+                if (parentOrganization != null) {
+                    if (parentOrganization.getEmail().equals(organization.getEmail())) {
                         o.setParentOrganization(null);
                         organizationJpaRepository.save(o);
                     }
@@ -123,21 +124,21 @@ public class OrganizationServiceImpl implements OrganizationService {
             }
 
             List<Person> sponsors = organization.getSponsors();
-            for(Person p : sponsors ){
+            for (Person p : sponsors) {
                 p.setOrganization_sponsor(null);
                 personJpaRepository.save(p);
             }
 
             //delete organization but this organization is connected with persons
             List<Person> employees = personJpaRepository.findAll();
-            for( Person p : employees){
+            for (Person p : employees) {
                 Organization personWorksForThisOrganization = p.getWorksFor();
-                    if(personWorksForThisOrganization != null ){
-                        p.setWorksFor(null);
-                    }
-                    personJpaRepository.save(p);
+                if (personWorksForThisOrganization != null) {
+                    p.setWorksFor(null);
                 }
+                personJpaRepository.save(p);
             }
+        }
         organizationJpaRepository.deleteById(id);
     }
 
@@ -147,7 +148,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         String departmentEmail = departmentOrganization.getEmail();
         Optional<Organization> existDepartmentOrganization = organizationJpaRepository.findByEmail(departmentEmail);
         //this organization always exist because we add departments for that organization
-        if(existsOrganization.isPresent()){
+        if (existsOrganization.isPresent()) {
             Organization organization = existsOrganization.get();
             List<Organization> departments = organization.getDepartments();
             //if department do NOT exist
@@ -155,7 +156,7 @@ public class OrganizationServiceImpl implements OrganizationService {
                 //create department like a organization
                 Organization newDepartment = addNewOrganization(departmentOrganization);
                 //check if department is already in organization departments
-                if(!departments.contains(newDepartment)){
+                if (!departments.contains(newDepartment)) {
                     departments.add(newDepartment);
                 }
                 organization.setDepartments(departments);
@@ -165,15 +166,14 @@ public class OrganizationServiceImpl implements OrganizationService {
                 //if department that we want to add to organization already exists in database we check is in departments of organization if not we add to organizations_collageue
                 //check if department is already in organization departments
                 Organization newDepartment = existDepartmentOrganization.get();
-                if(!departments.contains(newDepartment)){
+                if (!departments.contains(newDepartment)) {
                     departments.add(newDepartment);
                 }
                 organization.setDepartments(departments);
                 organizationJpaRepository.save(organization);
                 return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
             }
-        }
-        else {
+        } else {
             return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
         }
     }
@@ -184,7 +184,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         String subOrganizationEmail = subOrganizationOrganization.getEmail();
         Optional<Organization> existSubOrganizationOrganization = organizationJpaRepository.findByEmail(subOrganizationEmail);
         //this organization always exist because we add subOrganizations for that organization
-        if(existsOrganization.isPresent()){
+        if (existsOrganization.isPresent()) {
             Organization organization = existsOrganization.get();
             List<Organization> subOrganizations = organization.getSubOrganization();
             //if subOrganization do NOT exist
@@ -192,7 +192,7 @@ public class OrganizationServiceImpl implements OrganizationService {
                 //create subOrganization like a organization
                 Organization newSubOrganization = addNewOrganization(subOrganizationOrganization);
                 //check if subOrganization is already in organization subOrganizations
-                if(!subOrganizations.contains(newSubOrganization)){
+                if (!subOrganizations.contains(newSubOrganization)) {
                     subOrganizations.add(newSubOrganization);
                 }
                 organization.setSubOrganization(subOrganizations);
@@ -202,15 +202,14 @@ public class OrganizationServiceImpl implements OrganizationService {
                 //if subOrganization that we want to add to organization already exists in database we check is in subOrganizations of organization if not we add to organizations_collageue
                 //check if subOrganization is already in organization subOrganizations
                 Organization newSubOrganization = existSubOrganizationOrganization.get();
-                if(!subOrganizations.contains(newSubOrganization)){
+                if (!subOrganizations.contains(newSubOrganization)) {
                     subOrganizations.add(newSubOrganization);
                 }
                 organization.setSubOrganization(subOrganizations);
                 organizationJpaRepository.save(organization);
                 return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
             }
-        }
-        else {
+        } else {
             return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
         }
     }
@@ -221,7 +220,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         String memberOfOrganizationEmail = memberOfOrganization.getEmail();
         Optional<Organization> existMemberOfOrganizationOrganization = organizationJpaRepository.findByEmail(memberOfOrganizationEmail);
         //this organization always exist because we add memberOfOrganizations for that organization
-        if(existsOrganization.isPresent()){
+        if (existsOrganization.isPresent()) {
             Organization organization = existsOrganization.get();
             List<Organization> memberOfOrganizations = organization.getMemberOf_organization();
             //if memberOfOrganization do NOT exist
@@ -229,7 +228,7 @@ public class OrganizationServiceImpl implements OrganizationService {
                 //create memberOfOrganization like a organization
                 Organization newMemberOfOrganization = addNewOrganization(memberOfOrganization);
                 //check if memberOfOrganization is already in organization memberOfOrganizations
-                if(!memberOfOrganizations.contains(newMemberOfOrganization)){
+                if (!memberOfOrganizations.contains(newMemberOfOrganization)) {
                     memberOfOrganizations.add(newMemberOfOrganization);
                 }
                 organization.setMemberOf_organization(memberOfOrganizations);
@@ -239,15 +238,14 @@ public class OrganizationServiceImpl implements OrganizationService {
                 //if memberOfOrganization that we want to add to organization already exists in database we check is in memberOfOrganizations of organization if not we add to organizations_collageue
                 //check if memberOfOrganization is already in organization memberOfOrganizations
                 Organization newMemberOfOrganization = existMemberOfOrganizationOrganization.get();
-                if(!memberOfOrganizations.contains(newMemberOfOrganization)){
+                if (!memberOfOrganizations.contains(newMemberOfOrganization)) {
                     memberOfOrganizations.add(newMemberOfOrganization);
                 }
                 organization.setMemberOf_organization(memberOfOrganizations);
                 organizationJpaRepository.save(organization);
                 return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
             }
-        }
-        else {
+        } else {
             return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
         }
     }
@@ -258,7 +256,7 @@ public class OrganizationServiceImpl implements OrganizationService {
         String parentOfOrganizationEmail = parentOfOrganization.getEmail();
         Optional<Organization> existParentOfOrganization = organizationJpaRepository.findByEmail(parentOfOrganizationEmail);
         //this organization always exist because we add parentOfOrganizations for that organization
-        if(existsOrganization.isPresent()){
+        if (existsOrganization.isPresent()) {
             Organization organization = existsOrganization.get();
             //if parentOfOrganization do NOT exist
             if (!existParentOfOrganization.isPresent()) {
@@ -275,20 +273,19 @@ public class OrganizationServiceImpl implements OrganizationService {
                 organizationJpaRepository.save(organization);
                 return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
             }
-        }
-        else {
+        } else {
             return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
         }
     }
 
     @Override
-    public String addSponsorInOrganization(Integer organizationId, Person sponsorInOrganization ) {
+    public String addSponsorInOrganization(Integer organizationId, Person sponsorInOrganization) {
         Optional<Organization> existsOrganization = organizationJpaRepository.findById(organizationId);
         String sponsorInOrganizationSocialNumber = sponsorInOrganization.getSocialNumber();
         Optional<Person> existSponsorPerson = personJpaRepository.findBySocialNumber(sponsorInOrganizationSocialNumber);
 
         //this organization always exist because we add parentOfOrganizations for that organization
-        if(existsOrganization.isPresent()){
+        if (existsOrganization.isPresent()) {
             Organization organization = existsOrganization.get();
             //if sponsorInOrganization do NOT exist like a person
             if (!existSponsorPerson.isPresent()) {
@@ -321,20 +318,19 @@ public class OrganizationServiceImpl implements OrganizationService {
 
                 return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
             }
-        }
-        else {
+        } else {
             return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
         }
     }
 
     @Override
-    public String addEmployeeInOrganization(Integer organizationId, Person employee ) {
+    public String addEmployeeInOrganization(Integer organizationId, Person employee) {
         Optional<Organization> existsOrganization = organizationJpaRepository.findById(organizationId);
         String employeeSocialNumber = employee.getSocialNumber();
         Optional<Person> existEmployee = personJpaRepository.findBySocialNumber(employeeSocialNumber);
 
         //this organization always exist because we add parentOfOrganizations for that organization
-        if(existsOrganization.isPresent()){
+        if (existsOrganization.isPresent()) {
             Organization organization = existsOrganization.get();
             //if sponsorInOrganization do NOT exist like a person
             if (!existEmployee.isPresent()) {
@@ -367,19 +363,18 @@ public class OrganizationServiceImpl implements OrganizationService {
 
                 return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
             }
-        }
-        else {
+        } else {
             return "redirect:/organizations/showFormForUpdate?organizationId=" + organizationId;
         }
     }
 
     @Override
-    public void addMemberInOrganization(Integer organizationId, Person member ) {
+    public void addMemberInOrganization(Integer organizationId, Person member) {
         Optional<Organization> existsOrganization = organizationJpaRepository.findById(organizationId);
         String memberSocialNumber = member.getSocialNumber();
         Optional<Person> existMember = personJpaRepository.findBySocialNumber(memberSocialNumber);
 
-        if(existsOrganization.isPresent()){
+        if (existsOrganization.isPresent()) {
             Organization organization = existsOrganization.get();
             List<Person> membersList = organization.getMember();
 

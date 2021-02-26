@@ -24,5 +24,5 @@ public interface DataValidator {
      * @param dateString date in string type
      * @return if string is valid date return false else return true
      */
-   // boolean isDateValid(String dateString);
+    // boolean isDateValid(String dateString);
 }

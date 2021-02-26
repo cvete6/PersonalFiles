@@ -67,7 +67,6 @@ public class PersonController {
         return "redirect:/persons/person-list/page/1";
     }
 
-    //ova ne go koristam !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     @GetMapping("/showFormForAddPerson")
     public String showFormForAddPerson(@RequestParam("personColleagueId") Integer personColleagueId, Model model) {
         model.addAttribute("colleaguePerson", new Person());
@@ -77,7 +76,7 @@ public class PersonController {
     /**
      * Save modified person to database
      *
-     * @param person     person that is save to model in Edit person form
+     * @param person        person that is save to model in Edit person form
      * @param personalImage multipartFile for uploaded personal image
      * @param model         is used to get model attributes from view
      * @return redirect to thymeleaf template for all persons
@@ -110,7 +109,7 @@ public class PersonController {
         model.addAttribute("knowsPerson", new Person());
         model.addAttribute("organizationSponsorPerson", new Organization());
         model.addAttribute("worksForOrganization", new Organization());
-        model.addAttribute("memberOfOrganization",new Organization());
+        model.addAttribute("memberOfOrganization", new Organization());
         return "editPerson";
     }
 
@@ -128,19 +127,15 @@ public class PersonController {
      * Get data from uploaded pdf file and create new entry in database
      *
      * @param uploadedMultipartPdfFile a file that we upload
-     * @param model add attribute to model only if person already exist in database
+     * @param model                    add attribute to model only if person already exist in database
      * @return redirect to edit view for new person or show details if person already exists in the database
      */
     @PostMapping("/uploadPdfFile")
     public String uploadAndSaveDataFromPdfFile(
             @RequestParam("uploadedMultipartPdfFile") MultipartFile uploadedMultipartPdfFile, Model model)
             throws Exception {
-        return personService.validateAndCreateEmployee(uploadedMultipartPdfFile,model);
+        return personService.validateAndCreateEmployee(uploadedMultipartPdfFile, model);
     }
-
-
-
-
 
 
     @RequestMapping(value = "/exportRDFFileInTURTLEFormat/{personId}")
@@ -208,7 +203,7 @@ public class PersonController {
      * Get data from uploaded file and create new entry in database if person with that rdf does not exist
      *
      * @param uploadedMultipartRDFFile a file that we upload
-     * @param model add attribute to model only if person already exist in database
+     * @param model                    add attribute to model only if person already exist in database
      * @return redirect to edit view for new person or show details if person already exists in the database
      */
     @PostMapping("/uploadRDFFile")
@@ -223,7 +218,7 @@ public class PersonController {
     /**
      * Save new Person to database
      *
-     * @param model         is used to get model attributes from view
+     * @param model is used to get model attributes from view
      * @return redirect to thymeleaf template for all Persons
      * @throws IOException getBytes() from MultipartFile need not to be null
      */
@@ -231,7 +226,7 @@ public class PersonController {
     public String addNewChildren(@ModelAttribute Person childrenPerson,
                                  @RequestParam("personId") Integer personId,
                                  Model model) {
-        personService.addChildren(personId,childrenPerson);
+        personService.addChildren(personId, childrenPerson);
         return "redirect:/persons/showFormForUpdate?personId=" + personId;
 
     }
@@ -240,16 +235,16 @@ public class PersonController {
     public String addNewParent(@ModelAttribute Person parentPerson,
                                @RequestParam("personId") Integer personId,
                                Model model) {
-        personService.addParent(personId,parentPerson);
+        personService.addParent(personId, parentPerson);
         return "redirect:/persons/showFormForUpdate?personId=" + personId;
 
     }
 
     @PostMapping("/addColleague")
     public String addNewColleague(@ModelAttribute Person colleaguePerson,
-                               @RequestParam("personId") Integer personId,
-                               Model model) {
-        personService.addColleagues(personId,colleaguePerson);
+                                  @RequestParam("personId") Integer personId,
+                                  Model model) {
+        personService.addColleagues(personId, colleaguePerson);
         return "redirect:/persons/showFormForUpdate?personId=" + personId;
 
     }
@@ -258,7 +253,7 @@ public class PersonController {
     public String addNewSpouse(@ModelAttribute Person spousePerson,
                                @RequestParam("personId") Integer personId,
                                Model model) {
-        personService.addSpouse(personId,spousePerson);
+        personService.addSpouse(personId, spousePerson);
         return "redirect:/persons/showFormForUpdate?personId=" + personId;
     }
 
@@ -266,7 +261,7 @@ public class PersonController {
     public String addFollows(@ModelAttribute Person followPerson,
                              @RequestParam("personId") Integer personId,
                              Model model) {
-        personService.addFollowPerson(personId,followPerson);
+        personService.addFollowPerson(personId, followPerson);
         return "redirect:/persons/showFormForUpdate?personId=" + personId;
     }
 
@@ -280,17 +275,17 @@ public class PersonController {
 
     @PostMapping("/addOrganizationSponsor")
     public String addSponsorToOrganization(@ModelAttribute Organization organizationSponsor,
-                               @RequestParam("personId") Integer personId,
-                               Model model) {
-        personService.addOrganizationSponsor(personId,organizationSponsor);
+                                           @RequestParam("personId") Integer personId,
+                                           Model model) {
+        personService.addOrganizationSponsor(personId, organizationSponsor);
         return "redirect:/persons/showFormForUpdate?personId=" + personId;
     }
 
     @PostMapping("/addWorksForOrganization")
     public String addNewWorksForOrganization(@ModelAttribute Organization worksForOrganization,
-                               @RequestParam("personId") Integer personId,
-                               Model model) {
-        personService.addWorksForOrganization(personId,worksForOrganization);
+                                             @RequestParam("personId") Integer personId,
+                                             Model model) {
+        personService.addWorksForOrganization(personId, worksForOrganization);
         return "redirect:/persons/showFormForUpdate?personId=" + personId;
     }
 

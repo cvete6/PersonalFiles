@@ -23,36 +23,40 @@
 <body>
 <div id="menu" th:fragment="menu" class="bg-light border-bottom d-flex justify-content-center">
     <div class="row align-items-center m-2 container-md ">
-        <div class="col-4 ml-xl-auto text-light">
+        <div class="col-3 ml-xl-auto text-light">
             <a class="align-content-center naslov row" th:href="@{/persons/start}">
-                <img src="https://www.pinclipart.com/picdir/middle/221-2217551_user-icon-png-clipart-computer-icons-user-green.png" class="rounded-circle" height="80" width="80">
-                <h6 class="pt-4 text-uppercase " style="color: #124265;!important;">  [[#{app.ApplicationTitle}]] </h6>
+                <img src="https://www.pinclipart.com/picdir/middle/221-2217551_user-icon-png-clipart-computer-icons-user-green.png"
+                     class="rounded-circle" height="80" width="80">
+                <h6 class="pt-4 text-uppercase " style="color: #124265;!important;"> [[#{app.ApplicationTitle}]] </h6>
             </a>
         </div>
-        <div class="col-8 align-items-end ">
+        <div class="col-9 align-items-end ">
             <nav class="navbar navbar-expand-md navbar-light bg-light">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+                        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse text-dark  justify-content-end" id="navbarCollapse">
                     <ul class="navbar-nav ml-auto justify-content-end">
                         <li class="nav-item active">
-                            <a class="nav-link text-dark border border-light rounded bg-light pr-2 mr-2 " th:href="@{/persons/person-list/page/1}">[[#{app.title}]]</a>
+                            <a class="nav-link text-dark border border-light rounded bg-light pr-2 mr-2 "
+                               th:href="@{/persons/person-list/page/1}">[[#{app.title}]]</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link text-dark border border-light pr-2 mr-2 rounded bg-light" th:href="@{/organizations/organization-list/page/1}">[[#{app.organization}]]</a>
+                            <a class="nav-link text-dark border border-light pr-2 mr-2 rounded bg-light"
+                               th:href="@{/organizations/organization-list/page/1}">[[#{app.organization}]]</a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link text-dark border border-light rounded bg-light pr-2 mr-2 " th:href="@{/email}">[[#{app.sendEmail}]]</a>
+                            <a class="nav-link text-dark border border-light rounded bg-light pr-2 mr-2 "
+                               th:href="@{/email}">[[#{app.sendEmail}]]</a>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link text-dark border border-light rounded bg-light pr-2 mr-2 " th:href="@{/email}">[[#{app.uploadPdfFile}]]</a>
+                            <a class="nav-link text-dark border border-light rounded bg-light pr-2 mr-2 "
+                               th:href="@{/email}">[[#{app.uploadPdfFile}]]</a>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link text-dark border border-light rounded bg-light pr-2 mr-2 " th:href="@{/persons/showFormForUploadRDFFile}">[[#{app.uploadRDFFile}]]</a>
-                        </li>
-                        <li class="text-success">
-                            User: <span sec:authentication="principal.username"></span>
+                            <a class="nav-link text-dark border border-light rounded bg-light pr-2 mr-2 "
+                               th:href="@{/persons/showFormForUploadRDFFile}">[[#{app.uploadRDFFile}]]</a>
                         </li>
                     </ul>
                     <div class="row mb-0 m-1">
@@ -63,24 +67,32 @@
     </div>
     <div class="row form-inline d-flex align-items-center">
         <div class="pt-2" sec:authorize="isAuthenticated()">
-            <form method="POST" th:action="@{/logout}" >
-                <button class="btn btn-sm btn-info " ><i class="fa fa-sign-out" aria-hidden="true"></i>
-                    [[#{app.SignOut}]]
-                </button>
+            <form method="POST" th:action="@{/logout}">
+                <div class="col">
+                    [[#{app.user}]]: <span sec:authentication="principal.username"></span>
+                </div>
+                <div class="col">
+                    <button class="btn btn-sm btn-info "><i class="fa fa-sign-out" aria-hidden="true"></i>
+                        [[#{app.SignOut}]]
+                    </button>
+                </div>
             </form>
         </div>
-        <div class="w-100"></div>
-        <div th:with="currentUrl=(${#httpServletRequest.requestURI + '?' + #strings.defaultString(#httpServletRequest.queryString, '')})" class="form-inline d-flex justify-content-center align-items-center pl-4 ">
+        <div></div>
+        <div th:with="currentUrl=(${#httpServletRequest.requestURI + '?' + #strings.defaultString(#httpServletRequest.queryString, '')})"
+             class="form-inline d-flex justify-content-center align-items-center pl-4 ">
             <div class="row form-inline d-flex justify-content-top p-0">
                 <div class="d-flex justify-content-center p-0 pl-2"
                      th:with="currentUrl=(${@currentUrlWithoutParam.apply('lang')})">
-                    <a class="nav-link font-weight-light d-flex justify-content-center m-0 p-0" th:href="@{${currentUrl}(lang=mk)}">
+                    <a class="nav-link font-weight-light d-flex justify-content-center m-0 p-0"
+                       th:href="@{${currentUrl}(lang=mk)}">
                         <p width="30">MK </p>
                     </a>
                 </div>
                 <div class="d-flex justify-content-center mb-0 mt-0 p-0 pl-2"
                      th:with="currentUrl=(${@currentUrlWithoutParam.apply('lang')})">
-                    <a class="nav-link font-weight-light d-flex justify-content-center m-0 p-0" th:href="@{${currentUrl}(lang=en)}">
+                    <a class="nav-link font-weight-light d-flex justify-content-center m-0 p-0"
+                       th:href="@{${currentUrl}(lang=en)}">
                         <p width="30"> EN</p>
                     </a>
                 </div>

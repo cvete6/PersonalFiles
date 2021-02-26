@@ -12,5 +12,6 @@ import java.util.Optional;
  */
 public interface OrganizationJpaRepository extends JpaRepository<Organization, Integer> {
     Page<Organization> findAll(Pageable pageable);
+
     Optional<Organization> findByEmail(String email);
 }

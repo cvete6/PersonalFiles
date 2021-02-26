@@ -78,7 +78,7 @@ public class EmailSenderServiceImpl {
             helper.setText(body);
 
             if (attachmentFile != null) {
-                helper.addAttachment("Application for employment.pdf", attachmentFile, "application/pdf");
+                helper.addAttachment("PersonalFile.pdf", attachmentFile, "application/pdf");
             }
             javaMailSender.send(mimeMessage);
         } catch (RuntimeException e) {

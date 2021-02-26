@@ -26,151 +26,160 @@
 
 <main role="main" class="background ">
     <div class="container position-relative">
-    <h4 class="ml-2 mt-3 position-relative">[[#{app.title}]]:</h4>
-    <form th:action="@{/persons/person-list/page/1(keyword = ${keyword})}"
-          class="form-inline form-group row d-flex justify-content-end mt-2 mb-3 mr-2 mt-md-0 position-relative" method="GET">
-        <input class="form-control form-control-sm" id="txtsearch" type="text" name="keyword" th:value="${keyword}"
-               th:placeholder="#{app.searchPlaceholder}"
-               aria-label="Search">
-        <button class="btn btn-sm btn-outline-info my-2 my-sm-0 position-relative active" type="submit">[[#{app.search}]]</button>
-    </form>
-    <div class="container table-responsive position-relative">
-        <table class="table table-hover table-sm">
-            <thead>
-            <tr>
-                <th class="col-xs-5">[[#{app.name}]]</th>
-                <th class="col-xs-5">[[#{app.lastName}]]</th>
-                <th class="col-xs-5">[[#{app.socialNumber}]]</th>
-                <th class="col-xs-5">[[#{app.placeOfBirth}]]</th>
-                <th class="col-xs-5"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr scope="row" class="form-group" th:each="person : ${personsList}">
-                <td class="form-item font-weight-normal" th:text="${person.givenName}"></td>
-                <td class="form-item font-weight-normal" th:text="${person.familyName}"></td>
-                <td class="form-item font-weight-normal" th:text="${person.socialNumber}"></td>
-                <td class="form-item font-weight-normal" th:text="${person.birthPlace}"></td>
-                <td class="text-right row">
-                    <div class="btn-group" role="group">
-                        <div class="col-md-4 ">
-                            <form action="#" th:action="@{/persons/showFormForUpdate(personId = ${person.id})}"
-                                  method="GET">
-                                <input type="hidden" name="personId" th:value="${person.id}"/>
-                                <i class="fa fa-fw fa-edit"></i>
-                                <button type="submit" class="btn btn-sm btn-info ">[[#{app.edit}]]</button>
-                            </form>
-                        </div>
-                        <div class="col-md-5 ">
-                            <form th:action="@{/persons/delete(personId = ${person.id})}" th:method="delete">
-                                <input name="personId" th:value="${person.id}" type="hidden">
-                                <i class="fa fa-fw fa-trash"></i>
-                                <button type="submit" class="btn btn-sm btn-danger" id="delete">[[#{app.delete}]]</button>
-                            </form>
-                        </div>
-                        <div class="col-md-5 ">
-                            <div class=" justify-content-right ml-4 pl-2">
+        <h4 class="ml-2 mt-3 position-relative">[[#{app.title}]]:</h4>
+        <form th:action="@{/persons/person-list/page/1(keyword = ${keyword})}"
+              class="form-inline form-group row d-flex justify-content-end mt-2 mb-3 mr-2 mt-md-0 position-relative"
+              method="GET">
+            <input class="form-control form-control-sm" id="txtsearch" type="text" name="keyword" th:value="${keyword}"
+                   th:placeholder="#{app.searchPlaceholder}"
+                   aria-label="Search">
+            <button class="btn btn-sm btn-outline-info my-2 my-sm-0 position-relative active" type="submit">
+                [[#{app.search}]]
+            </button>
+        </form>
+        <div class="container table-responsive position-relative">
+            <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th class="col-xs-5">[[#{app.name}]]</th>
+                    <th class="col-xs-5">[[#{app.lastName}]]</th>
+                    <th class="col-xs-5">[[#{app.socialNumber}]]</th>
+                    <th class="col-xs-5">[[#{app.placeOfBirth}]]</th>
+                    <th class="col-xs-5"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr scope="row" class="form-group" th:each="person : ${personsList}">
+                    <td class="form-item font-weight-normal" th:text="${person.givenName}"></td>
+                    <td class="form-item font-weight-normal" th:text="${person.familyName}"></td>
+                    <td class="form-item font-weight-normal" th:text="${person.socialNumber}"></td>
+                    <td class="form-item font-weight-normal" th:text="${person.birthPlace}"></td>
+                    <td class="text-right row">
+                        <div class="btn-group" role="group">
+                            <div class="col-md-4 ">
+                                <form action="#" th:action="@{/persons/showFormForUpdate(personId = ${person.id})}"
+                                      method="GET">
+                                    <input type="hidden" name="personId" th:value="${person.id}"/>
+                                    <i class="fa fa-fw fa-edit"></i>
+                                    <button type="submit" class="btn btn-sm btn-info ">[[#{app.edit}]]</button>
+                                </form>
+                            </div>
+                            <div class="col-md-5 ">
+                                <form th:action="@{/persons/delete(personId = ${person.id})}" th:method="delete">
+                                    <input name="personId" th:value="${person.id}" type="hidden">
+                                    <i class="fa fa-fw fa-trash"></i>
+                                    <button type="submit" class="btn btn-sm btn-danger" id="delete">[[#{app.delete}]]
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="col-md-5 ">
+                                <div class=" justify-content-right ml-4 pl-2">
 
-                                <div class="dropdown show">
-                                    <a class="btn btn-sm btn-success dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Choose format
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                        <a class="dropdown-item" th:href="@{/persons/exportRDFFileInTURTLEFormat/{personId}(personId=${person.id})}">TURTLE</a>
-                                        <a class="dropdown-item" th:href="@{/persons/exportRDFFileInRDFXMLFormat/{personId}(personId=${person.id})}">RDF/XML</a>
-                                        <a class="dropdown-item" th:href="@{/persons/exportRDFFileInNTriplesFormat/{personId}(personId=${person.id})}">N-TRIPLES</a>
+                                    <div class="dropdown show">
+                                        <a class="btn btn-sm btn-success dropdown-toggle" href="#" role="button"
+                                           id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                           aria-expanded="false">
+                                            [[#{app.chooseFormat}]]
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a class="dropdown-item"
+                                               th:href="@{/persons/exportRDFFileInTURTLEFormat/{personId}(personId=${person.id})}">TURTLE</a>
+                                            <a class="dropdown-item"
+                                               th:href="@{/persons/exportRDFFileInRDFXMLFormat/{personId}(personId=${person.id})}">RDF/XML</a>
+                                            <a class="dropdown-item"
+                                               th:href="@{/persons/exportRDFFileInNTriplesFormat/{personId}(personId=${person.id})}">N-TRIPLES</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="row" th:fragment="pagination">
-            <div class=" col-4 justify-content-left">[[#{app.totalItems}]]: [[${totalItems}]] - [[#{app.page}]]
-                [[${currentPage}]] [[#{app.of}]] [[${totalPages}]]
-            </div>
-            <div class="col-8 d-flex justify-content-right">
-                <ul class=" pagination pagination-sm">
-                    <li class="page-item">
-                        <div th:if="${currentPage == 1}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="row" th:fragment="pagination">
+                <div class=" col-4 justify-content-left">[[#{app.totalItems}]]: [[${totalItems}]] - [[#{app.page}]]
+                    [[${currentPage}]] [[#{app.of}]] [[${totalPages}]]
+                </div>
+                <div class="col-8 d-flex justify-content-right">
+                    <ul class=" pagination pagination-sm">
+                        <li class="page-item">
+                            <div th:if="${currentPage == 1}">
+                                <div th:if="${keyword == null}">
+                                    <a class="page-link text-secondary"
+                                       th:href="@{|/persons/person-list/page/${currentPage}|}">
+                                        [[#{app.previous}]]
+                                    </a>
+                                </div>
+                                <div th:unless="${keyword == null}">
+                                    <a class="page-link text-secondary"
+                                       th:href="@{|/persons/person-list/page/${currentPage}?keyword=${keyword}|}">
+                                        [[#{app.previous}]]
+                                    </a>
+                                </div>
+                            </div>
+                            <div th:unless="${currentPage == 1}">
+                                <div th:if="${keyword == null}">
+                                    <a class="page-link "
+                                       th:href="@{|/persons/person-list/page/${currentPage - 1}|}">
+                                        [[#{app.previous}]]
+                                    </a>
+                                </div>
+                                <div th:unless="${keyword == null}">
+                                    <a class="page-link "
+                                       th:href="@{|/persons/person-list/page/${currentPage - 1}?keyword=${keyword}|}">
+                                        [[#{app.previous}]]
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="page-item" th:each="pageNumber : ${pageNumbers}">
                             <div th:if="${keyword == null}">
-                                <a class="page-link text-secondary"
-                                   th:href="@{|/persons/person-list/page/${currentPage}|}">
-                                    [[#{app.previous}]]
-                                </a>
+                                <a class="page-link"
+                                   th:href="@{|/persons/person-list/page/${pageNumber}|}"
+                                   th:text=${pageNumber}>1</a>
                             </div>
                             <div th:unless="${keyword == null}">
-                                <a class="page-link text-secondary"
-                                   th:href="@{|/persons/person-list/page/${currentPage}?keyword=${keyword}|}">
-                                    [[#{app.previous}]]
-                                </a>
+                                <a class="page-link"
+                                   th:href="@{|/persons/person-list/page/${pageNumber}?keyword=${keyword}|}"
+                                   th:text=${pageNumber}>1</a>
                             </div>
-                        </div>
-                        <div th:unless="${currentPage == 1}">
-                            <div th:if="${keyword == null}">
-                                <a class="page-link "
-                                   th:href="@{|/persons/person-list/page/${currentPage - 1}|}">
-                                    [[#{app.previous}]]
-                                </a>
-                            </div>
-                            <div th:unless="${keyword == null}">
-                                <a class="page-link "
-                                   th:href="@{|/persons/person-list/page/${currentPage - 1}?keyword=${keyword}|}">
-                                    [[#{app.previous}]]
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="page-item" th:each="pageNumber : ${pageNumbers}">
-                        <div th:if="${keyword == null}">
-                            <a class="page-link"
-                               th:href="@{|/persons/person-list/page/${pageNumber}|}"
-                               th:text=${pageNumber}>1</a>
-                        </div>
-                        <div th:unless="${keyword == null}">
-                            <a class="page-link"
-                               th:href="@{|/persons/person-list/page/${pageNumber}?keyword=${keyword}|}"
-                               th:text=${pageNumber}>1</a>
-                        </div>
-                    </li>
+                        </li>
 
-                    <li class="page-item">
-                        <div th:if="${currentPage == totalPages || totalItems == 0 }">
-                            <div th:if="${keyword == null}">
-                                <a class="page-link text-secondary"
-                                   th:href="@{|/persons/person-list/page/${currentPage}|}">
-                                    [[#{app.next}]]
-                                </a>
+                        <li class="page-item">
+                            <div th:if="${currentPage == totalPages || totalItems == 0 }">
+                                <div th:if="${keyword == null}">
+                                    <a class="page-link text-secondary"
+                                       th:href="@{|/persons/person-list/page/${currentPage}|}">
+                                        [[#{app.next}]]
+                                    </a>
+                                </div>
+                                <div th:unless="${keyword == null}">
+                                    <a class="page-link text-secondary"
+                                       th:href="@{|/persons/person-list/page/${currentPage}?keyword=${keyword}|}">
+                                        [[#{app.next}]]
+                                    </a>
+                                </div>
                             </div>
-                            <div th:unless="${keyword == null}">
-                                <a class="page-link text-secondary"
-                                   th:href="@{|/persons/person-list/page/${currentPage}?keyword=${keyword}|}">
-                                    [[#{app.next}]]
-                                </a>
+                            <div th:unless="${currentPage == totalPages || totalItems == 0}">
+                                <div th:if="${keyword == null}">
+                                    <a class="page-link"
+                                       th:href="@{|/persons/person-list/page/${currentPage  + 1}|}">
+                                        [[#{app.next}]]
+                                    </a>
+                                </div>
+                                <div th:unless="${keyword == null}">
+                                    <a class="page-link"
+                                       th:href="@{|/persons/person-list/page/${currentPage  + 1}?keyword=${keyword}|}">
+                                        [[#{app.next}]]
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div th:unless="${currentPage == totalPages || totalItems == 0}">
-                            <div th:if="${keyword == null}">
-                                <a class="page-link"
-                                   th:href="@{|/persons/person-list/page/${currentPage  + 1}|}">
-                                    [[#{app.next}]]
-                                </a>
-                            </div>
-                            <div th:unless="${keyword == null}">
-                                <a class="page-link"
-                                   th:href="@{|/persons/person-list/page/${currentPage  + 1}?keyword=${keyword}|}">
-                                    [[#{app.next}]]
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 </main>
 </body>

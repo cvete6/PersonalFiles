@@ -16,4 +16,5 @@ public interface PersonJpaRepository extends JpaRepository<Person, Integer> {
 
     Optional<Person> findBySocialNumber(String socialNumber);
 
+    Person findByEmail(String email);
 }

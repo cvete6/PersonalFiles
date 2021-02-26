@@ -47,7 +47,7 @@ public class Person {
 
     @Column(unique = true)
     @NotEmpty(message = "Social number cannot be empty")
-   // @Size(min = 9)
+    // @Size(min = 9)
     private String socialNumber;
 
     private String callSign;
@@ -115,12 +115,12 @@ public class Person {
     //@NotEmpty(message = "Passport Number cannot be empty")
     private String passportNumber;
 
-  //  @NotNull(message = "Date of issue passport cannot be empty")
+    //  @NotNull(message = "Date of issue passport cannot be empty")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfIssuePassport;
 
-//    @NotNull(message = "Date of expiry passport cannot be empty")
+    //    @NotNull(message = "Date of expiry passport cannot be empty")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfExpiryPassport;
@@ -130,54 +130,58 @@ public class Person {
 
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-                          CascadeType.MERGE,CascadeType.DETACH})
+            CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "children_id")
     private List<Person> children;
 
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-                          CascadeType.MERGE,CascadeType.DETACH})
+            CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "colleague_id")
     private List<Person> colleague;
 
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-                          CascadeType.MERGE,CascadeType.DETACH})
+            CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "parent_id")
     private List<Person> parent;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-                         CascadeType.MERGE,CascadeType.DETACH})
+            CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "spouse_id")
     private Person spouse;
 
     @JsonIgnore
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-                          CascadeType.MERGE,CascadeType.DETACH})
+            CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "follows_id")
     private List<Person> follows;
 
     @JsonIgnore
-    @OneToMany( cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-                           CascadeType.MERGE,CascadeType.DETACH})
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+            CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "knows_id")
     private List<Person> knows;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-                          CascadeType.MERGE,CascadeType.DETACH})
+            CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "organization_sponsor_id")
     private Organization organization_sponsor;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-                          CascadeType.MERGE,CascadeType.DETACH})
+            CascadeType.MERGE, CascadeType.DETACH})
     @JoinColumn(name = "organization_worksIn_id")
     private Organization worksFor;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
-                           CascadeType.MERGE,CascadeType.DETACH})
-    @JoinTable(name="person_organization",
+            CascadeType.MERGE, CascadeType.DETACH})
+    @JoinTable(name = "person_organization",
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "organization_id"))
     private List<Organization> memberOf;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "auth_provider")
+    private AuthenticationProvider authProvider;
 
 }

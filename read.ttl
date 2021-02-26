@@ -1,8 +1,0 @@
-<rdf:RDF
-    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:Person="http://schema.org/Person/">
-  <rdf:Description rdf:about="http://schema.org/Person/cvete">
-    <Person:familyName rdf:resource="http://schema.org/Person/trajkovska"/>
-    <Person:givenName rdf:resource="http://schema.org/Person/Irena"/>
-  </rdf:Description>
-</rdf:RDF>

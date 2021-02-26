@@ -87,18 +87,20 @@
                                th:placeholder="#{app.socialNumber}" required>
                     </div>
                     <div class="row">
-                        <label for="personCallSign" class="col-sm-5 col-form-label"><h6>[[#{app.callSign}]]:</h6></label>
+                        <label for="personCallSign" class="col-sm-5 col-form-label"><h6>[[#{app.callSign}]]:</h6>
+                        </label>
                         <input id="personCallSign" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.callSign}"
                                name="callSign"
-                               th:placeholder="#{app.callSign}" >
+                               th:placeholder="#{app.callSign}">
                     </div>
                     <div class="row">
-                        <label for="personContactPoint" class="col-sm-5 col-form-label"><h6>[[#{app.contactPoint}]]:</h6></label>
+                        <label for="personContactPoint" class="col-sm-5 col-form-label"><h6>
+                            [[#{app.contactPoint}]]:</h6></label>
                         <input id="personContactPoint" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.contactPoint}"
                                name="contact point"
-                               th:placeholder="#{app.contactPoint}" >
+                               th:placeholder="#{app.contactPoint}">
                     </div>
                     <div class="row">
                         <label for="dateOfBirth"
@@ -122,7 +124,7 @@
                         <input id="dateOfDeath" class="form-control form-control-sm col-6" type="date"
                                th:field="*{person.deathDate}"
                                name="dateOfDeath"
-                               th:placeholder="#{app.dateOfDeath}" >
+                               th:placeholder="#{app.dateOfDeath}">
                     </div>
                     <div class="row">
                         <label for="placeOfDeath"
@@ -130,7 +132,7 @@
                         <input id="placeOfDeath" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.deathPlace}"
                                name="placeOfDeath"
-                               th:placeholder="#{app.placeOfDeath}" >
+                               th:placeholder="#{app.placeOfDeath}">
                     </div>
                     <div class="row">
                         <label for="email"
@@ -141,87 +143,97 @@
                                th:placeholder="#{app.email}" required>
                     </div>
                     <div class="row">
-                        <label for="personFaxNumber" class="col-sm-5 col-form-label"><h6>[[#{app.faxNumber}]]:</h6></label>
+                        <label for="personFaxNumber" class="col-sm-5 col-form-label"><h6>[[#{app.faxNumber}]]:</h6>
+                        </label>
                         <input id="personFaxNumber" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.faxNumber}"
                                name="faxNumber"
-                               th:placeholder="#{app.faxNumber}" >
+                               th:placeholder="#{app.faxNumber}">
                     </div>
                     <div class="row">
                         <label for="personGender" class="col-sm-5 col-form-label"><h6>[[#{app.gender}]]:</h6></label>
                         <input id="personGender" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.gender}"
                                name="gender"
-                               th:placeholder="#{app.gender}" >
+                               th:placeholder="#{app.gender}">
                     </div>
                     <div class="row">
-                        <label for="personGlobalLocationNumber" class="col-sm-5 col-form-label"><h6>[[#{app.globalLocationNumber}]]:</h6></label>
+                        <label for="personGlobalLocationNumber" class="col-sm-5 col-form-label"><h6>
+                            [[#{app.globalLocationNumber}]]:</h6></label>
                         <input id="personGlobalLocationNumber" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.globalLocationNumber}"
                                name="address"
-                               th:placeholder="#{app.globalLocationNumber}" >
+                               th:placeholder="#{app.globalLocationNumber}">
                     </div>
                     <div class="row">
                         <label for="personHeight" class="col-sm-5 col-form-label"><h6>[[#{app.height}]]:</h6></label>
                         <input id="personHeight" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.height}"
                                name="height"
-                               th:placeholder="#{app.height}" >
+                               th:placeholder="#{app.height}">
                     </div>
                     <div class="row">
                         <label for="personWeight" class="col-sm-5 col-form-label"><h6>[[#{app.weight}]]:</h6></label>
                         <input id="personWeight" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.weight}"
                                name="weight"
-                               th:placeholder="#{app.weight}" >
+                               th:placeholder="#{app.weight}">
                     </div>
                     <div class="row">
-                        <label for="personHomeLocation" class="col-sm-5 col-form-label"><h6>[[#{app.homeLocation}]]:</h6></label>
+                        <label for="personHomeLocation" class="col-sm-5 col-form-label"><h6>
+                            [[#{app.homeLocation}]]:</h6></label>
                         <input id="personHomeLocation" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.homeLocation}"
                                name="homeLocation"
-                               th:placeholder="#{app.homeLocation}" >
+                               th:placeholder="#{app.homeLocation}">
                     </div>
                     <div class="row">
-                        <label for="personHonorificPrefix" class="col-sm-5 col-form-label"><h6>[[#{app.honorificPrefix}]]:</h6></label>
+                        <label for="personHonorificPrefix" class="col-sm-5 col-form-label"><h6>
+                            [[#{app.honorificPrefix}]]:</h6></label>
                         <input id="personHonorificPrefix" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.honorificPrefix}"
                                name="honorificPrefix"
-                               th:placeholder="#{app.honorificPrefix}" >
+                               th:placeholder="#{app.honorificPrefix}">
                     </div>
                     <div class="row">
-                        <label for="personHonorificSuffix" class="col-sm-5 col-form-label"><h6>[[#{app.honorificSuffix}]]:</h6></label>
+                        <label for="personHonorificSuffix" class="col-sm-5 col-form-label"><h6>
+                            [[#{app.honorificSuffix}]]:</h6></label>
                         <input id="personHonorificSuffix" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.honorificSuffix}"
                                name="honorificSuffix"
-                               th:placeholder="#{app.honorificSuffix}" >
+                               th:placeholder="#{app.honorificSuffix}">
                     </div>
                     <div class="row">
-                        <label for="personJobTitle" class="col-sm-5 col-form-label"><h6>[[#{app.jobTitle}]]:</h6></label>
+                        <label for="personJobTitle" class="col-sm-5 col-form-label"><h6>[[#{app.jobTitle}]]:</h6>
+                        </label>
                         <input id="personJobTitle" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.jobTitle}"
                                name="jobTitle"
-                               th:placeholder="#{app.jobTitle}" >
+                               th:placeholder="#{app.jobTitle}">
                     </div>
                     <div class="row">
-                        <label for="personKnowsAbout" class="col-sm-5 col-form-label"><h6>[[#{app.knowsAbout}]]:</h6></label>
+                        <label for="personKnowsAbout" class="col-sm-5 col-form-label"><h6>[[#{app.knowsAbout}]]:</h6>
+                        </label>
                         <input id="personKnowsAbout" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.knowsAbout}"
                                name="knowsAbout"
-                               th:placeholder="#{app.knowsAbout}" >
+                               th:placeholder="#{app.knowsAbout}">
                     </div>
                     <div class="row">
-                        <label for="personKnowsLanguage" class="col-sm-5 col-form-label"><h6>[[#{app.knowsLanguage}]]:</h6></label>
+                        <label for="personKnowsLanguage" class="col-sm-5 col-form-label"><h6>
+                            [[#{app.knowsLanguage}]]:</h6></label>
                         <input id="personKnowsLanguage" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.knowsLanguage}"
                                name="knowsLanguage"
-                               th:placeholder="#{app.knowsLanguage}" >
+                               th:placeholder="#{app.knowsLanguage}">
                     </div>
                 </div>
                 <div class="col">
                     <div class="col-sm-8 my-2 mb-5">
-                        <div class="card justify-content-end pt-5 pb-5 mt-5 mb-5 pt-5 " th:if="${personalImageExist}" style="padding-top: 30%;">
-                            <label class="card-body pt-4"><h6 class="text-muted">[[#{app.noPersonalImage}]] </h6></label>
+                        <div class="card justify-content-end pt-5 pb-5 mt-5 mb-5 pt-5 " th:if="${personalImageExist}"
+                             style="padding-top: 30%;">
+                            <label class="card-body pt-4"><h6 class="text-muted">[[#{app.noPersonalImage}]] </h6>
+                            </label>
                             <div class="card-body pb-5">
                                 <h5 class="card-title" th:text="${person.givenName} +' '+ ${person.familyName}">
                                     [[#{app.name}]]
@@ -239,53 +251,58 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <label for="personNationality" class="col-sm-5 col-form-label"><h6>[[#{app.nationality}]]:</h6></label>
+                        <label for="personNationality" class="col-sm-5 col-form-label"><h6>[[#{app.nationality}]]:</h6>
+                        </label>
                         <input id="personNationality" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.nationality}"
                                name="nationality"
-                               th:placeholder="#{app.nationality}" >
+                               th:placeholder="#{app.nationality}">
                     </div>
                     <div class="row">
-                        <label for="personPerformIn" class="col-sm-5 col-form-label"><h6>[[#{app.performerIn}]]:</h6></label>
+                        <label for="personPerformIn" class="col-sm-5 col-form-label"><h6>[[#{app.performerIn}]]:</h6>
+                        </label>
                         <input id="personPerformIn" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.performerIn}"
                                name="performIn"
-                               th:placeholder="#{app.performerIn}" >
+                               th:placeholder="#{app.performerIn}">
                     </div>
                     <div class="row">
-                        <label for="personPublishingPrinciple" class="col-sm-5 col-form-label"><h6>[[#{app.publishingPrinciples}]]:</h6></label>
+                        <label for="personPublishingPrinciple" class="col-sm-5 col-form-label"><h6>
+                            [[#{app.publishingPrinciples}]]:</h6></label>
                         <input id="personPublishingPrinciple" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.publishingPrinciples}"
                                name="publishingPrinciple"
-                               th:placeholder="#{app.publishingPrinciples}" >
+                               th:placeholder="#{app.publishingPrinciples}">
                     </div>
                     <div class="row">
                         <label for="personSeeks" class="col-sm-5 col-form-label"><h6>[[#{app.seeks}]]:</h6></label>
                         <input id="personSeeks" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.seeks}"
                                name="seeks"
-                               th:placeholder="#{app.seeks}" >
+                               th:placeholder="#{app.seeks}">
                     </div>
                     <div class="row">
                         <label for="personTaxID" class="col-sm-5 col-form-label"><h6>[[#{app.taxID}]]:</h6></label>
                         <input id="personTaxID" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.taxID}"
                                name="taxID"
-                               th:placeholder="#{app.taxID}" >
+                               th:placeholder="#{app.taxID}">
                     </div>
                     <div class="row">
-                        <label for="personTelephone" class="col-sm-5 col-form-label"><h6>[[#{app.telephone}]]:</h6></label>
+                        <label for="personTelephone" class="col-sm-5 col-form-label"><h6>[[#{app.telephone}]]:</h6>
+                        </label>
                         <input id="personTelephone" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.telephone}"
                                name="telephone"
-                               th:placeholder="#{app.telephone}" >
+                               th:placeholder="#{app.telephone}">
                     </div>
                     <div class="row">
-                        <label for="personWorkLocation" class="col-sm-5 col-form-label"><h6>[[#{app.workLocation}]]:</h6></label>
+                        <label for="personWorkLocation" class="col-sm-5 col-form-label"><h6>
+                            [[#{app.workLocation}]]:</h6></label>
                         <input id="personWorkLocation" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.workLocation}"
                                name="workLocation"
-                               th:placeholder="#{app.workLocation}" >
+                               th:placeholder="#{app.workLocation}">
                     </div>
                     <hr>
                     <div class="row">
@@ -295,7 +312,7 @@
                         <input id="passportNumber" class="form-control form-control-sm col-6" type="text"
                                th:field="*{person.passportNumber}"
                                name="passportNumber"
-                               th:placeholder="#{app.passportNumber}" >
+                               th:placeholder="#{app.passportNumber}">
                     </div>
                     <div class="row">
                         <label for="dateOfIssuePassport" class="col-sm-5 col-form-label">
@@ -304,7 +321,7 @@
                         <input id="dateOfIssuePassport" class="form-control form-control-sm col-6" type="date"
                                th:field="*{person.dateOfIssuePassport}"
                                name="dateOfIssuePassport"
-                               th:placeholder="dd-mm-yyyy" >
+                               th:placeholder="dd-mm-yyyy">
                     </div>
                     <div class="row">
                         <label for="dateOfExpiryPassport" class="col-sm-5 col-form-label">
@@ -313,7 +330,7 @@
                         <input id="dateOfExpiryPassport" class="form-control form-control-sm col-6" type="date"
                                th:field="*{person.dateOfExpiryPassport}"
                                name="dateOfExpiryPassport"
-                               th:placeholder="dd-mm-yyyy" >
+                               th:placeholder="dd-mm-yyyy">
                     </div>
                     <hr>
                     <div class="row">
@@ -324,8 +341,11 @@
                                name="personalImage"
                                type="file">
                     </div>
-                    <div class="row d-flex justify-content-end pb-5 btn-block" style="position: absolute; padding-top: 90%;">
-                        <button type="submit" class="col-3 btn btn-info btn-sm mt-3 d-flex justify-content-around float-end btn-block" style="position: relative;">
+                    <div class="row d-flex justify-content-end pb-5 btn-block"
+                         style="position: absolute; padding-top: 90%;">
+                        <button type="submit"
+                                class="col-3 btn btn-info btn-sm mt-3 d-flex justify-content-around float-end btn-block"
+                                style="position: relative;">
                             [[#{app.submit}]]
                         </button>
                     </div>
@@ -340,11 +360,14 @@
                     <label for="personSpouse" class="col-sm-5 col-form-label"><h6>[[#{app.spouse}]]:</h6></label>
                     <ul class="col-4 col-form-label" th:field="*{person.spouse}">
                         <li th:each="person : ${spouse}" th:value="${person.id}">
-                            <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit" th:text="${person.givenName}"></a>
+                            <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit"
+                               th:text="${person.givenName}"></a>
                         </li>
                     </ul>
                     <div id="personSpouse" class="form-group blu-margin">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterSpouse">[[#{app.add}]]</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModalCenterSpouse">[[#{app.add}]]
+                        </button>
                         <div th:replace="addPerson/addSpouse  :: addSpouseModal"></div>
                     </div>
                 </div>
@@ -353,11 +376,14 @@
                     <label for="personChildren" class="col-sm-5 col-form-label"><h6>[[#{app.children}]]:</h6></label>
                     <ul class="col-4 col-form-label" th:field="*{person.children}">
                         <li th:each="person : ${childrenList}" th:value="${person.id}">
-                            <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit" th:text="${person.givenName}"></a>
+                            <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit"
+                               th:text="${person.givenName}"></a>
                         </li>
                     </ul>
                     <div id="personChildren" class="form-group blu-margin">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">[[#{app.add}]]</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModalCenter">[[#{app.add}]]
+                        </button>
                         <div th:replace="addPerson/addChildren  :: addChildrenModal"></div>
                     </div>
                 </div>
@@ -366,37 +392,48 @@
                     <label for="personParent" class="col-sm-5 col-form-label"><h6>[[#{app.personParent}]]:</h6></label>
                     <ul class="col-4 col-form-label" th:field="*{person.parent}">
                         <li th:each="person : ${parentList}" th:value="${person.id}">
-                            <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit" th:text="${person.givenName}"></a>
+                            <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit"
+                               th:text="${person.givenName}"></a>
                         </li>
                     </ul>
                     <div id="personParent" class="form-group blu-margin">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">[[#{app.add}]]</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModalCenter2">[[#{app.add}]]
+                        </button>
                         <div th:replace="addPerson/addParent :: addParentModal"></div>
                     </div>
                 </div>
                 <hr>
                 <div class="row">
-                    <label for="personCollegue" class="col-sm-5 col-form-label"><h6>[[#{app.personColleague}]]:</h6></label>
+                    <label for="personCollegue" class="col-sm-5 col-form-label"><h6>[[#{app.personColleague}]]:</h6>
+                    </label>
                     <ul class="col-4 col-form-label" th:field="*{person.colleague}">
-                        <li th:each="person : ${colleaguesList}" th:value="${person.id}" >
-                            <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit" th:text="${person.givenName}"></a>
+                        <li th:each="person : ${colleaguesList}" th:value="${person.id}">
+                            <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit"
+                               th:text="${person.givenName}"></a>
                         </li>
                     </ul>
                     <div id="personCollegue" class="form-group blu-margin">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">[[#{app.add}]]</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModalCenter1">[[#{app.add}]]
+                        </button>
                         <div th:replace="addPerson/addColleague :: addColleagueModal"></div>
                     </div>
                 </div>
                 <hr>
                 <div class="row">
-                    <label for="personFollows" class="col-sm-5 col-form-label"><h6>[[#{app.personFollows}]]:</h6></label>
+                    <label for="personFollows" class="col-sm-5 col-form-label"><h6>[[#{app.personFollows}]]:</h6>
+                    </label>
                     <ul class="col-4 col-form-label" th:field="*{person.colleague}">
-                        <li th:each="person : ${followsList}" th:value="${person.id}" >
-                            <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit" th:text="${person.givenName}"></a>
+                        <li th:each="person : ${followsList}" th:value="${person.id}">
+                            <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit"
+                               th:text="${person.givenName}"></a>
                         </li>
                     </ul>
                     <div id="personFollows" class="form-group blu-margin">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterPersonFollows">[[#{app.add}]]</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModalCenterPersonFollows">[[#{app.add}]]
+                        </button>
                         <div th:replace="addPerson/addFollows :: addFollowsModal"></div>
                     </div>
                 </div>
@@ -408,51 +445,66 @@
                 <div class="row">
                     <label for="personKnows" class="col-sm-5 col-form-label"><h6>[[#{app.personKnows}]]:</h6></label>
                     <ul class="col-4 col-form-label" th:field="*{person.colleague}">
-                        <li th:each="person : ${knowsList}" th:value="${person.id}" >
-                            <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit" th:text="${person.givenName}"></a>
+                        <li th:each="person : ${knowsList}" th:value="${person.id}">
+                            <a th:href="@{/persons/showFormForUpdate(personId = ${person.id})}" type="submit"
+                               th:text="${person.givenName}"></a>
                         </li>
                     </ul>
                     <div id="personKnows" class="form-group blu-margin">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterPersonKnows">[[#{app.add}]]</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModalCenterPersonKnows">[[#{app.add}]]
+                        </button>
                         <div th:replace="addPerson/addKnows :: addKnowsModal"></div>
                     </div>
                 </div>
                 <hr>
                 <div class="row">
-                    <label for="organizationSponsor" class="col-sm-5 col-form-label"><h6>[[#{app.organizationSponsor}]]:</h6></label>
+                    <label for="organizationSponsor" class="col-sm-5 col-form-label"><h6>
+                        [[#{app.organizationSponsor}]]:</h6></label>
                     <ul class="col-4 col-form-label" th:field="*{person.organization_sponsor}">
                         <li th:each="organization : ${organizationSponsor}" th:value="${organization.id}">
-                            <a th:href="@{/organizations/showFormForUpdate(organizationId = ${organization.id})}" type="submit" th:text="${organization.legalName}"></a>
+                            <a th:href="@{/organizations/showFormForUpdate(organizationId = ${organization.id})}"
+                               type="submit" th:text="${organization.legalName}"></a>
                         </li>
                     </ul>
                     <div id="organizationSponsor" class="form-group blu-margin">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterOrganizationSponsor">[[#{app.add}]]</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModalCenterOrganizationSponsor">[[#{app.add}]]
+                        </button>
                         <div th:replace="addPerson/addOrganizationSponsor  :: addOrganizationSponsorModal"></div>
                     </div>
                 </div>
                 <hr>
                 <div class="row">
-                    <label for="worksForOrganization" class="col-sm-5 col-form-label"><h6>[[#{app.worksForOrganization}]]:</h6></label>
+                    <label for="worksForOrganization" class="col-sm-5 col-form-label"><h6>
+                        [[#{app.worksForOrganization}]]:</h6></label>
                     <ul class="col-4 col-form-label" th:field="*{person.worksFor}">
                         <li th:each="organization : ${worksFor}" th:value="${organization.id}">
-                            <a th:href="@{/organizations/showFormForUpdate(organizationId = ${organization.id})}" type="submit" th:text="${organization.legalName}"></a>
+                            <a th:href="@{/organizations/showFormForUpdate(organizationId = ${organization.id})}"
+                               type="submit" th:text="${organization.legalName}"></a>
                         </li>
                     </ul>
                     <div id="worksForOrganization" class="form-group blu-margin">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterWorksFor">[[#{app.add}]]</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModalCenterWorksFor">[[#{app.add}]]
+                        </button>
                         <div th:replace="addPerson/addWorksForOrganization  :: addWorksForOrganizationModal"></div>
                     </div>
                 </div>
                 <hr>
                 <div class="row">
-                    <label for="memberOfOrganization" class="col-sm-5 col-form-label"><h6>[[#{app.memberPersonOfOrganization}]]:</h6></label>
+                    <label for="memberOfOrganization" class="col-sm-5 col-form-label"><h6>
+                        [[#{app.memberPersonOfOrganization}]]:</h6></label>
                     <ul class="col-4 col-form-label" th:field="*{person.worksFor}">
                         <li th:each="organization : ${memberOfOrganizationList}" th:value="${organization.id}">
-                            <a th:href="@{/organizations/showFormForUpdate(organizationId = ${organization.id})}" type="submit" th:text="${organization.legalName}"></a>
+                            <a th:href="@{/organizations/showFormForUpdate(organizationId = ${organization.id})}"
+                               type="submit" th:text="${organization.legalName}"></a>
                         </li>
                     </ul>
                     <div id="memberOfOrganization" class="form-group blu-margin">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenterMemberOf">[[#{app.add}]]</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModalCenterMemberOf">[[#{app.add}]]
+                        </button>
                         <div th:replace="addPerson/addMemberOfOrganization  :: addMemberOfOrganizationModal"></div>
                     </div>
                 </div>
